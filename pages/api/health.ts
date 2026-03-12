@@ -1,5 +1,5 @@
-﻿import { NextResponse } from "next/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET() {
-  return NextResponse.json({ status: "ok", service: "portal-frutos-do-espirito" });
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.status(200).json({ status: "ok" });
 }
