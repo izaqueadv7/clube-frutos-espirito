@@ -1,0 +1,227 @@
+﻿generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  PATHFINDER
+  LEADER
+  PARENT
+}
+
+enum SpecialtyStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum AnnouncementAudience {
+  ALL
+  PATHFINDER
+  PARENT
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  pathfinderProfile Pathfinder?
+  parentProfile     Parent?
+  announcements     Announcement[]
+  subscriptions     PushSubscription[]
+
+  @@map("users")
+}
+
+model Pathfinder {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  birthDate      DateTime?
+  currentClassId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentClass        PathfinderClass?     @relation(fields: [currentClassId], references: [id])
+  specialties         PathfinderSpecialty[]
+  progress            PathfinderProgress[]
+  attendance          Attendance[]
+  parentRelationships ParentPathfinder[]
+
+  @@map("pathfinders")
+}
+
+model Parent {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  children  ParentPathfinder[]
+
+  @@map("parents")
+}
+
+model ParentPathfinder {
+  id           String @id @default(uuid())
+  parentId     String
+  pathfinderId String
+
+  parent     Parent     @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  pathfinder Pathfinder @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+
+  @@unique([parentId, pathfinderId])
+  @@map("parent_pathfinders")
+}
+
+model Specialty {
+  id           String   @id @default(uuid())
+  name         String
+  category     String
+  description  String
+  requirements String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  pathfinders PathfinderSpecialty[]
+
+  @@map("specialties")
+}
+
+model PathfinderSpecialty {
+  id           String          @id @default(uuid())
+  pathfinderId String
+  specialtyId  String
+  status       SpecialtyStatus @default(PENDING)
+  startedAt    DateTime?
+  completedAt  DateTime?
+
+  pathfinder Pathfinder @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+  specialty  Specialty  @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+
+  @@unique([pathfinderId, specialtyId])
+  @@map("pathfinder_specialties")
+}
+
+model PathfinderClass {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  order       Int
+
+  requirements ClassRequirement[]
+  pathfinders  Pathfinder[]
+
+  @@map("classes")
+}
+
+model ClassRequirement {
+  id       String @id @default(uuid())
+  classId  String
+  title    String
+  details  String
+  points   Int    @default(1)
+
+  class PathfinderClass @relation(fields: [classId], references: [id], onDelete: Cascade)
+  progress PathfinderProgress[]
+
+  @@map("class_requirements")
+}
+
+model PathfinderProgress {
+  id            String   @id @default(uuid())
+  pathfinderId  String
+  requirementId String
+  completed     Boolean  @default(false)
+  completedAt   DateTime?
+
+  pathfinder  Pathfinder       @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+  requirement ClassRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+
+  @@unique([pathfinderId, requirementId])
+  @@map("pathfinder_progress")
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  attendance Attendance[]
+
+  @@map("events")
+}
+
+model Announcement {
+  id         String                @id @default(uuid())
+  title      String
+  content    String
+  audience   AnnouncementAudience  @default(ALL)
+  authorId   String
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("announcements")
+}
+
+model Attendance {
+  id           String           @id @default(uuid())
+  eventId       String
+  pathfinderId  String
+  status        AttendanceStatus @default(PRESENT)
+  checkInTime   DateTime?
+  note          String?
+
+  event      Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  pathfinder Pathfinder @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, pathfinderId])
+  @@map("attendance")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("password_reset_tokens")
+}
+
+model PushSubscription {
+  id         String   @id @default(uuid())
+  userId     String
+  endpoint   String   @unique
+  p256dhKey  String
+  authKey    String
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("push_subscriptions")
+}

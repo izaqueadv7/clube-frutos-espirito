@@ -1,0 +1,33 @@
+﻿@import "../styles/theme.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-surface text-ink min-h-screen antialiased;
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+}
+
+main {
+  @apply min-h-screen;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-card border border-red-100;
+}
+
+.input {
+  @apply w-full rounded-xl border border-red-200 bg-white px-4 py-2 outline-none transition focus:border-primary focus:ring-2 focus:ring-red-100;
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+}
+
+.section-title {
+  @apply text-xl font-bold text-primary;
+}
