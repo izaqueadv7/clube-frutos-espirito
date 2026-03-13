@@ -61,7 +61,7 @@ export default async function DashboardPage() {
 
     const child = parent?.children[0]?.pathfinder;
     const total = child?.progress.length ?? 0;
-    const completed = child?.progress.filter((item) => item.completed).length ?? 0;
+    const completed = child?.progress.filter((item: any) => item.completed).length ?? 0;
     const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
 
     return (
@@ -97,11 +97,11 @@ export default async function DashboardPage() {
     }
   });
 
-  const completedReqs = pathfinder?.progress.filter((item) => item.completed).length ?? 0;
+  const completedReqs = pathfinder?.progress.filter((item: any) => item.completed).length ?? 0;
   const totalReqs = pathfinder?.progress.length ?? 0;
   const classProgress = totalReqs ? Math.round((completedReqs / totalReqs) * 100) : 0;
 
-  const specialtyDone = pathfinder?.specialties.filter((item) => item.status === "COMPLETED").length ?? 0;
+  const specialtyDone = pathfinder?.specialties.filter((item: any) => item.status === "COMPLETED").length ?? 0;
   const specialtyTotal = pathfinder?.specialties.length ?? 0;
   const specialtyProgress = specialtyTotal ? Math.round((specialtyDone / specialtyTotal) * 100) : 0;
 
