@@ -52,7 +52,7 @@ export default async function SpecialtiesPage() {
         <Card className="p-4">
           <h2 className="mb-3 font-bold text-slate-700">Pendentes</h2>
           <div className="space-y-2">
-            {grouped.PENDING.map((item) => (
+            {grouped.PENDING.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-red-100 p-3">
                 <p className="font-semibold">{item.specialty.name}</p>
                 <p className="text-xs text-slate-500">{item.specialty.category}</p>
@@ -64,7 +64,7 @@ export default async function SpecialtiesPage() {
         <Card className="p-4">
           <h2 className="mb-3 font-bold text-slate-700">Em andamento</h2>
           <div className="space-y-2">
-            {grouped.IN_PROGRESS.map((item) => (
+            {grouped.IN_PROGRESS.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-yellow-200 bg-yellow-50 p-3">
                 <p className="font-semibold">{item.specialty.name}</p>
                 <p className="text-xs text-slate-600">{item.specialty.description}</p>
@@ -76,7 +76,7 @@ export default async function SpecialtiesPage() {
         <Card className="p-4">
           <h2 className="mb-3 font-bold text-slate-700">Concluidas</h2>
           <div className="space-y-2">
-            {grouped.COMPLETED.map((item) => (
+            {grouped.COMPLETED.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-green-200 bg-green-50 p-3">
                 <p className="font-semibold">{item.specialty.name}</p>
                 <Badge className="bg-green-600 text-white">Concluida</Badge>
