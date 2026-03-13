@@ -20,7 +20,7 @@ export async function Sidebar() {
       <p className="mb-4 text-lg font-bold text-primary">{session?.user?.name ?? "Visitante"}</p>
       <div className="space-y-2">
         {links.map((link) => (
-          <Link key={link.href} href={link.href} className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-red-50">
+          <Link key={link.href} href={link.href as any} className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-red-50">
             {link.label}
           </Link>
         ))}
