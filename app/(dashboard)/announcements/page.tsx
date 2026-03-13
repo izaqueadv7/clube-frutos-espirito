@@ -9,7 +9,7 @@ export default async function AnnouncementsPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const where =
+  const where: any =
     session.user.role === "LEADER"
       ? {}
       : session.user.role === "PARENT"
