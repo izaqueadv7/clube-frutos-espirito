@@ -47,7 +47,7 @@ export async function GET(request: Request) {
   });
 
   const total = items.length;
-  const completed = items.filter((item) => item.completed).length;
+  const completed = items.filter((item: any) => item.completed).length;
   const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
 
   return NextResponse.json({
