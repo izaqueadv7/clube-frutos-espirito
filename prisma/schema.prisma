@@ -94,7 +94,7 @@ model ParentPathfinder {
 
 model Specialty {
   id           String   @id @default(uuid())
-  name         String
+  name        String   @unique
   category     String
   description  String
   requirements String
