@@ -13,7 +13,7 @@ export function ResetPasswordForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const token = params.get("token") ?? "";
+  const token = params?.get("token") ?? "";
 
   return (
     <form
