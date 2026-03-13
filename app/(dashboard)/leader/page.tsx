@@ -102,7 +102,7 @@ export default async function LeaderPage() {
         <Card className="p-5">
           <h2 className="mb-3 text-lg font-bold text-primary">Proximos Eventos</h2>
           <div className="space-y-2">
-            {events.map((item) => (
+            {events.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-red-100 p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500">ID: {item.id}</p>
                 <p className="font-semibold">{item.title}</p>
@@ -118,7 +118,7 @@ export default async function LeaderPage() {
         <Card className="p-5">
           <h2 className="mb-3 text-lg font-bold text-primary">Requirements IDs</h2>
           <div className="space-y-2">
-            {requirements.map((item) => (
+            {requirements.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-red-100 p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500">ID: {item.id}</p>
                 <p className="font-semibold">{item.title}</p>
@@ -131,7 +131,7 @@ export default async function LeaderPage() {
         <Card className="p-5">
           <h2 className="mb-3 text-lg font-bold text-primary">Atribuicoes de Especialidade</h2>
           <div className="space-y-2">
-            {assignments.map((item) => (
+            {assignments.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-red-100 p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500">Assignment ID: {item.id}</p>
                 <p className="font-semibold">{item.specialty.name}</p>
