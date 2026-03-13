@@ -34,9 +34,9 @@ export default async function SpecialtiesPage() {
       });
 
   const grouped = {
-    PENDING: assignments.filter((item) => item.status === "PENDING"),
-    IN_PROGRESS: assignments.filter((item) => item.status === "IN_PROGRESS"),
-    COMPLETED: assignments.filter((item) => item.status === "COMPLETED")
+    PENDING: assignments.filter((item: any) => item.status === "PENDING"),
+    IN_PROGRESS: assignments.filter((item: any) => item.status === "IN_PROGRESS"),
+    COMPLETED: assignments.filter((item: any) => item.status === "COMPLETED")
   };
 
   return (
