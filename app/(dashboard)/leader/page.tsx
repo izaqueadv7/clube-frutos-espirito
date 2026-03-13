@@ -88,7 +88,7 @@ export default async function LeaderPage() {
         <Card className="p-5">
           <h2 className="mb-3 text-lg font-bold text-primary">Ultimos Pathfinders</h2>
           <div className="space-y-2">
-            {pathfinders.map((item) => (
+            {pathfinders.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-red-100 p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500">ID: {item.id}</p>
                 <p className="font-semibold">{item.user.name}</p>
