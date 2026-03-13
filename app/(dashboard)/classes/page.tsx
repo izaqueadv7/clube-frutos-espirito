@@ -43,7 +43,7 @@ export default async function ClassesPage() {
         {classes.map((item: any) => {
           const reqs = item.requirements;
           const completed = reqs.filter((req: any) =>
-            progress.some((p) => p.requirementId === req.id && p.completed)
+            progress.some((p: any) => p.requirementId === req.id && p.completed)
           ).length;
           const pct = reqs.length ? Math.round((completed / reqs.length) * 100) : 0;
 
