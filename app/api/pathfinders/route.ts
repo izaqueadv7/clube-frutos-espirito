@@ -44,7 +44,7 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      items: parent?.children.map((relation) => relation.pathfinder) ?? []
+      items: parent?.children.map((relation: any) => relation.pathfinder) ?? []
     });
   }
 
