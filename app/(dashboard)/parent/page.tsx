@@ -73,7 +73,7 @@ export default async function ParentPage() {
           <Card className="p-5">
             <h3 className="mb-3 text-lg font-bold text-primary">Frequencia</h3>
             <div className="space-y-2">
-              {child.attendance.map((item) => (
+              {child.attendance.map((item: any) => (
                 <div key={item.id} className="rounded-xl border border-red-100 p-3 text-sm">
                   <p className="font-semibold">{item.event.title}</p>
                   <p className="text-slate-600">Status: {item.status}</p>
