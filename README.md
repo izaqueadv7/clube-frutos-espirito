@@ -1,4 +1,4 @@
-﻿# Portal Frutos do Espirito
+﻿# Clube Frutos do Espirito
 
 Plataforma web + PWA completa para gestao do Clube de Desbravadores Frutos do Espirito.
 
