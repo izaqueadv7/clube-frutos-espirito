@@ -174,7 +174,7 @@ async function main() {
       create: {
         pathfinderId: pathfinder.id,
         specialtyId: specialty.id,
-        status: specialty.name === "Primeiros Socorros Basico" ? SpecialtyStatus.IN_PROGRESS : SpecialtyStatus.PENDING
+        status: specialty.name === "Primeiros Socorros Basico" ? "IN_PROGRESS" : "PENDING"
       }
     });
   }
