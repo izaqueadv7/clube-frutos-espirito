@@ -31,10 +31,10 @@ export default async function ParentPage() {
   const child = parent?.children[0]?.pathfinder;
 
   const totalReqs = child?.progress.length ?? 0;
-  const completedReqs = child?.progress.filter((item) => item.completed).length ?? 0;
+  const completedReqs = child?.progress.filter((item: any) => item.completed).length ?? 0;
   const progressPct = totalReqs ? Math.round((completedReqs / totalReqs) * 100) : 0;
 
-  const specialtyDone = child?.specialties.filter((item) => item.status === "COMPLETED").length ?? 0;
+  const specialtyDone = child?.specialties.filter((item: any) => item.status === "COMPLETED").length ?? 0;
   const specialtyTotal = child?.specialties.length ?? 0;
   const specialtyPct = specialtyTotal ? Math.round((specialtyDone / specialtyTotal) * 100) : 0;
 
