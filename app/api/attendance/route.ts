@@ -34,7 +34,7 @@ export async function GET() {
       include: { children: true }
     });
 
-    const ids = parent?.children.map((child) => child.pathfinderId) ?? [];
+    const ids = parent?.children.map((child: any) => child.pathfinderId) ?? [];
 
     const items = await prisma.attendance.findMany({
       where: { pathfinderId: { in: ids } },
