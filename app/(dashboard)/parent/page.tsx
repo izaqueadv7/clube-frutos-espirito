@@ -61,7 +61,7 @@ export default async function ParentPage() {
           <Card className="p-5">
             <h3 className="mb-3 text-lg font-bold text-primary">Especialidades</h3>
             <div className="grid gap-2 md:grid-cols-2">
-              {child.specialties.map((item) => (
+              {child.specialties.map((item: any) => (
                 <div key={item.id} className="rounded-xl border border-red-100 p-3 text-sm">
                   <p className="font-semibold">{item.specialty.name}</p>
                   <p className="text-slate-600">Status: {item.status}</p>
