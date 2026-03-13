@@ -40,7 +40,7 @@ export default async function ClassesPage() {
       </Card>
 
       <div className="space-y-4">
-        {classes.map((item) => {
+        {classes.map((item: any) => {
           const reqs = item.requirements;
           const completed = reqs.filter((req) =>
             progress.some((p) => p.requirementId === req.id && p.completed)
