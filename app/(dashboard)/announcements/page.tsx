@@ -38,7 +38,7 @@ export default async function AnnouncementsPage() {
       ) : null}
 
       <div className="space-y-3">
-        {announcements.map((item) => (
+        {announcements.map((item: any) => (
           <Card key={item.id} className="p-4">
             <div className="flex items-center justify-between gap-3">
               <h3 className="text-lg font-bold text-primary">{item.title}</h3>
