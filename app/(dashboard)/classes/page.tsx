@@ -58,7 +58,7 @@ export default async function ClassesPage() {
                 <ProgressBar label="Progresso" value={pct} />
               ) : null}
               <div className="grid gap-2 md:grid-cols-2">
-                {reqs.map((req) => (
+                {reqs.map((req: any) => (
                   <div key={req.id} className="rounded-xl border border-red-100 p-3 text-sm">
                     <p className="font-semibold">{req.title}</p>
                     <p className="text-slate-600">{req.details}</p>
