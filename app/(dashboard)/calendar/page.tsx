@@ -24,7 +24,7 @@ export default async function CalendarPage() {
       </Card>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {events.map((event) => (
+        {events.map((event: any) => (
           <Card key={event.id} className="space-y-2 p-4">
             <p className="text-xs font-semibold uppercase text-slate-500">Evento</p>
             <h2 className="text-lg font-bold text-primary">{event.title}</h2>
