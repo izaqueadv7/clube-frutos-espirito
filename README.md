@@ -46,7 +46,7 @@ Extras de producao:
 ## 3) Estrutura de pastas
 
 ```txt
-portal-frutos-do-espirito/
+clube-frutos-do-espirito/
   app/
     (public)/
     (auth)/
