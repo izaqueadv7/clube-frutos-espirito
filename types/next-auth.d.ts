@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿import "next-auth";
+=======
+import "next-auth";
+>>>>>>> 1dee135b41e3bfcf35d855a8770da1de9d6a166a
 import "next-auth/jwt";
 
 declare module "next-auth" {
