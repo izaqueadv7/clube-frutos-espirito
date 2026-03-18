@@ -25,10 +25,22 @@ export async function Sidebar() {
           </Link>
         ))}
         {role === "LEADER" ? (
-          <Link href="/leader" className="block rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white">
-            Painel Lider
-          </Link>
-        ) : null}
+  <>
+    <Link
+      href="/leader"
+      className="block rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white"
+    >
+      Painel Líder
+    </Link>
+
+    <Link
+      href="/leader/users"
+      className="block rounded-lg bg-green-600 px-3 py-2 text-sm font-bold text-white hover:bg-green-700"
+    >
+      Gerenciar Usuários
+    </Link>
+  </>
+) : null}
         {role === "PARENT" ? (
           <Link href="/parent" className="block rounded-lg bg-accent px-3 py-2 text-sm font-bold text-ink">
             Portal Pais
