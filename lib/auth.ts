@@ -19,8 +19,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
         token.id = user.id;
+        token.role = user.role;
+        token.primaryFunction = user.primaryFunction;
+        token.secondaryFunction = user.secondaryFunction;
+        token.isAdmin = user.isAdmin;
+        token.isMedia = user.isMedia;
+        token.canManageUsers = user.canManageUsers;
+        token.canManageContent = user.canManageContent;
       }
       return token;
     },
@@ -28,6 +34,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as "PATHFINDER" | "LEADER" | "PARENT";
+        session.user.primaryFunction = token.primaryFunction as string | undefined;
+        session.user.secondaryFunction = token.secondaryFunction as string | undefined;
+        session.user.isAdmin = token.isAdmin as boolean | undefined;
+        session.user.isMedia = token.isMedia as boolean | undefined;
+        session.user.canManageUsers = token.canManageUsers as boolean | undefined;
+        session.user.canManageContent = token.canManageContent as boolean | undefined;
       }
       return session;
     }
@@ -55,7 +67,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role
+          role: user.role,
+          primaryFunction: user.primaryFunction,
+          secondaryFunction: user.secondaryFunction,
+          isAdmin: user.isAdmin,
+          isMedia: user.isMedia,
+          canManageUsers: user.canManageUsers,
+          canManageContent: user.canManageContent
         };
       }
     })

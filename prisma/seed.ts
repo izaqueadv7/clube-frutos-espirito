@@ -39,49 +39,85 @@ async function main() {
   const laisaPass = await bcrypt.hash("Laisa@dbv", 10);
 
   const izaqueUser = await prisma.user.upsert({
-    where: { email: "izaqueadv@gmail.com" },
-    update: {
-      name: "Izaque Natanael Dantas",
-      passwordHash: izaquePass,
-      role: "LEADER"
-    },
-    create: {
-      name: "Izaque Natanael Dantas",
-      email: "izaqueadv@gmail.com",
-      passwordHash: izaquePass,
-      role: "LEADER"
-    }
-  });
+  where: { email: "izaqueadv@gmail.com" },
+  update: {
+    name: "Izaque Natanael Dantas",
+    passwordHash: izaquePass,
+    role: "LEADER",
+    primaryFunction: "Instrutor de Classe",
+    secondaryFunction: "Mídia",
+    isAdmin: true,
+    isMedia: true,
+    canManageUsers: true,
+    canManageContent: true
+  },
+  create: {
+    name: "Izaque Natanael Dantas",
+    email: "izaqueadv@gmail.com",
+    passwordHash: izaquePass,
+    role: "LEADER",
+    primaryFunction: "Instrutor de Classe",
+    secondaryFunction: "Mídia",
+    isAdmin: true,
+    isMedia: true,
+    canManageUsers: true,
+    canManageContent: true
+  }
+});
 
-  const edsonUser = await prisma.user.upsert({
-    where: { email: "franciscoedsonsouza96@gmail.com" },
-    update: {
-      name: "Francisco Edson de Souza Silva",
-      passwordHash: edsonPass,
-      role: "LEADER"
-    },
-    create: {
-      name: "Francisco Edson de Souza Silva",
-      email: "franciscoedsonsouza96@gmail.com",
-      passwordHash: edsonPass,
-      role: "LEADER"
-    }
-  });
+const edsonUser = await prisma.user.upsert({
+  where: { email: "franciscoedsonsouza96@gmail.com" },
+  update: {
+    name: "Francisco Edson de Souza Silva",
+    passwordHash: edsonPass,
+    role: "LEADER",
+    primaryFunction: "Diretor",
+    secondaryFunction: null,
+    isAdmin: false,
+    isMedia: false,
+    canManageUsers: true,
+    canManageContent: true
+  },
+  create: {
+    name: "Francisco Edson de Souza Silva",
+    email: "franciscoedsonsouza96@gmail.com",
+    passwordHash: edsonPass,
+    role: "LEADER",
+    primaryFunction: "Diretor",
+    secondaryFunction: null,
+    isAdmin: false,
+    isMedia: false,
+    canManageUsers: true,
+    canManageContent: true
+  }
+});
 
-  const laisaUser = await prisma.user.upsert({
-    where: { email: "laisaestefany6@gmail.com" },
-    update: {
-      name: "Laisa Estefany Costa Vitorino",
-      passwordHash: laisaPass,
-      role: "LEADER"
-    },
-    create: {
-      name: "Laisa Estefany Costa Vitorino",
-      email: "laisaestefany6@gmail.com",
-      passwordHash: laisaPass,
-      role: "LEADER"
-    }
-  });
+const laisaUser = await prisma.user.upsert({
+  where: { email: "laisaestefany6@gmail.com" },
+  update: {
+    name: "Laisa Estefany Costa Vitorino",
+    passwordHash: laisaPass,
+    role: "LEADER",
+    primaryFunction: "Secretária",
+    secondaryFunction: "Conselheira associada",
+    isAdmin: false,
+    isMedia: false,
+    canManageUsers: true,
+    canManageContent: true
+  },
+  create: {
+    name: "Laisa Estefany Costa Vitorino",
+    email: "laisaestefany6@gmail.com",
+    passwordHash: laisaPass,
+    role: "LEADER",
+    primaryFunction: "Secretária",
+    secondaryFunction: "Conselheira associada",
+    isAdmin: false,
+    isMedia: true,
+    canManageUsers: true,
+    canManageContent: true
+  }
+});
 
   const classRecords = [] as { id: string; name: string }[];
   for (const item of classes) {

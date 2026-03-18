@@ -8,6 +8,7 @@ import { ProgressBar } from "@/components/dashboard/progress-bar";
 
 export default async function DashboardPage() {
   const session = await auth();
+
   if (!session?.user) {
     redirect("/login");
   }
@@ -30,11 +31,42 @@ export default async function DashboardPage() {
         </div>
 
         <Card className="p-5">
-          <h2 className="section-title">Painel de lideranca</h2>
+          <h2 className="section-title">Painel de liderança</h2>
           <p className="mt-2 text-sm text-slate-600">
-            Use a area "Painel Lider" para cadastrar desbravadores, atualizar progresso, eventos, avisos e presenca.
+            Use a área "Painel Lider" para cadastrar desbravadores, atualizar progresso,
+            eventos, avisos e presença.
           </p>
-          <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-slate-700">Verso do dia: {verseOfDay}</p>
+
+          <div className="mt-4 space-y-2 rounded-xl bg-red-50 p-4 text-sm text-slate-700">
+            <p>
+              <strong>Função principal:</strong>{" "}
+              {session.user.primaryFunction ?? "Não definida"}
+            </p>
+            <p>
+              <strong>Função secundária:</strong>{" "}
+              {session.user.secondaryFunction ?? "Nenhuma"}
+            </p>
+            <p>
+              <strong>Administrador geral:</strong>{" "}
+              {session.user.isAdmin ? "Sim" : "Não"}
+            </p>
+            <p>
+              <strong>Responsável por mídia:</strong>{" "}
+              {session.user.isMedia ? "Sim" : "Não"}
+            </p>
+            <p>
+              <strong>Gerencia usuários:</strong>{" "}
+              {session.user.canManageUsers ? "Sim" : "Não"}
+            </p>
+            <p>
+              <strong>Gerencia conteúdo:</strong>{" "}
+              {session.user.canManageContent ? "Sim" : "Não"}
+            </p>
+          </div>
+
+          <p className="mt-4 rounded-xl bg-yellow-50 p-3 text-sm text-slate-700">
+            Verso do dia: {verseOfDay}
+          </p>
         </Card>
       </>
     );
@@ -73,9 +105,11 @@ export default async function DashboardPage() {
         </div>
 
         <Card className="space-y-4 p-5">
-          <h2 className="section-title">Acompanhamento do responsavel</h2>
+          <h2 className="section-title">Acompanhamento do responsável</h2>
           <ProgressBar label="Progresso da classe" value={pct} />
-          <p className="rounded-xl bg-yellow-50 p-3 text-sm text-slate-700">Verso do dia: {verseOfDay}</p>
+          <p className="rounded-xl bg-yellow-50 p-3 text-sm text-slate-700">
+            Verso do dia: {verseOfDay}
+          </p>
         </Card>
       </>
     );
@@ -101,11 +135,17 @@ export default async function DashboardPage() {
   const totalReqs = pathfinder?.progress.length ?? 0;
   const classProgress = totalReqs ? Math.round((completedReqs / totalReqs) * 100) : 0;
 
-  const specialtyDone = pathfinder?.specialties.filter((item: any) => item.status === "COMPLETED").length ?? 0;
+  const specialtyDone =
+    pathfinder?.specialties.filter((item: any) => item.status === "COMPLETED").length ?? 0;
   const specialtyTotal = pathfinder?.specialties.length ?? 0;
-  const specialtyProgress = specialtyTotal ? Math.round((specialtyDone / specialtyTotal) * 100) : 0;
+  const specialtyProgress = specialtyTotal
+    ? Math.round((specialtyDone / specialtyTotal) * 100)
+    : 0;
 
-  const nextEvent = await prisma.event.findFirst({ where: { date: { gte: new Date() } }, orderBy: { date: "asc" } });
+  const nextEvent = await prisma.event.findFirst({
+    where: { date: { gte: new Date() } },
+    orderBy: { date: "asc" }
+  });
 
   return (
     <>
@@ -122,7 +162,7 @@ export default async function DashboardPage() {
       </Card>
 
       <Card className="p-5">
-        <h2 className="section-title">Proximo encontro</h2>
+        <h2 className="section-title">Próximo encontro</h2>
         {nextEvent ? (
           <>
             <p className="mt-2 text-lg font-semibold">{nextEvent.title}</p>
@@ -131,7 +171,9 @@ export default async function DashboardPage() {
         ) : (
           <p className="mt-2 text-sm text-slate-600">Nenhum evento agendado.</p>
         )}
-        <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-slate-700">Verso do dia: {verseOfDay}</p>
+        <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-slate-700">
+          Verso do dia: {verseOfDay}
+        </p>
       </Card>
     </>
   );

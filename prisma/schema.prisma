@@ -33,13 +33,19 @@ enum AnnouncementAudience {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  role         UserRole
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id               String   @id @default(uuid())
+  name             String
+  email            String   @unique
+  passwordHash     String
+  role             UserRole
+  primaryFunction  String?
+  secondaryFunction String?
+  isAdmin          Boolean  @default(false)
+  isMedia          Boolean  @default(false)
+  canManageUsers   Boolean  @default(false)
+  canManageContent Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   pathfinderProfile Pathfinder?
   parentProfile     Parent?
