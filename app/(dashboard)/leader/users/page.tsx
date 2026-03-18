@@ -28,6 +28,7 @@ export default async function LeaderUsersPage() {
       isMedia: true,
       canManageUsers: true,
       canManageContent: true,
+      isActive: true,
       createdAt: true
     }
   });
@@ -60,7 +61,8 @@ export default async function LeaderUsersPage() {
                 isAdmin: user.isAdmin,
                 isMedia: user.isMedia,
                 canManageUsers: user.canManageUsers,
-                canManageContent: user.canManageContent
+                canManageContent: user.canManageContent,
+                isActive: user.isActive
               }}
             />
           </Card>

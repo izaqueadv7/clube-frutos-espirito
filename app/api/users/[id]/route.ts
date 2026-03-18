@@ -34,9 +34,13 @@ export async function PUT(request: Request, { params }: Params) {
   const isMedia = Boolean(body?.isMedia);
   const canManageUsers = Boolean(body?.canManageUsers);
   const canManageContent = Boolean(body?.canManageContent);
+  const isActive = Boolean(body?.isActive);
 
   if (!name || !email || !role) {
-    return NextResponse.json({ error: "Nome, email e perfil são obrigatórios." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Nome, email e perfil são obrigatórios." },
+      { status: 400 }
+    );
   }
 
   const existing = await prisma.user.findFirst({
@@ -47,7 +51,10 @@ export async function PUT(request: Request, { params }: Params) {
   });
 
   if (existing) {
-    return NextResponse.json({ error: "Já existe outro usuário com esse email." }, { status: 409 });
+    return NextResponse.json(
+      { error: "Já existe outro usuário com esse email." },
+      { status: 409 }
+    );
   }
 
   const data: {
@@ -60,6 +67,7 @@ export async function PUT(request: Request, { params }: Params) {
     isMedia: boolean;
     canManageUsers: boolean;
     canManageContent: boolean;
+    isActive: boolean;
     passwordHash?: string;
   } = {
     name,
@@ -70,7 +78,8 @@ export async function PUT(request: Request, { params }: Params) {
     isAdmin,
     isMedia,
     canManageUsers,
-    canManageContent
+    canManageContent,
+    isActive
   };
 
   if (password) {
@@ -90,9 +99,38 @@ export async function PUT(request: Request, { params }: Params) {
       isAdmin: true,
       isMedia: true,
       canManageUsers: true,
-      canManageContent: true
+      canManageContent: true,
+      isActive: true
     }
   });
 
   return NextResponse.json({ user });
+}
+
+export async function DELETE(request: Request, { params }: Params) {
+  const session = await auth();
+
+  if (!session?.user) {
+    return NextResponse.json({ error: "Não autenticado." }, { status: 401 });
+  }
+
+  if (session.user.role !== "LEADER") {
+    return NextResponse.json({ error: "Sem permissão." }, { status: 403 });
+  }
+
+  const { id } = await params;
+
+  try {
+    await prisma.user.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ message: "Usuário excluído com sucesso." });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Não foi possível excluir o usuário." },
+      { status: 500 }
+    );
+  }
 }

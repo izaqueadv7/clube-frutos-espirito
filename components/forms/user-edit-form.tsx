@@ -15,6 +15,7 @@ type UserEditFormProps = {
     isMedia: boolean;
     canManageUsers: boolean;
     canManageContent: boolean;
+    isActive: boolean;
   };
 };
 
@@ -31,6 +32,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
   const [isMedia, setIsMedia] = useState(user.isMedia);
   const [canManageUsers, setCanManageUsers] = useState(user.canManageUsers);
   const [canManageContent, setCanManageContent] = useState(user.canManageContent);
+  const [isActive, setIsActive] = useState(user.isActive);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -58,7 +60,8 @@ export function UserEditForm({ user }: UserEditFormProps) {
           isAdmin,
           isMedia,
           canManageUsers,
-          canManageContent
+          canManageContent,
+          isActive
         })
       });
 
@@ -75,6 +78,36 @@ export function UserEditForm({ user }: UserEditFormProps) {
       router.refresh();
     } catch {
       setError("Erro ao atualizar usuário.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDelete() {
+    const confirmed = window.confirm("Tem certeza que deseja excluir este usuário?");
+    if (!confirmed) return;
+
+    try {
+      setLoading(true);
+      setMessage("");
+      setError("");
+
+      const response = await fetch(`/api/users/${user.id}`, {
+        method: "DELETE"
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data?.error || "Não foi possível excluir.");
+        setLoading(false);
+        return;
+      }
+
+      setMessage("Usuário excluído com sucesso.");
+      router.refresh();
+    } catch {
+      setError("Erro ao excluir usuário.");
     } finally {
       setLoading(false);
     }
@@ -150,12 +183,20 @@ export function UserEditForm({ user }: UserEditFormProps) {
       </div>
 
       <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-        <input type="checkbox" checked={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={isAdmin}
+          onChange={(e) => setIsAdmin(e.target.checked)}
+        />
         Administrador geral
       </label>
 
       <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-        <input type="checkbox" checked={isMedia} onChange={(e) => setIsMedia(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={isMedia}
+          onChange={(e) => setIsMedia(e.target.checked)}
+        />
         Responsável por mídia
       </label>
 
@@ -177,6 +218,15 @@ export function UserEditForm({ user }: UserEditFormProps) {
         Gerencia conteúdo
       </label>
 
+      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 md:col-span-2">
+        <input
+          type="checkbox"
+          checked={isActive}
+          onChange={(e) => setIsActive(e.target.checked)}
+        />
+        Usuário ativo
+      </label>
+
       <div className="md:col-span-2">
         {error ? (
           <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
@@ -191,9 +241,18 @@ export function UserEditForm({ user }: UserEditFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-primary px-4 py-2 font-semibold text-white"
+          className="rounded-lg bg-primary px-4 py-2 font-semibold text-white disabled:opacity-60"
         >
           {loading ? "Salvando..." : "Salvar alterações"}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={loading}
+          className="ml-3 rounded-lg bg-red-600 px-4 py-2 font-semibold text-white disabled:opacity-60"
+        >
+          Excluir usuário
         </button>
       </div>
     </form>
