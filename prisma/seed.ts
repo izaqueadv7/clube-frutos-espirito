@@ -34,40 +34,52 @@ const specialties = [
 ];
 
 async function main() {
-  const leaderPass = await bcrypt.hash("Leader@123", 10);
-  const pathfinderPass = await bcrypt.hash("Pathfinder@123", 10);
-  const parentPass = await bcrypt.hash("Parent@123", 10);
+  const izaquePass = await bcrypt.hash("Izaque@dbv", 10);
+  const edsonPass = await bcrypt.hash("Edson@dbv", 10);
+  const laisaPass = await bcrypt.hash("Laisa@dbv", 10);
 
-  const leaderUser = await prisma.user.upsert({
-    where: { email: "lider@frutos.com" },
-    update: {},
+  const izaqueUser = await prisma.user.upsert({
+    where: { email: "izaqueadv@gmail.com" },
+    update: {
+      name: "Izaque Natanael Dantas",
+      passwordHash: izaquePass,
+      role: "LEADER"
+    },
     create: {
-      name: "Lider Principal",
-      email: "lider@frutos.com",
-      passwordHash: leaderPass,
+      name: "Izaque Natanael Dantas",
+      email: "izaqueadv@gmail.com",
+      passwordHash: izaquePass,
       role: "LEADER"
     }
   });
 
-  const pathfinderUser = await prisma.user.upsert({
-    where: { email: "desbravador@frutos.com" },
-    update: {},
+  const edsonUser = await prisma.user.upsert({
+    where: { email: "franciscoedsonsouza96@gmail.com" },
+    update: {
+      name: "Francisco Edson de Souza Silva",
+      passwordHash: edsonPass,
+      role: "LEADER"
+    },
     create: {
-      name: "Daniel Araujo",
-      email: "desbravador@frutos.com",
-      passwordHash: pathfinderPass,
-      role: "PATHFINDER"
+      name: "Francisco Edson de Souza Silva",
+      email: "franciscoedsonsouza96@gmail.com",
+      passwordHash: edsonPass,
+      role: "LEADER"
     }
   });
 
-  const parentUser = await prisma.user.upsert({
-    where: { email: "pai@frutos.com" },
-    update: {},
+  const laisaUser = await prisma.user.upsert({
+    where: { email: "laisaestefany6@gmail.com" },
+    update: {
+      name: "Laisa Estefany Costa Vitorino",
+      passwordHash: laisaPass,
+      role: "LEADER"
+    },
     create: {
-      name: "Carlos Araujo",
-      email: "pai@frutos.com",
-      passwordHash: parentPass,
-      role: "PARENT"
+      name: "Laisa Estefany Costa Vitorino",
+      email: "laisaestefany6@gmail.com",
+      passwordHash: laisaPass,
+      role: "LEADER"
     }
   });
 
@@ -129,22 +141,24 @@ async function main() {
   }
 
   const pathfinder = await prisma.pathfinder.upsert({
-    where: { userId: pathfinderUser.id },
+    where: { userId: edsonUser.id },
     update: {
       currentClassId: friendClass?.id
     },
     create: {
-      userId: pathfinderUser.id,
+      userId: edsonUser.id,
       currentClassId: friendClass?.id
     }
   });
 
   const parent = await prisma.parent.upsert({
-    where: { userId: parentUser.id },
-    update: {},
+    where: { userId: laisaUser.id },
+    update: {
+      phone: "(84) 99894-6754"
+    },
     create: {
-      userId: parentUser.id,
-      phone: "+55 31 99999-9999"
+      userId: laisaUser.id,
+      phone: "(84) 99894-6754"
     }
   });
 
@@ -179,7 +193,10 @@ async function main() {
     });
   }
 
-  const requirements = await prisma.classRequirement.findMany({ where: { classId: friendClass?.id } });
+  const requirements = await prisma.classRequirement.findMany({
+    where: { classId: friendClass?.id }
+  });
+
   for (const req of requirements) {
     await prisma.pathfinderProgress.upsert({
       where: {
@@ -220,7 +237,7 @@ async function main() {
       title: "Bem-vindos ao Portal",
       content: "Este e o novo portal digital do clube. Confira seu progresso semanalmente.",
       audience: "ALL",
-      authorId: leaderUser.id
+      authorId: izaqueUser.id
     }
   }).catch(() => undefined);
 

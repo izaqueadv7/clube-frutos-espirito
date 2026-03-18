@@ -1,48 +1,63 @@
 ﻿import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { registerSchema } from "@/lib/validators/schemas";
 import { prisma } from "@/lib/prisma";
 
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
-  const body = await request.json();
-  const parsed = registerSchema.safeParse(body);
+  try {
+    const body = await request.json();
 
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Dados invalidos", details: parsed.error.flatten() }, { status: 400 });
-  }
+    const name = String(body?.name || "").trim();
+    const email = String(body?.email || "").trim().toLowerCase();
+    const password = String(body?.password || "");
 
-  const { name, email, password, role } = parsed.data;
+    if (!name || !email || !password) {
+      return NextResponse.json(
+        { error: "Preencha nome, email e senha." },
+        { status: 400 }
+      );
+    }
 
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) {
-    return NextResponse.json({ error: "Email ja cadastrado" }, { status: 409 });
-  }
+    if (password.length < 6) {
+      return NextResponse.json(
+        { error: "A senha deve ter pelo menos 6 caracteres." },
+        { status: 400 }
+      );
+    }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
 
-  const result = await prisma.$transaction(async (tx: any) => {
-    const user = await tx.user.create({
+    if (existingUser) {
+      return NextResponse.json(
+        { error: "Já existe uma conta com esse email." },
+        { status: 409 }
+      );
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    await prisma.user.create({
       data: {
         name,
         email,
         passwordHash,
-        role
+        role: "PATHFINDER"
       }
     });
 
-    if (role === "PATHFINDER") {
-      await tx.pathfinder.create({ data: { userId: user.id } });
-    }
+    return NextResponse.json(
+      { message: "Cadastro realizado com sucesso." },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Erro no cadastro:", error);
 
-    if (role === "PARENT") {
-      await tx.parent.create({ data: { userId: user.id } });
-    }
-
-    return user;
-  });
-
-  return NextResponse.json({
-    message: "Conta criada",
-    user: { id: result.id, name: result.name, email: result.email, role: result.role }
-  });
+    return NextResponse.json(
+      { error: "Erro interno ao realizar cadastro." },
+      { status: 500 }
+    );
+  }
 }
