@@ -10,7 +10,7 @@ export function Footer() {
             Login
           </Link>
           <Link href="/dashboard" className="hover:text-primary">
-            Portal
+            Clube
           </Link>
         </div>
       </div>

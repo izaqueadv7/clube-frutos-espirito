@@ -217,8 +217,8 @@ async function main() {
 
   await prisma.announcement.create({
     data: {
-      title: "Bem-vindos ao Portal",
-      content: "Este e o novo portal digital do clube. Confira seu progresso semanalmente.",
+      title: "Bem-vindos ao Clube Frutos do Espirito!",
+      content: "Este e o novo site do clube. Confira seu progresso semanalmente.",
       audience: "ALL",
       authorId: leaderUser.id
     }

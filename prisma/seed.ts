@@ -234,8 +234,8 @@ async function main() {
 
   await prisma.announcement.create({
     data: {
-      title: "Bem-vindos ao Portal",
-      content: "Este e o novo portal digital do clube. Confira seu progresso semanalmente.",
+      title: "Bem-vindos ao Clube de Desbravadores!",
+      content: "Este e o novo Site do clube. Confira seu progresso semanalmente.",
       audience: "ALL",
       authorId: izaqueUser.id
     }

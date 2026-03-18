@@ -5,14 +5,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/pwa/pwa-register";
 
 export const metadata: Metadata = {
-  title: "Portal Frutos do Espirito",
-  description: "Portal digital do Clube de Desbravadores Frutos do Espirito",
+  title: "Clube Frutos do Espirito",
+  description: "Site do Clube de Desbravadores Frutos do Espirito",
   manifest: "/manifest.webmanifest",
   themeColor: "#C1121F",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Frutos Portal"
+    title: "Clube Frutos"
   },
   icons: {
     icon: [

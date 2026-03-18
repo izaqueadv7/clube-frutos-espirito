@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "portal-frutos-v1";
+﻿const CACHE_NAME = "Clube-frutos-v1";
 const OFFLINE_URL = "/offline.html";
 
 const STATIC_ASSETS = [
@@ -61,7 +61,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  let payload = { title: "Portal Frutos do Espirito", body: "Novo aviso no portal" };
+  let payload = { title: "Clube Frutos do Espirito", body: "Novo aviso no portal" };
 
   try {
     payload = event.data ? event.data.json() : payload;

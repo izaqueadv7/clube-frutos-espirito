@@ -36,7 +36,7 @@ export default async function HomePage() {
     announcements = [
       {
         id: "tmp2",
-        title: "Portal em construcao",
+        title: "Site em construcao",
         content: "Conecte o banco PostgreSQL para exibir dados reais.",
         createdAt: new Date()
       }
@@ -48,9 +48,9 @@ export default async function HomePage() {
       <NotificationPermission />
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-16">
         <div className="space-y-6">
-          <Badge className="bg-primary text-white">Portal Oficial</Badge>
+          <Badge className="bg-primary text-white">Site Oficial</Badge>
           <h1 className="text-4xl font-extrabold leading-tight text-primary sm:text-5xl">
-            Portal Frutos do Espirito
+            Clube Frutos do Espirito
           </h1>
           <p className="max-w-xl text-lg text-slate-700">
             A plataforma digital do Clube de Desbravadores para acompanhar classes, especialidades,

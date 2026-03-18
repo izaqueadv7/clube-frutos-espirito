@@ -16,7 +16,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     <main className="min-h-screen bg-hero-gradient px-4 py-4 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl bg-white p-4 shadow-card">
         <Link href="/" className="text-lg font-extrabold text-primary">
-          Portal Frutos do Espirito
+          Clube Frutos do Espirito
         </Link>
         <div className="flex items-center gap-3">
           <SubscribeNotifications />

@@ -1,8 +1,8 @@
 ﻿{
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "name": "Clube Frutos do Espirito",
-  "short_name": "Frutos Clube",
-  "description": "Portal oficial do Clube de Desbravadores Frutos do Espirito",
+  "short_name": "Clube Frutos",
+  "description": "Site oficial do Clube de Desbravadores Frutos do Espirito",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
