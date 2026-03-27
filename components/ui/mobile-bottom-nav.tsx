@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import {
   LibraryBig,
@@ -10,7 +11,11 @@ import {
   BookOpenText
 } from "lucide-react";
 
-const items = [
+const items: {
+  href: Route;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
   {
     href: "/classes",
     label: "Classes",
