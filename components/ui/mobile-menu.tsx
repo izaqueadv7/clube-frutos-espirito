@@ -166,7 +166,7 @@ export function MobileMenu({ user }: { user: any }) {
                         <Link href="/leader/classes" onClick={closeAll} className={itemClass}>
                           Gerenciar Classes
                         </Link>
-                        <Link href="/leader/classes/registre" onClick={closeAll} className={itemClass}>
+                        <Link href="/leader/classes/register" onClick={closeAll} className={itemClass}>
                           Registro de Classes
                         </Link>
                         <Link href="/leader/specialties" onClick={closeAll} className={itemClass}>
