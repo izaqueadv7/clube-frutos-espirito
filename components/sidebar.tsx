@@ -146,7 +146,7 @@ export async function Sidebar() {
             ) : null}
             
             <Link
-  href="/leader/specialties/register"
+  href="/leader/specialties/registre"
   className="block rounded-lg bg-teal-700 px-3 py-2 text-sm font-bold text-white hover:bg-teal-800"
 >
   Registro de Especialidades
