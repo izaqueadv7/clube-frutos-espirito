@@ -52,7 +52,7 @@ export default async function DashboardLayout({
 
   return (
     <main className="min-h-screen bg-hero-gradient pb-28 lg:px-8">
-      <MobileTopBar name={dbUser.name} image={dbUser.image} />
+      <MobileTopBar name={dbUser.name} image={dbUser.image} user={session.user} />
 
       <div
         className="mx-auto hidden max-w-7xl items-center justify-between rounded-2xl p-4 shadow-card lg:mt-4 lg:flex"

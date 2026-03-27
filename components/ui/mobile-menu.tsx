@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   canAccessFullLeaderPanel,
   canAccessSecretaryPanel,
@@ -11,111 +11,190 @@ import {
   canManageAssignments
 } from "@/lib/permissions";
 
-export function MobileMenu({ isOpen, onClose, user }: any) {
-  const menuRef = useRef<HTMLDivElement>(null);
+export function MobileMenu({ user }: { user: any }) {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  function closeAll() {
+    setOpen(false);
+  }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        onClose();
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        closeAll();
       }
     }
 
-    if (isOpen) {
+    if (open) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+  }, [open]);
 
   const itemClass =
-    "block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-gray-100 dark:hover:bg-zinc-900";
+    "block rounded-xl px-3 py-2 text-sm font-medium transition hover:bg-[rgba(46,125,50,0.08)]";
+  const sectionTitleClass =
+    "mt-4 text-xs font-bold uppercase tracking-wide text-slate-500";
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40">
-      <div
-        ref={menuRef}
-        className="absolute left-0 top-0 h-full w-72 bg-white p-4 dark:bg-zinc-950"
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="rounded-xl border border-[rgba(46,125,50,0.15)] bg-white px-3 py-2 text-primary shadow-sm hover:bg-[rgba(46,125,50,0.06)]"
+        aria-label="Abrir menu"
       >
-        <h2 className="mb-4 text-lg font-bold text-primary">Menu</h2>
+        ☰
+      </button>
 
-        <Link href="/dashboard" onClick={onClose} className={itemClass}>
-          Dashboard
-        </Link>
+      {open ? (
+        <div className="fixed inset-0 z-50 bg-black/35">
+          <div
+            ref={menuRef}
+            className="absolute left-0 top-0 h-full w-[82%] max-w-[320px] overflow-y-auto rounded-r-3xl border-r p-4 shadow-2xl"
+            style={{
+              backgroundColor: "rgb(var(--accent))",
+              color: "rgb(var(--ink))",
+              borderColor: "rgba(46,125,50,0.12)"
+            }}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-primary">Menu</h2>
 
-        {canAccessFullLeaderPanel(user) && (
-          <Link href="/leader" onClick={onClose} className={itemClass}>
-            Painel Geral
-          </Link>
-        )}
+              <button
+                type="button"
+                onClick={closeAll}
+                className="rounded-xl px-3 py-1 text-sm font-semibold hover:bg-[rgba(46,125,50,0.08)]"
+              >
+                ✕
+              </button>
+            </div>
 
-        {canAccessSecretaryPanel(user) && (
-          <>
-            <p className="mt-3 text-xs text-gray-400">SECRETARIA</p>
-            <Link href="/leader/secretaria" onClick={onClose} className={itemClass}>
-              Painel Secretaria
-            </Link>
-            <Link href="/leader/secretaria/eventos" onClick={onClose} className={itemClass}>
-              Eventos
-            </Link>
-          </>
-        )}
+            <div className="space-y-1">
+  <p className={sectionTitleClass}>Geral</p>
 
-        {canAccessMediaPanel(user) && (
-          <>
-            <p className="mt-3 text-xs text-gray-400">MÍDIA</p>
-            <Link href="/leader/highlights" onClick={onClose} className={itemClass}>
-              Avisos
-            </Link>
-            <Link href="/leader/gallery" onClick={onClose} className={itemClass}>
-              Galeria
-            </Link>
-          </>
-        )}
+  <Link href="/profile" onClick={closeAll} className={itemClass}>
+    Usuário
+  </Link>
 
-        {canAccessDirectorPanel(user) && (
-          <>
-            <p className="mt-3 text-xs text-gray-400">DIREÇÃO</p>
-            <Link href="/leader/classes" onClick={onClose} className={itemClass}>
-              Classes
-            </Link>
-            <Link href="/leader/classes/register" onClick={onClose} className={itemClass}>
-              Registro Classes
-            </Link>
-            <Link href="/leader/specialties" onClick={onClose} className={itemClass}>
-              Especialidades
-            </Link>
-            <Link href="/leader/specialties/registre" onClick={onClose} className={itemClass}>
-              Registro Especialidades
-            </Link>
-          </>
-        )}
+  <Link href="/dashboard" onClick={closeAll} className={itemClass}>
+    Resumo
+  </Link>
 
-        {canAccessCounselorPanel(user) && (
-          <>
-            <p className="mt-3 text-xs text-gray-400">CONSELHEIRO</p>
-            <Link href="/leader/conselheiro" onClick={onClose} className={itemClass}>
-              Progresso
-            </Link>
-          </>
-        )}
+  <Link href="/classes" onClick={closeAll} className={itemClass}>
+    Classes
+  </Link>
 
-        {canManageAssignments(user) && (
-          <>
-            <p className="mt-3 text-xs text-gray-400">GERENCIAMENTO</p>
-            <Link href="/leader/assignments" onClick={onClose} className={itemClass}>
-              Vínculos
-            </Link>
-            <Link href="/leader/parents/link" onClick={onClose} className={itemClass}>
-              Responsáveis
-            </Link>
-          </>
-        )}
-      </div>
-    </div>
+  <Link href="/specialties" onClick={closeAll} className={itemClass}>
+    Especialidades
+  </Link>
+
+  <Link href="/announcements" onClick={closeAll} className={itemClass}>
+    Avisos
+  </Link>
+
+  <Link href="/calendar" onClick={closeAll} className={itemClass}>
+    Calendário
+  </Link>
+
+  <Link href="/bible" onClick={closeAll} className={itemClass}>
+    Bíblia
+  </Link>
+
+  {canAccessFullLeaderPanel(user) && (
+    <Link href="/leader" onClick={closeAll} className={itemClass}>
+      Painel Geral
+    </Link>
+  )}
+</div>
+
+            {canAccessSecretaryPanel(user) && (
+              <div className="space-y-1">
+                <p className={sectionTitleClass}>Secretaria</p>
+
+                <Link href="/leader/secretaria" onClick={closeAll} className={itemClass}>
+                  Painel Secretaria
+                </Link>
+
+                <Link href="/leader/secretaria/eventos" onClick={closeAll} className={itemClass}>
+                  Eventos
+                </Link>
+
+                <Link href="/leader/users" onClick={closeAll} className={itemClass}>
+                  Usuários
+                </Link>
+              </div>
+            )}
+
+            {canAccessMediaPanel(user) && (
+              <div className="space-y-1">
+                <p className={sectionTitleClass}>Mídia</p>
+
+                <Link href="/leader/highlights" onClick={closeAll} className={itemClass}>
+                  Avisos
+                </Link>
+
+                <Link href="/leader/gallery" onClick={closeAll} className={itemClass}>
+                  Galeria
+                </Link>
+              </div>
+            )}
+
+            {canAccessDirectorPanel(user) && (
+              <div className="space-y-1">
+                <p className={sectionTitleClass}>Direção</p>
+
+                <Link href="/leader/classes" onClick={closeAll} className={itemClass}>
+                  Classes
+                </Link>
+
+                <Link href="/leader/classes/register" onClick={closeAll} className={itemClass}>
+                  Registro Classes
+                </Link>
+
+                <Link href="/leader/specialties" onClick={closeAll} className={itemClass}>
+                  Especialidades
+                </Link>
+
+                <Link href="/leader/specialties/registre" onClick={closeAll} className={itemClass}>
+                  Registro Especialidades
+                </Link>
+              </div>
+            )}
+
+            {canAccessCounselorPanel(user) && (
+              <div className="space-y-1">
+                <p className={sectionTitleClass}>Conselheiro</p>
+
+                <Link href="/leader/conselheiro" onClick={closeAll} className={itemClass}>
+                  Progresso
+                </Link>
+              </div>
+            )}
+
+            {canManageAssignments(user) && (
+              <div className="space-y-1">
+                <p className={sectionTitleClass}>Gerenciamento</p>
+
+                <Link href="/leader/assignments" onClick={closeAll} className={itemClass}>
+                  Vínculos
+                </Link>
+
+                <Link href="/leader/parents/link" onClick={closeAll} className={itemClass}>
+                  Responsáveis
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 }
