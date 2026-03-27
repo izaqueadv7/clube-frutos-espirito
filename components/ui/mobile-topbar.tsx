@@ -36,7 +36,7 @@ export function MobileTopBar({
           href="/profile"
           className="flex items-center gap-2"
         >
-          <span className="text-sm font-semibold text-ink">
+          <span className="text-sm font-semibold text-slate-800 dark:text-white">
             {name?.split(" ")[0] ?? "Usuário"}
           </span>
 
