@@ -29,25 +29,45 @@ export function LoginForm() {
 
         setLoading(false);
 
-        if (!result || result.error) {
-          setError("Email ou senha invalidos");
+        if (!result) {
+          setError("Não foi possível iniciar o login.");
+          return;
+        }
+
+        if (result.error) {
+          setError(result.error);
           return;
         }
 
         router.push("/dashboard");
+        router.refresh();
       }}
     >
       <div>
         <label className="mb-1 block text-sm font-semibold">Email</label>
-        <Input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
+        <Input
+          type="email"
+          required
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-semibold">Senha</label>
-        <Input type="password" required value={password} onChange={(event) => setPassword(event.target.value)} />
+        <Input
+          type="password"
+          required
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
       </div>
 
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {error ? (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-3 text-sm text-amber-800">
+          {error}
+        </div>
+      ) : null}
 
       <Button className="w-full" type="submit" disabled={loading}>
         {loading ? "Entrando..." : "Entrar"}

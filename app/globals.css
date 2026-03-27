@@ -7,8 +7,14 @@
   color-scheme: light;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
 body {
-  @apply bg-surface text-ink min-h-screen antialiased;
+  @apply min-h-screen antialiased;
+  background-color: rgb(var(--surface));
+  color: rgb(var(--ink));
   font-family: "Segoe UI", "Trebuchet MS", sans-serif;
 }
 
@@ -17,11 +23,25 @@ main {
 }
 
 .card {
-  @apply bg-white rounded-2xl shadow-card border border-red-100;
+  @apply rounded-2xl border shadow-card;
+  background-color: rgb(var(--accent));
+  border-color: rgba(46, 125, 50, 0.12);
+}
+
+html.dark .card {
+  border-color: rgba(102, 187, 106, 0.18);
 }
 
 .input {
-  @apply w-full rounded-xl border border-red-200 bg-white px-4 py-2 outline-none transition focus:border-primary focus:ring-2 focus:ring-red-100;
+  @apply w-full rounded-xl border px-4 py-2 outline-none transition;
+  background-color: rgb(var(--accent));
+  border-color: rgba(46, 125, 50, 0.18);
+  color: rgb(var(--ink));
+}
+
+.input:focus {
+  border-color: rgb(46, 125, 50);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
 }
 
 .badge {
@@ -29,5 +49,42 @@ main {
 }
 
 .section-title {
-  @apply text-xl font-bold text-primary;
+  color: rgb(var(--primary));
+  @apply text-xl font-bold;
+}
+
+.bg-primary {
+  background-color: rgb(var(--primary));
+}
+
+.bg-primary-dark {
+  background-color: rgb(var(--primary-dark));
+}
+
+.bg-accent {
+  background-color: rgb(var(--accent));
+}
+
+.bg-surface {
+  background-color: rgb(var(--surface));
+}
+
+.text-primary {
+  color: rgb(var(--primary));
+}
+
+.text-ink {
+  color: rgb(var(--ink));
+}
+
+.border-primary {
+  border-color: rgb(var(--primary));
+}
+
+.shadow-card {
+  box-shadow: var(--card-shadow);
+}
+
+.bg-hero-gradient {
+  background: var(--hero-gradient);
 }

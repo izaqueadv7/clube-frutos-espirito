@@ -42,7 +42,7 @@ export function SpecialtyCreateForm() {
     >
       <Input placeholder="Nome da especialidade" value={name} onChange={(e) => setName(e.target.value)} required />
       <Input placeholder="Categoria" value={category} onChange={(e) => setCategory(e.target.value)} required />
-      <Input placeholder="Descricao" value={description} onChange={(e) => setDescription(e.target.value)} required />
+      <Input placeholder="Descrição" value={description} onChange={(e) => setDescription(e.target.value)} required />
       <textarea
         className="input min-h-20"
         placeholder="Requisitos"

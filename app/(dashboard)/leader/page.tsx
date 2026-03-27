@@ -2,7 +2,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/card";
-import { PathfinderCreateForm } from "@/components/forms/pathfinder-create-form";
 import { EventCreateForm } from "@/components/forms/event-create-form";
 import { AnnouncementForm } from "@/components/forms/announcement-form";
 import { SpecialtyCreateForm } from "@/components/forms/specialty-create-form";
@@ -10,29 +9,36 @@ import { SpecialtyStatusForm } from "@/components/forms/specialty-status-form";
 import { ProgressUpdateForm } from "@/components/forms/progress-update-form";
 import { AttendanceForm } from "@/components/forms/attendance-form";
 import { NotificationTestForm } from "@/components/forms/notification-test-form";
+import { canAccessFullLeaderPanel } from "@/lib/permissions";
+import { PathfinderRegisterForm } from "@/components/forms/pathfinder-register-form";
 
 export default async function LeaderPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (session.user.role !== "LEADER") redirect("/dashboard");
+  if (!canAccessFullLeaderPanel(session.user)) {
+  redirect("/dashboard");
+}
 
-  const [pathfinders, events, requirements, assignments] = await Promise.all([
-    prisma.pathfinder.findMany({ include: { user: true, currentClass: true }, take: 10, orderBy: { createdAt: "desc" } }),
-    prisma.event.findMany({ take: 10, orderBy: { date: "asc" } }),
-    prisma.classRequirement.findMany({
-      include: { class: true },
-      take: 20,
-      orderBy: { title: "asc" }
-    }),
-    prisma.pathfinderSpecialty.findMany({
-      include: {
-        specialty: true,
-        pathfinder: { include: { user: true } }
-      },
-      take: 20,
-      orderBy: { id: "desc" }
-    })
-  ]);
+  const [pathfinders, events, requirements, assignments, classes] = await Promise.all([
+  prisma.pathfinder.findMany({ include: { user: true, currentClass: true }, take: 10, orderBy: { createdAt: "desc" } }),
+  prisma.event.findMany({ take: 10, orderBy: { date: "asc" } }),
+  prisma.classRequirement.findMany({
+    include: { class: true },
+    take: 20,
+    orderBy: { title: "asc" }
+  }),
+  prisma.pathfinderSpecialty.findMany({
+    include: {
+      specialty: true,
+      pathfinder: { include: { user: true } }
+    },
+    take: 20,
+    orderBy: { id: "desc" }
+  }),
+  prisma.pathfinderClass.findMany({
+    orderBy: { order: "asc" }
+  })
+]);
 
   return (
     <div className="space-y-4">
@@ -45,8 +51,13 @@ export default async function LeaderPage() {
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card className="p-5">
-          <h2 className="mb-3 text-lg font-bold text-primary">Registrar Pathfinder</h2>
-          <PathfinderCreateForm />
+          <h2 className="mb-3 text-lg font-bold text-primary">Registrar Desbravador</h2>
+          <PathfinderRegisterForm
+  classes={classes.map((item) => ({
+    id: item.id,
+    name: item.name
+  }))}
+/>
         </Card>
 
         <Card className="p-5">
@@ -86,7 +97,7 @@ export default async function LeaderPage() {
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card className="p-5">
-          <h2 className="mb-3 text-lg font-bold text-primary">Ultimos Pathfinders</h2>
+          <h2 className="mb-3 text-lg font-bold text-primary">Ultimos Desbravadores</h2>
           <div className="space-y-2">
             {pathfinders.map((item: any) => (
               <div key={item.id} className="rounded-xl border border-red-100 p-3 text-sm">

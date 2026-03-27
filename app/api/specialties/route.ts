@@ -1,94 +1,81 @@
 ﻿import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { requireUser, requireLeader } from "@/lib/api-auth";
+import { canAccessSecretaryPanel } from "@/lib/permissions";
 
-export async function GET(request: Request) {
-  const authResult = await requireUser();
-  if ("error" in authResult) return authResult.error;
+export const runtime = "nodejs";
 
-  const { searchParams } = new URL(request.url);
-  const pathfinderId = searchParams.get("pathfinderId");
-
-  const role = authResult.session.user.role;
-  const userId = authResult.session.user.id;
-  let resolvedPathfinderId = pathfinderId;
-
-  if (role === "PATHFINDER") {
-    const record = await prisma.pathfinder.findUnique({ where: { userId } });
-    resolvedPathfinderId = record?.id ?? null;
-  }
-
-  if (role === "PARENT") {
-    const parent = await prisma.parent.findUnique({
-      where: { userId },
-      include: { children: true }
+export async function GET() {
+  try {
+    const items = await prisma.specialty.findMany({
+      orderBy: { name: "asc" }
     });
-    resolvedPathfinderId = parent?.children[0]?.pathfinderId ?? null;
+
+    return NextResponse.json({ items });
+  } catch (error) {
+    console.error("Erro ao listar especialidades:", error);
+    return NextResponse.json(
+      { error: "Erro ao listar especialidades." },
+      { status: 500 }
+    );
   }
-
-  if (!resolvedPathfinderId && role !== "LEADER") {
-    return NextResponse.json({ items: [] });
-  }
-
-  const catalog = await prisma.specialty.findMany({ orderBy: [{ category: "asc" }, { name: "asc" }] });
-
-  const assignments = resolvedPathfinderId
-    ? await prisma.pathfinderSpecialty.findMany({
-        where: { pathfinderId: resolvedPathfinderId },
-        include: { specialty: true }
-      })
-    : [];
-
-  return NextResponse.json({ catalog, assignments });
 }
 
 export async function POST(request: Request) {
-  const authResult = await requireLeader();
-  if ("error" in authResult) return authResult.error;
+  const session = await auth();
 
-  const body = await request.json();
-
-  const name = String(body.name ?? "").trim();
-  const category = String(body.category ?? "").trim();
-  const description = String(body.description ?? "").trim();
-  const requirements = String(body.requirements ?? "").trim();
-
-  if (!name || !category || !description || !requirements) {
-    return NextResponse.json({ error: "Todos os campos da especialidade sao obrigatorios" }, { status: 400 });
+  if (!session?.user || !canAccessSecretaryPanel(session.user)) {
+    return NextResponse.json({ error: "Sem permissão." }, { status: 403 });
   }
 
-  const specialty = await prisma.specialty.create({
-    data: {
-      name,
-      category,
-      description,
-      requirements
+  try {
+    const body = await request.json();
+
+    const title = String(body?.title || body?.name || "").trim();
+    const code = String(body?.code || body?.description || "").trim();
+    const category = String(body?.category || "").trim();
+    const requirements = Array.isArray(body?.requirements)
+      ? body.requirements
+          .map((item: unknown) => String(item || "").trim())
+          .filter((item: string) => item.length > 0)
+      : String(body?.requirements || "")
+          .split("||REQ||")
+          .map((item) => item.trim())
+          .filter((item) => item.length > 0);
+
+    if (!title || !code || !category) {
+      return NextResponse.json(
+        { error: "Título, código e categoria são obrigatórios." },
+        { status: 400 }
+      );
     }
-  });
 
-  return NextResponse.json({ message: "Especialidade criada", specialty });
-}
+    const existing = await prisma.specialty.findUnique({
+      where: { name: title }
+    });
 
-export async function PATCH(request: Request) {
-  const authResult = await requireLeader();
-  if ("error" in authResult) return authResult.error;
+    if (existing) {
+      return NextResponse.json(
+        { error: "Já existe uma especialidade com esse título." },
+        { status: 409 }
+      );
+    }
 
-  const body = await request.json();
-  const assignmentId = String(body.assignmentId ?? "");
-  const status = body.status as "PENDING" | "IN_PROGRESS" | "COMPLETED";
+    const item = await prisma.specialty.create({
+      data: {
+        name: title,
+        description: code,
+        category,
+        requirements: requirements.join("\n\n||REQ||\n\n")
+      }
+    });
 
-  if (!assignmentId || !status) {
-    return NextResponse.json({ error: "assignmentId e status sao obrigatorios" }, { status: 400 });
+    return NextResponse.json({ item }, { status: 201 });
+  } catch (error) {
+    console.error("Erro ao criar especialidade:", error);
+    return NextResponse.json(
+      { error: "Erro ao criar especialidade." },
+      { status: 500 }
+    );
   }
-
-  const updated = await prisma.pathfinderSpecialty.update({
-    where: { id: assignmentId },
-    data: {
-      status,
-      startedAt: status === "IN_PROGRESS" ? new Date() : undefined,
-      completedAt: status === "COMPLETED" ? new Date() : null
-    }
-  });
-
-  return NextResponse.json({ message: "Status atualizado", assignment: updated });
 }

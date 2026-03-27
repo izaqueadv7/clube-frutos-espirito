@@ -61,7 +61,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  let payload = { title: "Clube Frutos do Espirito", body: "Novo aviso no portal" };
+  let payload = { title: "Clube Frutos do Espírito", body: "Novo aviso no portal" };
 
   try {
     payload = event.data ? event.data.json() : payload;

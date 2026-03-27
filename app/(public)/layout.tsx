@@ -1,4 +1,4 @@
-﻿import { Footer } from "@/components/footer";
+﻿import { SiteFooter } from "@/components/site-footer";
 import { TopBar } from "@/components/top-bar";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -6,7 +6,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-hero-gradient">
       <TopBar />
       {children}
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }

@@ -32,12 +32,19 @@ enum AnnouncementAudience {
   PARENT
 }
 
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id                String   @id @default(uuid())
   name              String
   email             String   @unique
   passwordHash      String
   role              UserRole
+  image             String?
   primaryFunction   String?
   secondaryFunction String?
   isAdmin           Boolean  @default(false)
@@ -45,6 +52,7 @@ model User {
   canManageUsers    Boolean  @default(false)
   canManageContent  Boolean  @default(false)
   isActive Boolean @default(true)
+  status UserStatus @default(PENDING)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -52,6 +60,8 @@ model User {
   parentProfile     Parent?
   announcements     Announcement[]
   subscriptions     PushSubscription[]
+  featuredSlides FeaturedSlide[]
+galleryPhotos  GalleryPhoto[]
 
   @@map("users")
 }
@@ -61,6 +71,7 @@ model Pathfinder {
   userId         String   @unique
   birthDate      DateTime?
   currentClassId String?
+  notes String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -101,16 +112,28 @@ model ParentPathfinder {
 
 model Specialty {
   id           String   @id @default(uuid())
-  name        String   @unique
+  name         String   @unique
   category     String
   description  String
   requirements String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  pathfinders PathfinderSpecialty[]
+  pathfinders  PathfinderSpecialty[]
+  items        SpecialtyRequirement[]
 
   @@map("specialties")
+}
+
+model SpecialtyRequirement {
+  id          String   @id @default(uuid())
+  specialtyId String
+  text        String
+  order       Int      @default(0)
+
+  specialty Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+
+  @@map("specialty_requirements")
 }
 
 model PathfinderSpecialty {
@@ -218,6 +241,40 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@map("password_reset_tokens")
+}
+
+model FeaturedSlide {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  imageUrl    String
+  imagePublicId String?
+  linkUrl     String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("featured_slides")
+}
+
+model GalleryPhoto {
+  id          String   @id @default(uuid())
+  title       String?
+  imageUrl    String
+  imagePublicId String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("gallery_photos")
 }
 
 model PushSubscription {

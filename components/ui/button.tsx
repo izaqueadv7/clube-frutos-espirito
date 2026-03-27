@@ -10,7 +10,7 @@ export function Button({ className, variant = "primary", ...props }: ButtonProps
   const styles = {
     primary: "bg-primary text-white hover:bg-primary-dark",
     secondary: "bg-accent text-ink hover:bg-accent-dark",
-    ghost: "bg-white text-primary border border-primary/30 hover:bg-red-50"
+    ghost: "bg-white dark:bg-zinc-900 text-primary border border-primary/30 hover:bg-red-50"
   }[variant];
 
   return (

@@ -36,15 +36,15 @@ export function AttendanceForm() {
         toast("Presenca registrada");
       }}
     >
-      <Input placeholder="Event ID" value={eventId} onChange={(e) => setEventId(e.target.value)} required />
-      <Input placeholder="Pathfinder ID" value={pathfinderId} onChange={(e) => setPathfinderId(e.target.value)} required />
+      <Input placeholder="Evento ID" value={eventId} onChange={(e) => setEventId(e.target.value)} required />
+      <Input placeholder="Desbravador ID" value={pathfinderId} onChange={(e) => setPathfinderId(e.target.value)} required />
       <select className="input" value={status} onChange={(e) => setStatus(e.target.value)}>
         <option value="PRESENT">Presente</option>
         <option value="ABSENT">Ausente</option>
         <option value="LATE">Atrasado</option>
         <option value="EXCUSED">Justificado</option>
       </select>
-      <Input placeholder="Observacao" value={note} onChange={(e) => setNote(e.target.value)} />
+      <Input placeholder="Observação" value={note} onChange={(e) => setNote(e.target.value)} />
       <Button type="submit" disabled={loading}>
         {loading ? "Registrando..." : "Registrar presenca"}
       </Button>

@@ -36,7 +36,7 @@ export function SpecialtyStatusForm() {
       }}
     >
       <Input
-        placeholder="ID da atribuicao (pathfinder_specialties)"
+        placeholder="ID da atribuição (Especialidade do Desbravador)"
         value={assignmentId}
         onChange={(e) => setAssignmentId(e.target.value)}
         required

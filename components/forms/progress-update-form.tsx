@@ -35,8 +35,8 @@ export function ProgressUpdateForm() {
         toast("Progresso atualizado");
       }}
     >
-      <Input placeholder="Pathfinder ID" value={pathfinderId} onChange={(e) => setPathfinderId(e.target.value)} required />
-      <Input placeholder="Requirement ID" value={requirementId} onChange={(e) => setRequirementId(e.target.value)} required />
+      <Input placeholder="Desbravador ID" value={pathfinderId} onChange={(e) => setPathfinderId(e.target.value)} required />
+      <Input placeholder="Requisito ID" value={requirementId} onChange={(e) => setRequirementId(e.target.value)} required />
       <label className="flex items-center gap-2 text-sm">
         <input type="checkbox" checked={completed} onChange={(e) => setCompleted(e.target.checked)} />
         Requisito concluido

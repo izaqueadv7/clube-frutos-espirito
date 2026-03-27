@@ -1,43 +1,72 @@
 ﻿import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { eventSchema } from "@/lib/validators/schemas";
-import { requireLeader, requireUser } from "@/lib/api-auth";
+import { canAccessSecretaryPanel } from "@/lib/permissions";
+
+export const runtime = "nodejs";
 
 export async function GET() {
-  const authResult = await requireUser();
-  if ("error" in authResult) return authResult.error;
+  try {
+    const events = await prisma.event.findMany({
+      orderBy: { date: "asc" }
+    });
 
-  const now = new Date();
-  const events = await prisma.event.findMany({
-    where: { date: { gte: now } },
-    orderBy: { date: "asc" },
-    take: 20
-  });
-
-  return NextResponse.json({ items: events });
+    return NextResponse.json({ events });
+  } catch (error) {
+    console.error("Erro ao listar eventos:", error);
+    return NextResponse.json(
+      { error: "Erro ao listar eventos." },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
-  const authResult = await requireLeader();
-  if ("error" in authResult) return authResult.error;
+  const session = await auth();
 
-  const body = await request.json();
-  const parsed = eventSchema.safeParse(body);
-
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Dados do evento invalidos" }, { status: 400 });
+  if (!session?.user || !canAccessSecretaryPanel(session.user)) {
+    return NextResponse.json({ error: "Sem permissão." }, { status: 403 });
   }
 
-  const payload = parsed.data;
+  try {
+    const body = await request.json();
 
-  const event = await prisma.event.create({
-    data: {
-      title: payload.title,
-      description: payload.description,
-      date: new Date(payload.date),
-      location: payload.location
+    const title = String(body?.title || "").trim();
+    const description = String(body?.description || "").trim();
+    const location = String(body?.location || "").trim();
+    const rawDate = String(body?.date || "").trim();
+
+    if (!title || !location || !rawDate) {
+      return NextResponse.json(
+        { error: "Título, local e data são obrigatórios." },
+        { status: 400 }
+      );
     }
-  });
 
-  return NextResponse.json({ message: "Evento criado", event });
+    const parsedDate = new Date(rawDate);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+      return NextResponse.json(
+        { error: "Data inválida." },
+        { status: 400 }
+      );
+    }
+
+    const event = await prisma.event.create({
+      data: {
+        title,
+        description: description || "",
+        location,
+        date: parsedDate
+      }
+    });
+
+    return NextResponse.json({ event }, { status: 201 });
+  } catch (error) {
+    console.error("Erro ao criar evento:", error);
+    return NextResponse.json(
+      { error: "Erro ao criar evento." },
+      { status: 500 }
+    );
+  }
 }

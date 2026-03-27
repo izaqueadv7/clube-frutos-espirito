@@ -4,12 +4,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const classes = [
-  { name: "Friend", description: "Fundamentos espirituais e servico", order: 1 },
-  { name: "Companion", description: "Crescimento em equipe", order: 2 },
-  { name: "Explorer", description: "Descobertas e habilidades", order: 3 },
-  { name: "Ranger", description: "Lideranca em acao", order: 4 },
-  { name: "Voyager", description: "Missao e perseveranca", order: 5 },
-  { name: "Guide", description: "Preparacao de lideres", order: 6 }
+  { name: "Amigo", description: "Fundamentos espirituais e servico", order: 1 },
+  { name: "Companheiro", description: "Crescimento em equipe", order: 2 },
+  { name: "Pesquisador", description: "Descobertas e habilidades", order: 3 },
+  { name: "Pioneiro", description: "Lideranca em acao", order: 4 },
+  { name: "Excursionista", description: "Missao e perseveranca", order: 5 },
+  { name: "Guia", description: "Preparacao de lideres", order: 6 }
 ];
 
 const specialties = [
@@ -34,9 +34,9 @@ const specialties = [
 ];
 
 async function main() {
-  const leaderPass = await bcrypt.hash("Leader@123", 10);
-  const pathfinderPass = await bcrypt.hash("Pathfinder@123", 10);
-  const parentPass = await bcrypt.hash("Parent@123", 10);
+  const leaderPass = await bcrypt.hash("Lider@123", 10);
+  const pathfinderPass = await bcrypt.hash("Desbravador@123", 10);
+  const parentPass = await bcrypt.hash("Responsavel@123", 10);
 
   const leaderUser = await prisma.user.upsert({
     where: { email: "lider@frutos.com" },
@@ -217,7 +217,7 @@ async function main() {
 
   await prisma.announcement.create({
     data: {
-      title: "Bem-vindos ao Clube Frutos do Espirito!",
+      title: "Bem-vindos ao Clube Frutos do Espírito!",
       content: "Este e o novo site do clube. Confira seu progresso semanalmente.",
       audience: "ALL",
       authorId: leaderUser.id

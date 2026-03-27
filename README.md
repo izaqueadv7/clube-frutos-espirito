@@ -1,4 +1,4 @@
-﻿# Clube Frutos do Espirito
+﻿# Clube Frutos do Espírito
 
 Plataforma web + PWA completa para gestao do Clube de Desbravadores Frutos do Espirito.
 
@@ -75,7 +75,7 @@ clube-frutos-do-espirito/
 
 Publico:
 
-- Home com hero, descricao do clube, verso da semana, proximos eventos, avisos e CTA de login
+- Home com hero, descrição do clube, verso da semana, proximos eventos, avisos e CTA de login
 - Layout responsivo mobile-first
 
 Autenticacao:
@@ -207,8 +207,8 @@ npx prisma migrate deploy
 ## Credenciais seed (desenvolvimento)
 
 - Lider: `lider@frutos.com` / `Leader@123`
-- Pathfinder: `desbravador@frutos.com` / `Pathfinder@123`
-- Parent: `pai@frutos.com` / `Parent@123`
+- Pathfinder: `desbravador@frutos.com` / `Desbravador@123`
+- Parent: `pai@frutos.com` / `Responsavel@123`
 
 ## Observacoes de producao
 

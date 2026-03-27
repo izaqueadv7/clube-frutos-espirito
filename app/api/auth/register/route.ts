@@ -44,12 +44,17 @@ export async function POST(request: Request) {
         name,
         email,
         passwordHash,
-        role: "PATHFINDER"
+        role: "PATHFINDER",
+        isActive: true,
+        status: "PENDING"
       }
     });
 
     return NextResponse.json(
-      { message: "Cadastro realizado com sucesso." },
+      {
+        message:
+          "Cadastro realizado com sucesso. Aguarde aprovação da liderança."
+      },
       { status: 201 }
     );
   } catch (error) {

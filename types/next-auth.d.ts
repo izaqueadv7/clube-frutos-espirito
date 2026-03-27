@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-﻿import "next-auth";
-=======
 import "next-auth";
->>>>>>> 1dee135b41e3bfcf35d855a8770da1de9d6a166a
 import "next-auth/jwt";
 
 declare module "next-auth" {
@@ -10,6 +6,7 @@ declare module "next-auth" {
     user: {
       id: string;
       role: "PATHFINDER" | "LEADER" | "PARENT";
+      status?: "PENDING" | "APPROVED" | "REJECTED";
       primaryFunction?: string;
       secondaryFunction?: string;
       isAdmin?: boolean;
@@ -24,25 +21,21 @@ declare module "next-auth" {
 
   interface User {
     id: string;
-    role: "PATHFINDER" | "LEADER" | "PARENT";
+    role?: "PATHFINDER" | "LEADER" | "PARENT";
+    status?: "PENDING" | "APPROVED" | "REJECTED";
     primaryFunction?: string | null;
     secondaryFunction?: string | null;
     isAdmin?: boolean;
     isMedia?: boolean;
     canManageUsers?: boolean;
     canManageContent?: boolean;
+    image?: string | null;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
-    role?: "PATHFINDER" | "LEADER" | "PARENT";
-    primaryFunction?: string | null;
-    secondaryFunction?: string | null;
-    isAdmin?: boolean;
-    isMedia?: boolean;
-    canManageUsers?: boolean;
-    canManageContent?: boolean;
+    image?: string | null;
   }
 }

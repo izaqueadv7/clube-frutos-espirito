@@ -1,58 +1,64 @@
 ﻿import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { requireLeader, requireUser } from "@/lib/api-auth";
+import { canAccessSecretaryPanel } from "@/lib/permissions";
+
+export const runtime = "nodejs";
 
 export async function GET() {
-  const authResult = await requireUser();
-  if ("error" in authResult) return authResult.error;
+  try {
+    const items = await prisma.pathfinderClass.findMany({
+      include: {
+        requirements: true
+      },
+      orderBy: { order: "asc" }
+    });
 
-  const classes = await prisma.pathfinderClass.findMany({
-    include: {
-      requirements: {
-        orderBy: { title: "asc" }
-      }
-    },
-    orderBy: { order: "asc" }
-  });
-
-  return NextResponse.json({ items: classes });
+    return NextResponse.json({ items });
+  } catch (error) {
+    console.error("Erro ao listar classes:", error);
+    return NextResponse.json(
+      { error: "Erro ao listar classes." },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
-  const authResult = await requireLeader();
-  if ("error" in authResult) return authResult.error;
+  const session = await auth();
 
-  const body = await request.json();
+  if (!session?.user || !canAccessSecretaryPanel(session.user)) {
+    return NextResponse.json({ error: "Sem permissão." }, { status: 403 });
+  }
 
-  if (body.mode === "class") {
+  try {
+    const body = await request.json();
+
+    const name = String(body?.name || "").trim();
+    const description = String(body?.description || "").trim();
+    const order = Number(body?.order || 0);
+
+    if (!name || !description) {
+      return NextResponse.json(
+        { error: "Nome e descrição são obrigatórios." },
+        { status: 400 }
+      );
+    }
+
     const item = await prisma.pathfinderClass.create({
       data: {
-        name: String(body.name ?? ""),
-        description: String(body.description ?? ""),
-        order: Number(body.order ?? 99)
+        name,
+        description,
+        order
       }
     });
 
-    return NextResponse.json({ message: "Classe criada", item });
+    return NextResponse.json({ item }, { status: 201 });
+  } catch (error) {
+    console.error("Erro ao criar classe:", error);
+    return NextResponse.json(
+      { error: "Erro ao criar classe." },
+      { status: 500 }
+    );
   }
-
-  const classId = String(body.classId ?? "");
-  const title = String(body.title ?? "");
-  const details = String(body.details ?? "");
-  const points = Number(body.points ?? 1);
-
-  if (!classId || !title || !details) {
-    return NextResponse.json({ error: "classId, title e details sao obrigatorios" }, { status: 400 });
-  }
-
-  const item = await prisma.classRequirement.create({
-    data: {
-      classId,
-      title,
-      details,
-      points
-    }
-  });
-
-  return NextResponse.json({ message: "Requisito criado", item });
 }

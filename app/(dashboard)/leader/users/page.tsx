@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/card";
-import { UserEditForm } from "@/components/forms/user-edit-form";
+import { UserManagementPanel } from "@/components/forms/user-management-panel";
+import { canAccessSecretaryPanel } from "@/lib/permissions";
 
 export default async function LeaderUsersPage() {
   const session = await auth();
@@ -11,9 +12,9 @@ export default async function LeaderUsersPage() {
     redirect("/login");
   }
 
-  if (session.user.role !== "LEADER") {
-    redirect("/dashboard");
-  }
+  if (!canAccessSecretaryPanel(session.user)) {
+  redirect("/dashboard");
+}
 
   const users = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
@@ -22,16 +23,22 @@ export default async function LeaderUsersPage() {
       name: true,
       email: true,
       role: true,
+      status: true,
       primaryFunction: true,
       secondaryFunction: true,
       isAdmin: true,
       isMedia: true,
       canManageUsers: true,
       canManageContent: true,
-      isActive: true,
-      createdAt: true
+      isActive: true
     }
   });
+
+  const normalizedUsers = users.map((user) => ({
+    ...user,
+    primaryFunction: user.primaryFunction ?? "",
+    secondaryFunction: user.secondaryFunction ?? ""
+  }));
 
   return (
     <div className="space-y-4">
@@ -42,32 +49,7 @@ export default async function LeaderUsersPage() {
         </p>
       </Card>
 
-      <div className="grid gap-4">
-        {users.map((user) => (
-          <Card key={user.id} className="p-5">
-            <div className="mb-4">
-              <h2 className="text-lg font-bold text-primary">{user.name}</h2>
-              <p className="text-sm text-slate-600">{user.email}</p>
-            </div>
-
-            <UserEditForm
-              user={{
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                primaryFunction: user.primaryFunction ?? "",
-                secondaryFunction: user.secondaryFunction ?? "",
-                isAdmin: user.isAdmin,
-                isMedia: user.isMedia,
-                canManageUsers: user.canManageUsers,
-                canManageContent: user.canManageContent,
-                isActive: user.isActive
-              }}
-            />
-          </Card>
-        ))}
-      </div>
+      <UserManagementPanel users={normalizedUsers} />
     </div>
   );
 }

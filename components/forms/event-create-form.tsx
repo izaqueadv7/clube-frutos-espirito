@@ -49,7 +49,7 @@ export function EventCreateForm() {
         <Input value={location} onChange={(e) => setLocation(e.target.value)} required />
       </div>
       <div className="md:col-span-2">
-        <label className="mb-1 block text-sm font-semibold">Descricao</label>
+        <label className="mb-1 block text-sm font-semibold">Descrição</label>
         <Input value={description} onChange={(e) => setDescription(e.target.value)} required />
       </div>
       <div className="md:col-span-2">

@@ -5,10 +5,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/pwa/pwa-register";
 
 export const metadata: Metadata = {
-  title: "Clube Frutos do Espirito",
-  description: "Site do Clube de Desbravadores Frutos do Espirito",
+  title: "Clube Frutos do Espírito",
+  description: "Site do Clube de Desbravadores Frutos do Espírito",
   manifest: "/manifest.webmanifest",
-  themeColor: "#C1121F",
+  themeColor: "#2E7D32",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -24,9 +24,21 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const themeScript = `
+    (function() {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  `;
+
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <SessionProvider>
           <PwaRegister />
           {children}

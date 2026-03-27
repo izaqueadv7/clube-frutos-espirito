@@ -8,8 +8,8 @@ import { toast } from "@/components/ui/toaster";
 export function PathfinderCreateForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("Pathfinder@123");
-  const [className, setClassName] = useState("Friend");
+  const [password, setPassword] = useState("Desbravador@123");
+  const [className, setClassName] = useState("Amigo");
   const [parentEmail, setParentEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +62,7 @@ export function PathfinderCreateForm() {
       </div>
 
       <Button type="submit" className="md:col-span-2" disabled={loading}>
-        {loading ? "Salvando..." : "Registrar Pathfinder"}
+        {loading ? "Salvando..." : "Registrar Desbravador"}
       </Button>
     </form>
   );

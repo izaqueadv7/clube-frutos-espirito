@@ -4,12 +4,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const classes = [
-  { name: "Friend", description: "Fundamentos espirituais e servico", order: 1 },
-  { name: "Companion", description: "Crescimento em equipe", order: 2 },
-  { name: "Explorer", description: "Descobertas e habilidades", order: 3 },
-  { name: "Ranger", description: "Lideranca em acao", order: 4 },
-  { name: "Voyager", description: "Missao e perseveranca", order: 5 },
-  { name: "Guide", description: "Preparacao de lideres", order: 6 }
+  { name: "Amigo", description: "Fundamentos espirituais e servico", order: 1 },
+  { name: "Companheiro", description: "Crescimento em equipe", order: 2 },
+  { name: "Pesquisador", description: "Descobertas e habilidades", order: 3 },
+  { name: "Pioneiro", description: "Lideranca em acao", order: 4 },
+  { name: "Excursionista", description: "Missao e perseveranca", order: 5 },
+  { name: "Guia", description: "Preparacao de lideres", order: 6 }
 ];
 
 const specialties = [
