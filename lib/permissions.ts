@@ -1,80 +1,97 @@
-﻿type UserLike = {
+﻿type AppUser = {
   role?: string;
+  isAdmin?: boolean;
   primaryFunction?: string | null;
   secondaryFunction?: string | null;
-  isAdmin?: boolean;
-  isMedia?: boolean;
+  canManageUsers?: boolean;
+  canManageContent?: boolean;
 };
 
-export function hasFunction(user: UserLike | null | undefined, fn: string) {
+function normalize(value?: string | null) {
+  return (value || "").trim().toLowerCase();
+}
+
+function hasFunction(user: AppUser | null | undefined, value: string) {
   if (!user) return false;
 
-  const primary = (user.primaryFunction ?? "").toLowerCase().trim();
-  const secondary = (user.secondaryFunction ?? "").toLowerCase().trim();
-  const target = fn.toLowerCase().trim();
+  const primary = normalize(user.primaryFunction);
+  const secondary = normalize(user.secondaryFunction);
+  const target = normalize(value);
 
   return primary === target || secondary === target;
 }
 
-export function isDirector(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (user.isAdmin || hasFunction(user, "Diretor"));
-}
+export function canAccessFullLeaderPanel(user: AppUser | null | undefined) {
+  if (!user) return false;
 
-export function isSecretary(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (user.isAdmin || hasFunction(user, "Secretária"));
-}
-
-export function isMedia(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (user.isAdmin || user.isMedia || hasFunction(user, "Mídia"));
-}
-
-export function isCounselor(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (user.isAdmin || hasFunction(user, "Conselheiro"));
-}
-
-export function canAccessFullLeaderPanel(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (
-    user.isAdmin ||
-    hasFunction(user, "Diretor") ||
-    hasFunction(user, "Secretária")
+  return (
+    user.isAdmin === true ||
+    user.role === "LEADER" &&
+      (
+        hasFunction(user, "administrador") ||
+        hasFunction(user, "diretor") ||
+        hasFunction(user, "diretora")
+      )
   );
 }
 
-export function canAccessMediaPanel(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (
-    user.isAdmin ||
-    hasFunction(user, "Diretor") ||
-    hasFunction(user, "Secretária") ||
-    user.isMedia ||
-    hasFunction(user, "Mídia")
+export function canAccessSecretaryPanel(user: AppUser | null | undefined) {
+  if (!user) return false;
+
+  return (
+    canAccessFullLeaderPanel(user) ||
+    user.canManageUsers === true ||
+    user.role === "LEADER" &&
+      (
+        hasFunction(user, "secretaria") ||
+        hasFunction(user, "secretária")
+      )
   );
 }
 
-export function canAccessSecretaryPanel(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (
-    user.isAdmin ||
-    hasFunction(user, "Diretor") ||
-    hasFunction(user, "Secretária")
+export function canAccessMediaPanel(user: AppUser | null | undefined) {
+  if (!user) return false;
+
+  return (
+    canAccessFullLeaderPanel(user) ||
+    user.canManageContent === true ||
+    user.role === "LEADER" &&
+      (
+        hasFunction(user, "midia") ||
+        hasFunction(user, "mídia")
+      )
   );
 }
 
-export function canAccessDirectorPanel(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (
-    user.isAdmin ||
-    hasFunction(user, "Diretor")
+export function canAccessDirectorPanel(user: AppUser | null | undefined) {
+  if (!user) return false;
+
+  return (
+    canAccessFullLeaderPanel(user) ||
+    user.role === "LEADER" &&
+      (
+        hasFunction(user, "diretor") ||
+        hasFunction(user, "diretora")
+      )
   );
 }
 
-export function canAccessCounselorPanel(user: UserLike | null | undefined) {
-  return !!user && user.role === "LEADER" && (
-    user.isAdmin ||
-    hasFunction(user, "Diretor") ||
-    hasFunction(user, "Secretária") ||
-    hasFunction(user, "Conselheiro")
+export function canAccessCounselorPanel(user: AppUser | null | undefined) {
+  if (!user) return false;
+
+  return (
+    canAccessFullLeaderPanel(user) ||
+    user.role === "LEADER" &&
+      (
+        hasFunction(user, "conselheiro") ||
+        hasFunction(user, "conselheira")
+      )
   );
 }
 
-export function canManageAssignments(user: any) {
+export function canManageAssignments(user: AppUser | null | undefined) {
+  if (!user) return false;
+
   return (
     canAccessFullLeaderPanel(user) ||
     canAccessSecretaryPanel(user) ||
