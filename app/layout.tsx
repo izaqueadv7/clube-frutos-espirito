@@ -3,6 +3,7 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/pwa/pwa-register";
+import { AppSplashScreen } from "@/components/pwa/app-splash-screen";
 
 export const metadata: Metadata = {
   title: "Clube Frutos do Espírito",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <AppSplashScreen />
         <SessionProvider>
           <PwaRegister />
           {children}
