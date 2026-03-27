@@ -22,11 +22,14 @@ type DevotionalItem = {
 export function BibleReader() {
   const [book, setBook] = useState("Joao");
   const [chapter, setChapter] = useState(1);
-  const [search, setSearch] = useState("");
+
+  const [bookSearch, setBookSearch] = useState("");
+  const [referenceSearch, setReferenceSearch] = useState("");
 
   const [devotional, setDevotional] = useState<DevotionalItem | null>(null);
   const [verses, setVerses] = useState<VerseItem[]>([]);
   const [searchResult, setSearchResult] = useState<VerseItem[]>([]);
+
   const [loadingVerses, setLoadingVerses] = useState(false);
   const [loadingSearch, setLoadingSearch] = useState(false);
 
@@ -34,6 +37,12 @@ export function BibleReader() {
     () => BIBLE_BOOKS.find((item) => item.name === book),
     [book]
   );
+
+  const filteredBooks = useMemo(() => {
+    return BIBLE_BOOKS.filter((item) =>
+      item.name.toLowerCase().includes(bookSearch.toLowerCase())
+    );
+  }, [bookSearch]);
 
   useEffect(() => {
     async function loadDevotional() {
@@ -67,38 +76,41 @@ export function BibleReader() {
     loadChapter();
   }, [book, chapter]);
 
-  useEffect(() => {
-    async function runSearch() {
-      if (search.trim().length < 2) {
-        setSearchResult([]);
-        return;
-      }
-
-      setLoadingSearch(true);
-      try {
-        const data = await searchVerses(search);
-        setSearchResult(data);
-      } finally {
-        setLoadingSearch(false);
-      }
+  async function handleReferenceSearch() {
+    if (referenceSearch.trim().length < 2) {
+      setSearchResult([]);
+      return;
     }
 
-    runSearch();
-  }, [search]);
+    setLoadingSearch(true);
+    try {
+      const data = await searchVerses(referenceSearch);
+      setSearchResult(data);
+    } finally {
+      setLoadingSearch(false);
+    }
+  }
+
+  function openVerseReference(item: VerseItem) {
+    setBook(item.book);
+    setChapter(item.chapter);
+    setReferenceSearch("");
+    setSearchResult([]);
+  }
 
   return (
     <div className="grid gap-4 lg:grid-cols-3">
       <Card className="space-y-3 p-4 lg:col-span-1">
         <h2 className="section-title">Livros</h2>
+
         <Input
           placeholder="Buscar livro"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          value={bookSearch}
+          onChange={(event) => setBookSearch(event.target.value)}
         />
+
         <div className="max-h-80 space-y-1 overflow-auto">
-          {BIBLE_BOOKS.filter((item) =>
-            item.name.toLowerCase().includes(search.toLowerCase())
-          ).map((item) => (
+          {filteredBooks.map((item) => (
             <button
               key={item.name}
               onClick={() => {
@@ -126,11 +138,58 @@ export function BibleReader() {
           </p>
         </Card>
 
+        <Card className="space-y-4 p-4">
+          <div>
+            <h3 className="section-title">Buscar referência bíblica</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Exemplo: Joao 3:16, Salmos 23:1, Romanos 12:12
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Input
+              placeholder="Digite a referência bíblica"
+              value={referenceSearch}
+              onChange={(event) => setReferenceSearch(event.target.value)}
+            />
+            <Button type="button" onClick={handleReferenceSearch}>
+              Buscar
+            </Button>
+          </div>
+
+          {referenceSearch.trim().length >= 2 ? (
+            <div className="space-y-2">
+              {loadingSearch ? (
+                <p className="text-sm text-slate-500">Buscando...</p>
+              ) : searchResult.length === 0 ? (
+                <p className="text-sm text-slate-500">
+                  Nenhum verso encontrado. Tente algo como Joao 3:16
+                </p>
+              ) : (
+                searchResult.map((item) => (
+                  <button
+                    key={`${item.book}-${item.chapter}-${item.verse}`}
+                    type="button"
+                    onClick={() => openVerseReference(item)}
+                    className="block w-full rounded-xl border border-red-100 p-3 text-left hover:bg-red-50"
+                  >
+                    <p className="font-semibold text-primary">
+                      {item.book} {item.chapter}:{item.verse}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-700">{item.text}</p>
+                  </button>
+                ))
+              )}
+            </div>
+          ) : null}
+        </Card>
+
         <Card className="p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h3 className="section-title">
               {book} - Capítulo {chapter}
             </h3>
+
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
@@ -138,6 +197,7 @@ export function BibleReader() {
               >
                 Anterior
               </Button>
+
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -173,30 +233,6 @@ export function BibleReader() {
             )}
           </div>
         </Card>
-
-        {search.trim().length >= 2 ? (
-          <Card className="p-4">
-            <h3 className="section-title">Resultado da busca</h3>
-            <div className="mt-4 space-y-2">
-              {loadingSearch ? (
-                <p className="text-sm text-slate-500">Buscando...</p>
-              ) : searchResult.length === 0 ? (
-                <p className="text-sm text-slate-500">
-                  Nenhum verso encontrado. Tente buscar algo como: Joao 3:16
-                </p>
-              ) : (
-                searchResult.map((item) => (
-                  <p key={`${item.book}-${item.chapter}-${item.verse}`} className="text-sm">
-                    <span className="font-semibold text-primary">
-                      {item.book} {item.chapter}:{item.verse}
-                    </span>{" "}
-                    - {item.text}
-                  </p>
-                ))
-              )}
-            </div>
-          </Card>
-        ) : null}
       </div>
     </div>
   );
