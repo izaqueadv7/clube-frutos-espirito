@@ -1,11 +1,14 @@
 ﻿import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    typedRoutes: true
-  },
+  typedRoutes: true,
   images: {
-    unoptimized: true
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com"
+      }
+    ]
   }
 };
 
