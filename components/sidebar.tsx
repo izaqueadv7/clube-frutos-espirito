@@ -95,7 +95,7 @@ export async function Sidebar() {
           <>
             <p className="mt-3 text-xs font-bold text-gray-400">CONSELHEIRO</p>
 
-            <Link href="/leader/progress" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+            <Link href="/leader/conselheiro" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
               Progresso
             </Link>
           </>
