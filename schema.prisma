@@ -44,6 +44,7 @@ model User {
   email             String   @unique
   passwordHash      String
   role              UserRole
+  birthDate         DateTime?
   image             String?
   primaryFunction   String?
   secondaryFunction String?
