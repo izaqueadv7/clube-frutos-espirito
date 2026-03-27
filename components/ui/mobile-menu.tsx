@@ -98,7 +98,7 @@ export function MobileMenu({ isOpen, onClose, user }: any) {
         {canAccessCounselorPanel(user) && (
           <>
             <p className="mt-3 text-xs text-gray-400">CONSELHEIRO</p>
-            <Link href="/leader/progress" onClick={onClose} className={itemClass}>
+            <Link href="/leader/conselheiro" onClick={onClose} className={itemClass}>
               Progresso
             </Link>
           </>
