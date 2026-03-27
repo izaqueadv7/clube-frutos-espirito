@@ -28,7 +28,7 @@ export function MobileTopBar({
           type="button"
           className="rounded-xl p-2 hover:bg-slate-100 dark:hover:bg-zinc-800"
         >
-          <Bell className="h-5 w-5" />
+          <Bell className="h-5 w-5 text-slate-800 dark:text-white" />
         </button>
 
         {/* PERFIL */}
