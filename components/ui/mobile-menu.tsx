@@ -172,7 +172,7 @@ export function MobileMenu({ user }: { user: any }) {
                         <Link href="/leader/specialties" onClick={closeAll} className={itemClass}>
                           Gerenciar Especialidades
                         </Link>
-                        <Link href="/leader/specialties/registe" onClick={closeAll} className={itemClass}>
+                        <Link href="/leader/specialties/registre" onClick={closeAll} className={itemClass}>
                           Registro de Especialidades
                         </Link>
                         <Link href="/leader/parents/link" onClick={closeAll} className={itemClass}>
