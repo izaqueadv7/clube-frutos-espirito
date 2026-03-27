@@ -1,181 +1,120 @@
 ﻿import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { translateRole } from "@/lib/translate";
 import {
   canAccessFullLeaderPanel,
   canAccessSecretaryPanel,
   canAccessMediaPanel,
   canAccessDirectorPanel,
-  canAccessCounselorPanel
+  canAccessCounselorPanel,
+  canManageAssignments
 } from "@/lib/permissions";
-
-const links = [
-  { href: "/profile", label: "Usuário" },
-  { href: "/dashboard", label: "Resumo" },
-  { href: "/classes", label: "Classes" },
-  { href: "/specialties", label: "Especialidades" },
-  { href: "/calendar", label: "Calendário" },
-  { href: "/announcements", label: "Avisos" },
-  { href: "/bible", label: "Bíblia" }
-];
 
 export async function Sidebar() {
   const session = await auth();
-  const role = session?.user?.role;
+  const user = session?.user;
+
+  if (!user) return null;
 
   return (
-    <aside className="card h-fit p-4">
-      <p className="text-xs uppercase tracking-wide text-slate-500">Acesso</p>
-
-      <div className="mb-4">
-        {session?.user?.image ? (
-          <img
-            src={session.user.image}
-            alt="Foto do usuário"
-            className="mb-3 h-16 w-16 rounded-full object-cover border"
-          />
-        ) : (
-          <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border bg-slate-100 text-slate-500">
-            {session?.user?.name?.[0] ?? "U"}
-          </div>
-        )}
-
-        <p className="text-lg font-bold text-primary">
-          {session?.user?.name ?? "Visitante"}
-        </p>
-        <p className="text-sm text-slate-600">
-          {role ? translateRole(role) : "Visitante"}
-        </p>
-      </div>
+    <aside className="hidden w-64 flex-col border-r border-gray-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950 lg:flex">
+      <h2 className="mb-4 text-lg font-bold text-primary">Painel</h2>
 
       <div className="space-y-2">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href as any}
-            className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-red-50"
-          >
-            {link.label}
-          </Link>
-        ))}
 
-        {role === "LEADER" ? (
+        {/* Dashboard */}
+        <Link href="/dashboard" className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-gray-100 dark:hover:bg-zinc-900">
+          Dashboard
+        </Link>
+
+        {/* Liderança Geral */}
+        {canAccessFullLeaderPanel(user) && (
+          <Link href="/leader" className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-gray-100 dark:hover:bg-zinc-900">
+            Painel Geral
+          </Link>
+        )}
+
+        {/* Secretária */}
+        {canAccessSecretaryPanel(user) && (
           <>
-            {canAccessFullLeaderPanel(session?.user) ? (
-              <Link
-                href="/leader"
-                className="block rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white"
-              >
-                Painel Líder
-              </Link>
-            ) : null}
+            <p className="mt-3 text-xs font-bold text-gray-400">SECRETARIA</p>
 
-            {canAccessSecretaryPanel(session?.user) ? (
-              <>
-                <Link
-                  href="/leader/users"
-                  className="block rounded-lg bg-green-600 px-3 py-2 text-sm font-bold text-white hover:bg-green-700"
-                >
-                  Gerenciar Usuários
-                </Link>
+            <Link href="/leader/secretaria" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Painel Secretaria
+            </Link>
 
-                <Link
-                  href="/leader/approvals"
-                  className="block rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-white hover:bg-amber-600"
-                >
-                  Aprovar Cadastros
-                </Link>
+            <Link href="/leader/secretaria/eventos" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Eventos
+            </Link>
 
-                <Link
-                  href="/leader/secretaria"
-                  className="block rounded-lg bg-pink-600 px-3 py-2 text-sm font-bold text-white hover:bg-pink-700"
-                >
-                  Painel da Secretária
-                </Link>
-              </>
-            ) : null}
-
-            {canAccessMediaPanel(session?.user) ? (
-              <>
-                <Link
-                  href="/leader/highlights"
-                  className="block rounded-lg bg-blue-600 px-3 py-2 text-sm font-bold text-white hover:bg-blue-700"
-                >
-                  Avisos Principais
-                </Link>
-
-                <Link
-                  href="/leader/gallery"
-                  className="block rounded-lg bg-purple-600 px-3 py-2 text-sm font-bold text-white hover:bg-purple-700"
-                >
-                  Galeria de Fotos
-                </Link>
-
-                <Link
-                  href="/leader/media"
-                  className="block rounded-lg bg-sky-600 px-3 py-2 text-sm font-bold text-white hover:bg-sky-700"
-                >
-                  Painel da Mídia
-                </Link>
-              </>
-            ) : null}
-
-             <Link
-  href="/leader/parents/link"
-  className="block rounded-lg bg-emerald-600 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-700"
->
-  Vincular Responsável
-</Link>
-
-            {canAccessDirectorPanel(session?.user) ? (
-              <Link
-                href="/leader/diretor"
-                className="block rounded-lg bg-zinc-700 px-3 py-2 text-sm font-bold text-white hover:bg-zinc-800"
-              >
-                Painel do Diretor
-              </Link>
-            ) : null}
-
-            {canAccessCounselorPanel(session?.user) ? (
-              <Link
-                href="/leader/conselheiro"
-                className="block rounded-lg bg-orange-600 px-3 py-2 text-sm font-bold text-white hover:bg-orange-700"
-              >
-                Painel do Conselheiro
-              </Link>
-            ) : null}
-            
-            <Link
-  href="/leader/specialties/registre"
-  className="block rounded-lg bg-teal-700 px-3 py-2 text-sm font-bold text-white hover:bg-teal-800"
->
-  Registro de Especialidades
-</Link>
-
-<Link
-  href="/leader/assignments"
-  className="block rounded-lg bg-green-700 px-3 py-2 text-sm font-bold text-white hover:bg-green-800"
->
-  Vincular Classes e Especialidades
-</Link>
-
-<Link
-  href="/leader/classes/register"
-  className="block rounded-lg bg-cyan-700 px-3 py-2 text-sm font-bold text-white hover:bg-cyan-800"
->
-  Registro de Classes
-</Link>
+            <Link href="/leader/secretaria/usuarios" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Usuários
+            </Link>
           </>
-        ) : null}
+        )}
 
-        {role === "PARENT" ? (
-          <Link
-            href="/parent"
-            className="block rounded-lg bg-accent px-3 py-2 text-sm font-bold text-ink"
-          >
-            Portal dos Pais
-          </Link>
-        ) : null}
+        {/* Mídia */}
+        {canAccessMediaPanel(user) && (
+          <>
+            <p className="mt-3 text-xs font-bold text-gray-400">MÍDIA</p>
+
+            <Link href="/leader/highlights" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Avisos Principais
+            </Link>
+
+            <Link href="/leader/gallery" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Galeria
+            </Link>
+          </>
+        )}
+
+        {/* Diretor */}
+        {canAccessDirectorPanel(user) && (
+          <>
+            <p className="mt-3 text-xs font-bold text-gray-400">DIREÇÃO</p>
+
+            <Link href="/leader/classes" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Gerenciar Classes
+            </Link>
+
+            <Link href="/leader/classes/register" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Registro de Classes
+            </Link>
+
+            <Link href="/leader/specialties" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Gerenciar Especialidades
+            </Link>
+
+            <Link href="/leader/specialties/registre" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Registro de Especialidades
+            </Link>
+          </>
+        )}
+
+        {/* Conselheiros */}
+        {canAccessCounselorPanel(user) && (
+          <>
+            <p className="mt-3 text-xs font-bold text-gray-400">CONSELHEIRO</p>
+
+            <Link href="/leader/progress" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Progresso
+            </Link>
+          </>
+        )}
+
+        {/* Vínculos */}
+        {canManageAssignments(user) && (
+          <>
+            <p className="mt-3 text-xs font-bold text-gray-400">GERENCIAMENTO</p>
+
+            <Link href="/leader/assignments" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Vincular Classes / Especialidades
+            </Link>
+
+            <Link href="/leader/parents/link" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+              Vincular Responsáveis
+            </Link>
+          </>
+        )}
       </div>
     </aside>
   );
