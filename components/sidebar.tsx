@@ -165,8 +165,6 @@ export async function Sidebar() {
 >
   Registro de Classes
 </Link>
-
-            <Link
           </>
         ) : null}
 
