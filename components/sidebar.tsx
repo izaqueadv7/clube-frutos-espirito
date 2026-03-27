@@ -46,7 +46,7 @@ export async function Sidebar() {
               Eventos
             </Link>
 
-            <Link href="/leader/secretaria/usuarios" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
+            <Link href="/leader/users" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-900">
               Usuários
             </Link>
           </>
