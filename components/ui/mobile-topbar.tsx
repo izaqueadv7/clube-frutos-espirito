@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Bell } from "lucide-react";
 import Image from "next/image";
 import { MobileMenu } from "@/components/ui/mobile-menu";
@@ -19,16 +20,11 @@ export function MobileTopBar({
         <MobileMenu user={user} />
       </div>
 
-      <p className="text-sm font-semibold text-ink">
-        Olá, {name?.split(" ")[0] ?? "Usuário"} 👋
-      </p>
-
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
-            3
-          </span>
+      <Link href="/profile" className="flex min-w-0 items-center gap-3">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold text-ink">
+            Olá, {name?.split(" ")[0] ?? "Usuário"}
+          </p>
         </div>
 
         {image ? (
@@ -44,7 +40,15 @@ export function MobileTopBar({
             {name?.[0] ?? "U"}
           </div>
         )}
-      </div>
+      </Link>
+
+      <button
+        type="button"
+        className="rounded-xl p-2 hover:bg-slate-100 dark:hover:bg-zinc-800"
+        aria-label="Notificações"
+      >
+        <Bell className="h-5 w-5" />
+      </button>
     </div>
   );
 }

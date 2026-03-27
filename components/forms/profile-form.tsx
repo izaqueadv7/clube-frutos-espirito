@@ -6,8 +6,16 @@ import { ImageUpload } from "@/components/forms/image-upload";
 
 export function ProfileForm({ user }: { user: any }) {
   const router = useRouter();
+
   const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [birthDate, setBirthDate] = useState(user?.birthDate || "");
   const [image, setImage] = useState(user?.image || "");
+
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -16,15 +24,39 @@ export function ProfileForm({ user }: { user: any }) {
     setLoading(true);
     setMessage("");
 
+    if (newPassword || confirmPassword || currentPassword) {
+      if (!currentPassword) {
+        setMessage("Informe sua senha atual para alterar a senha.");
+        setLoading(false);
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        setMessage("A nova senha deve ter pelo menos 6 caracteres.");
+        setLoading(false);
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        setMessage("A confirmação da nova senha não confere.");
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
-      const response = await fetch("/api/users/update-profile", { 
+      const response = await fetch("/api/users/update-profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           name,
-          image
+          email,
+          birthDate,
+          image,
+          currentPassword,
+          newPassword
         })
       });
 
@@ -36,12 +68,16 @@ export function ProfileForm({ user }: { user: any }) {
       }
 
       setMessage("Perfil atualizado com sucesso.");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+
       router.refresh();
 
       setTimeout(() => {
         window.location.reload();
       }, 800);
-    } catch (error) {
+    } catch {
       setMessage("Erro ao salvar perfil.");
     } finally {
       setLoading(false);
@@ -79,6 +115,62 @@ export function ProfileForm({ user }: { user: any }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-semibold">Email</label>
+        <input
+          type="email"
+          className="w-full rounded-lg border px-3 py-2"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-semibold">Data de nascimento</label>
+        <input
+          type="date"
+          className="w-full rounded-lg border px-3 py-2"
+          value={birthDate}
+          onChange={(e) => setBirthDate(e.target.value)}
+        />
+      </div>
+
+      <div className="rounded-xl border p-4">
+        <p className="mb-3 text-sm font-semibold">Alterar senha</p>
+
+        <div className="space-y-3">
+          <div>
+            <label className="mb-1 block text-sm font-semibold">Senha atual</label>
+            <input
+              type="password"
+              className="w-full rounded-lg border px-3 py-2"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold">Nova senha</label>
+            <input
+              type="password"
+              className="w-full rounded-lg border px-3 py-2"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold">Confirmar nova senha</label>
+            <input
+              type="password"
+              className="w-full rounded-lg border px-3 py-2"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+        </div>
       </div>
 
       {message ? (
