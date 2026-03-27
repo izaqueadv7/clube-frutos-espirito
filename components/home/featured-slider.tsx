@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ProSlider } from "@/components/home/pro-slider";
@@ -56,13 +55,15 @@ export function FeaturedSlider({ items }: FeaturedSliderProps) {
                 ) : null}
 
                 {item.linkUrl ? (
-                  <Link
-                    href={item.linkUrl}
-                    className="inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white"
-                  >
-                    Saiba mais
-                  </Link>
-                ) : null}
+  <a
+    href={item.linkUrl}
+    className="inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white"
+    target={item.linkUrl.startsWith("http") ? "_blank" : undefined}
+    rel={item.linkUrl.startsWith("http") ? "noreferrer" : undefined}
+  >
+    Saiba mais
+  </a>
+) : null}
               </div>
             </Card>
           );
