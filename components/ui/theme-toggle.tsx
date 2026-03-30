@@ -28,7 +28,7 @@ export function ThemeToggle() {
     return (
       <button
         type="button"
-        className="rounded-xl border px-3 py-2 text-slate-800 dark:text-white"
+        className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-sm"
       >
         ☾
       </button>
@@ -39,10 +39,12 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="rounded-xl border border-[rgba(46,125,50,0.15)] bg-white dark:bg-zinc-950 px-3 py-2 text-slate-800 transition hover:bg-slate-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
+      className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-sm transition hover:bg-primary-dark"
       title={theme === "dark" ? "Modo claro" : "Modo escuro"}
     >
-      {theme === "dark" ? "☀" : "☾"}
+      <span className="text-lg leading-none">
+        {theme === "dark" ? "☀" : "☾"}
+      </span>
     </button>
   );
 }

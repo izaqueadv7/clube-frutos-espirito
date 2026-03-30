@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { Card } from "@/components/ui/card";
 import { ProfileForm } from "@/components/forms/profile-form";
 import { translateRole } from "@/lib/translate";
 
@@ -20,8 +19,7 @@ export default async function ProfilePage() {
       image: true,
       role: true,
       primaryFunction: true,
-      secondaryFunction: true,
-      birthDate: true
+      secondaryFunction: true
     }
   });
 
@@ -29,31 +27,10 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-5">
-        <h1 className="section-title">Meu Perfil</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
-          Atualize suas informações, sua foto e sua senha.
-        </p>
-      </Card>
-
-      <Card className="p-5">
-        <div className="mb-4">
-          <p className="font-bold text-primary">{user.name}</p>
-          <p className="text-sm text-slate-600 dark:text-slate-800">{user.email}</p>
-          <p className="text-sm text-slate-600 dark:text-slate-800">
-            {translateRole(user.role)}
-          </p>
-        </div>
-
-        <ProfileForm
-          user={{
-            ...user,
-            birthDate: user.birthDate
-              ? new Date(user.birthDate).toISOString().split("T")[0]
-              : ""
-          }}
-        />
-      </Card>
+      <ProfileForm
+        user={user}
+        roleLabel={translateRole(user.role)}
+      />
     </div>
   );
 }

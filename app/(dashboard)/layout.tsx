@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { LogoutButton } from "@/components/forms/logout-button";
 import { SubscribeNotifications } from "@/components/pwa/subscribe-notifications";
 import { translateRole } from "@/lib/translate";
 import { MobileMenu } from "@/components/ui/mobile-menu";
@@ -107,7 +106,6 @@ export default async function DashboardLayout({
             </div>
           </div>
 
-          <LogoutButton />
         </div>
       </div>
 
