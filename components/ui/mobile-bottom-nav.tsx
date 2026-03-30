@@ -68,4 +68,15 @@ export function MobileBottomNav() {
               <span
                 className={[
                   "leading-tight",
-                  active ? "text-[12px] font
+                  active ? "text-[12px] font-bold" : "text-[11px] font-semibold"
+                ].join(" ")}
+              >
+                {item.label}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
