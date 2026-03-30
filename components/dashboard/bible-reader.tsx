@@ -19,30 +19,31 @@ type DevotionalItem = {
   text: string;
 };
 
+type ViewMode = "books" | "chapters" | "verses";
+
 export function BibleReader() {
-  const [book, setBook] = useState("Joao");
-  const [chapter, setChapter] = useState(1);
-
-  const [bookSearch, setBookSearch] = useState("");
-  const [referenceSearch, setReferenceSearch] = useState("");
-
   const [devotional, setDevotional] = useState<DevotionalItem | null>(null);
-  const [verses, setVerses] = useState<VerseItem[]>([]);
-  const [searchResult, setSearchResult] = useState<VerseItem[]>([]);
 
-  const [loadingVerses, setLoadingVerses] = useState(false);
+  const [referenceSearch, setReferenceSearch] = useState("");
+  const [searchResult, setSearchResult] = useState<VerseItem[]>([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
 
-  const selectedBook = useMemo(
-    () => BIBLE_BOOKS.find((item) => item.name === book),
-    [book]
-  );
+  const [bookSearch, setBookSearch] = useState("");
+  const [selectedBook, setSelectedBook] = useState<string | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
+  const [verses, setVerses] = useState<VerseItem[]>([]);
+  const [loadingVerses, setLoadingVerses] = useState(false);
+  const [view, setView] = useState<ViewMode>("books");
 
   const filteredBooks = useMemo(() => {
     return BIBLE_BOOKS.filter((item) =>
       item.name.toLowerCase().includes(bookSearch.toLowerCase())
     );
   }, [bookSearch]);
+
+  const currentBook = useMemo(() => {
+    return BIBLE_BOOKS.find((item) => item.name === selectedBook) ?? null;
+  }, [selectedBook]);
 
   useEffect(() => {
     async function loadDevotional() {
@@ -64,17 +65,21 @@ export function BibleReader() {
 
   useEffect(() => {
     async function loadChapter() {
+      if (!selectedBook || !selectedChapter) return;
+
       setLoadingVerses(true);
       try {
-        const data = await getVersesByReference(book, chapter);
+        const data = await getVersesByReference(selectedBook, selectedChapter);
         setVerses(data);
       } finally {
         setLoadingVerses(false);
       }
     }
 
-    loadChapter();
-  }, [book, chapter]);
+    if (view === "verses" && selectedBook && selectedChapter) {
+      loadChapter();
+    }
+  }, [view, selectedBook, selectedChapter]);
 
   async function handleReferenceSearch() {
     if (referenceSearch.trim().length < 2) {
@@ -91,148 +96,249 @@ export function BibleReader() {
     }
   }
 
-  function openVerseReference(item: VerseItem) {
-    setBook(item.book);
-    setChapter(item.chapter);
-    setReferenceSearch("");
+  function openReference(item: VerseItem) {
+    setSelectedBook(item.book);
+    setSelectedChapter(item.chapter);
+    setView("verses");
     setSearchResult([]);
+    setReferenceSearch("");
+  }
+
+  function openBook(bookName: string) {
+    setSelectedBook(bookName);
+    setSelectedChapter(null);
+    setVerses([]);
+    setView("chapters");
+  }
+
+  function openChapter(chapter: number) {
+    setSelectedChapter(chapter);
+    setVerses([]);
+    setView("verses");
+  }
+
+  function backToBooks() {
+    setView("books");
+    setSelectedBook(null);
+    setSelectedChapter(null);
+    setVerses([]);
+  }
+
+  function backToChapters() {
+    setView("chapters");
+    setSelectedChapter(null);
+    setVerses([]);
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
-      <Card className="space-y-3 p-4 lg:col-span-1">
-        <h2 className="section-title">Livros</h2>
-
-        <Input
-          placeholder="Buscar livro"
-          value={bookSearch}
-          onChange={(event) => setBookSearch(event.target.value)}
-        />
-
-        <div className="max-h-80 space-y-1 overflow-auto">
-          {filteredBooks.map((item) => (
-            <button
-              key={item.name}
-              onClick={() => {
-                setBook(item.name);
-                setChapter(1);
-              }}
-              className={`w-full rounded-lg px-3 py-2 text-left text-sm font-semibold ${
-                item.name === book ? "bg-primary text-white" : "hover:bg-red-50"
-              }`}
-            >
-              {item.name}
-            </button>
-          ))}
-        </div>
+    <div className="space-y-4">
+      <Card className="p-5">
+        <h2 className="section-title">Devocional do dia</h2>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          {devotional
+            ? `${devotional.book} ${devotional.chapter}:${devotional.verse}`
+            : "Carregando..."}
+        </p>
+        <p className="mt-3 text-base text-ink">
+          {devotional?.text ?? "Carregando devocional..."}
+        </p>
       </Card>
 
-      <div className="space-y-4 lg:col-span-2">
-        <Card className="p-4">
-          <h3 className="section-title">Devocional do dia</h3>
-          <p className="mt-2 text-sm text-slate-600">
-            {devotional ? `${devotional.book} ${devotional.chapter}:${devotional.verse}` : "Carregando..."}
+      <Card className="space-y-4 p-5">
+        <div>
+          <h2 className="section-title">Buscar referência bíblica</h2>
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+            Exemplo: Joao 3:16, Salmos 23:1, Romanos 12:12
           </p>
-          <p className="mt-2 text-ink">
-            {devotional?.text ?? "Carregando devocional..."}
-          </p>
-        </Card>
+        </div>
 
-        <Card className="space-y-4 p-4">
-          <div>
-            <h3 className="section-title">Buscar referência bíblica</h3>
-            <p className="mt-1 text-sm text-slate-600">
-              Exemplo: Joao 3:16, Salmos 23:1, Romanos 12:12
-            </p>
-          </div>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Input
+            placeholder="Digite a referência bíblica"
+            value={referenceSearch}
+            onChange={(event) => setReferenceSearch(event.target.value)}
+          />
+          <Button type="button" onClick={handleReferenceSearch}>
+            Buscar
+          </Button>
+        </div>
 
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Input
-              placeholder="Digite a referência bíblica"
-              value={referenceSearch}
-              onChange={(event) => setReferenceSearch(event.target.value)}
-            />
-            <Button type="button" onClick={handleReferenceSearch}>
-              Buscar
-            </Button>
-          </div>
-
-          {referenceSearch.trim().length >= 2 ? (
-            <div className="space-y-2">
-              {loadingSearch ? (
-                <p className="text-sm text-slate-500">Buscando...</p>
-              ) : searchResult.length === 0 ? (
-                <p className="text-sm text-slate-500">
-                  Nenhum verso encontrado. Tente algo como Joao 3:16
-                </p>
-              ) : (
-                searchResult.map((item) => (
-                  <button
-                    key={`${item.book}-${item.chapter}-${item.verse}`}
-                    type="button"
-                    onClick={() => openVerseReference(item)}
-                    className="block w-full rounded-xl border border-red-100 p-3 text-left hover:bg-red-50"
-                  >
-                    <p className="font-semibold text-primary">
-                      {item.book} {item.chapter}:{item.verse}
-                    </p>
-                    <p className="mt-1 text-sm text-slate-700">{item.text}</p>
-                  </button>
-                ))
-              )}
-            </div>
-          ) : null}
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="section-title">
-              {book} - Capítulo {chapter}
-            </h3>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                onClick={() => setChapter((current) => Math.max(1, current - 1))}
-              >
-                Anterior
-              </Button>
-
-              <Button
-                variant="ghost"
-                onClick={() =>
-                  setChapter((current) =>
-                    Math.min(selectedBook?.chapters ?? current, current + 1)
-                  )
-                }
-              >
-                Próximo
-              </Button>
-            </div>
-          </div>
-
-          <div className="mt-4 space-y-3">
-            {loadingVerses ? (
-              <p className="text-sm text-slate-500">Carregando capítulo...</p>
-            ) : verses.length === 0 ? (
-              <p className="text-sm text-slate-500">
-                Não foi possível carregar os versículos deste capítulo.
+        {referenceSearch.trim().length >= 2 || searchResult.length > 0 ? (
+          <div className="space-y-2">
+            {loadingSearch ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">Buscando...</p>
+            ) : searchResult.length === 0 ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Nenhum verso encontrado. Tente algo como Joao 3:16
               </p>
             ) : (
-              verses.map((item) => (
-                <div
+              searchResult.map((item) => (
+                <button
                   key={`${item.book}-${item.chapter}-${item.verse}`}
-                  className="rounded-xl border border-red-100 p-3"
+                  type="button"
+                  onClick={() => openReference(item)}
+                  className="block w-full rounded-xl border border-red-100 p-3 text-left hover:bg-red-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
                 >
-                  <p className="text-xs font-semibold text-primary">
+                  <p className="font-semibold text-primary">
                     {item.book} {item.chapter}:{item.verse}
                   </p>
-                  <p className="mt-1 text-sm text-slate-700">{item.text}</p>
-                </div>
+                  <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
+                    {item.text}
+                  </p>
+                </button>
               ))
             )}
           </div>
-        </Card>
+        ) : null}
+      </Card>
+
+      <div className="rounded-[28px] border border-gray-200 bg-white p-5 shadow-card dark:border-zinc-800 dark:bg-black dark:text-white dark:shadow-2xl">
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-primary dark:text-white">Bíblia</h2>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+              Navegue por livros, capítulos e versículos
+            </p>
+          </div>
+
+          {view !== "books" ? (
+            <button
+              type="button"
+              onClick={view === "verses" ? backToChapters : backToBooks}
+              className="rounded-xl bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+            >
+              Voltar
+            </button>
+          ) : null}
+        </div>
+
+        {view === "books" ? (
+          <div className="space-y-4">
+            <div>
+              <input
+                value={bookSearch}
+                onChange={(event) => setBookSearch(event.target.value)}
+                placeholder="Pesquisar livro"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 outline-none placeholder:text-gray-400 dark:border-white/10 dark:bg-white/10 dark:text-white dark:placeholder:text-gray-400"
+              />
+            </div>
+
+            <div className="space-y-1">
+              {filteredBooks.map((item) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => openBook(item.name)}
+                  className="flex w-full items-center justify-between rounded-2xl px-3 py-4 text-left text-gray-800 transition hover:bg-gray-100 dark:text-white dark:hover:bg-white/10"
+                >
+                  <span className="text-lg font-medium">{item.name}</span>
+                  <span className="text-xl text-gray-400 dark:text-gray-500">›</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {view === "chapters" && currentBook ? (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
+                {currentBook.name}
+              </h3>
+
+              <button
+                type="button"
+                onClick={backToBooks}
+                className="rounded-xl bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+              >
+                Livros
+              </button>
+            </div>
+
+            <div className="grid grid-cols-4 gap-3 sm:grid-cols-5">
+              {Array.from({ length: currentBook.chapters }, (_, index) => index + 1).map(
+                (chapterNumber) => (
+                  <button
+                    key={chapterNumber}
+                    type="button"
+                    onClick={() => openChapter(chapterNumber)}
+                    className="rounded-2xl bg-gray-100 px-3 py-5 text-center text-xl font-semibold text-gray-800 transition hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+                  >
+                    {chapterNumber}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+        ) : null}
+
+        {view === "verses" && currentBook && selectedChapter ? (
+          <div className="space-y-5">
+            <div className="text-center">
+              <p className="text-2xl text-gray-500 dark:text-gray-300">{currentBook.name}</p>
+              <h3 className="mt-1 text-7xl font-bold leading-none text-gray-900 dark:text-white">
+                {selectedChapter}
+              </h3>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={backToChapters}
+                className="rounded-xl bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+              >
+                Capítulos
+              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    selectedChapter > 1 && openChapter(selectedChapter - 1)
+                  }
+                  disabled={selectedChapter <= 1}
+                  className="rounded-xl bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 disabled:opacity-40 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+                >
+                  Anterior
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    currentBook.chapters > selectedChapter &&
+                    openChapter(selectedChapter + 1)
+                  }
+                  disabled={selectedChapter >= currentBook.chapters}
+                  className="rounded-xl bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200 disabled:opacity-40 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+                >
+                  Próximo
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {loadingVerses ? (
+                <p className="text-sm text-gray-500 dark:text-gray-400">Carregando capítulo...</p>
+              ) : verses.length === 0 ? (
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Não foi possível carregar os versículos deste capítulo.
+                </p>
+              ) : (
+                verses.map((item) => (
+                  <div
+                    key={`${item.book}-${item.chapter}-${item.verse}`}
+                    className="text-lg leading-9 text-gray-800 dark:text-gray-100"
+                  >
+                    <span className="mr-2 align-super text-xs text-gray-500 dark:text-gray-400">
+                      {item.verse}
+                    </span>
+                    {item.text}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
