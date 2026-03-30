@@ -44,7 +44,7 @@ export default async function AssignmentsPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Vincular Classes e Especialidades</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Selecione o desbravador e vincule de forma rápida a classe e as especialidades.
         </p>
       </Card>

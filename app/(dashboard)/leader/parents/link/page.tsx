@@ -42,7 +42,7 @@ export default async function ParentLinkPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Vincular Responsável ao Desbravador</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Escolha um responsável já cadastrado e vincule ao desbravador.
         </p>
       </Card>

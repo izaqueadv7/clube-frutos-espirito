@@ -82,8 +82,8 @@ export function MemberRecordsPanel({
         <Card key={member.id} className="p-5 space-y-4">
           <div>
             <h2 className="text-lg font-bold text-primary">{member.name}</h2>
-            <p className="text-sm text-slate-600">{member.email}</p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-600 dark:text-slate-300">{member.email}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               Classe atual: {member.currentClass ?? "Não definida"}
             </p>
           </div>
@@ -92,13 +92,13 @@ export function MemberRecordsPanel({
             <h3 className="mb-2 font-semibold">Progresso de Classe</h3>
             <div className="space-y-2">
               {member.progress.length === 0 ? (
-                <p className="text-sm text-slate-500">Sem registros de progresso.</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Sem registros de progresso.</p>
               ) : (
                 member.progress.map((item) => (
                   <div key={item.id} className="rounded-lg border p-3">
                     <p className="font-semibold">{item.title}</p>
-                    <p className="text-sm text-slate-600">{item.details}</p>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-300">{item.details}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
                       Concluído: {item.completed ? "Sim" : "Não"}
                     </p>
                     <button
@@ -118,13 +118,13 @@ export function MemberRecordsPanel({
             <h3 className="mb-2 font-semibold">Especialidades</h3>
             <div className="space-y-2">
               {member.specialties.length === 0 ? (
-                <p className="text-sm text-slate-500">Sem especialidades registradas.</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Sem especialidades registradas.</p>
               ) : (
                 member.specialties.map((item) => (
                   <div key={item.id} className="rounded-lg border p-3">
                     <p className="font-semibold">{item.name}</p>
-                    <p className="text-sm text-slate-600">{item.category}</p>
-                    <p className="text-sm text-slate-600">Status: {item.status}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">{item.category}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">Status: {item.status}</p>
                     <button
                       type="button"
                       onClick={() => deleteRecord("specialty", item.id)}

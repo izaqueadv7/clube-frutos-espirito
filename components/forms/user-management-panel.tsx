@@ -106,18 +106,18 @@ export function UserManagementPanel({ users }: { users: UserItem[] }) {
       <div className="space-y-4">
         {filteredUsers.length === 0 ? (
           <Card className="p-5">
-            <p className="text-sm text-slate-600">Nenhum usuário encontrado.</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum usuário encontrado.</p>
           </Card>
         ) : (
           filteredUsers.map((user) => (
             <Card key={user.id} className="p-5">
               <div className="mb-4">
                 <h2 className="text-lg font-bold text-primary">{user.name}</h2>
-                <p className="text-sm text-slate-600">{user.email}</p>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 dark:text-slate-300">{user.email}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
                   Perfil: {translateRole(user.role)}
                 </p>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 dark:text-slate-300">
                   Status: {translateStatus(user.status)}
                 </p>
               </div>

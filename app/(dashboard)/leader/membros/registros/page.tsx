@@ -59,7 +59,7 @@ export default async function MemberRecordsPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Registros dos Membros</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Gerencie e exclua registros de progresso de classes e especialidades por membro.
         </p>
       </Card>

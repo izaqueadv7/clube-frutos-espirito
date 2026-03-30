@@ -41,7 +41,7 @@ export default async function ClassesPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Módulo de Classes</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Amigo, Companheiro, Pesquisador, Pioneiro, Excursionista e Guia com
           acompanhamento por requisito.
         </p>
@@ -63,10 +63,10 @@ export default async function ClassesPage() {
                 <h2 className="text-lg font-bold text-primary">
                   {translateClassName(item.name)}
                 </h2>
-                <span className="text-xs text-slate-500">Ordem {item.order}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Ordem {item.order}</span>
               </div>
 
-              <p className="text-sm text-slate-600">{item.description}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">{item.description}</p>
 
               {session.user.role !== "LEADER" ? (
                 <ProgressBar label="Progresso" value={pct} />
@@ -76,10 +76,10 @@ export default async function ClassesPage() {
                 {reqs.map((req: any) => (
                   <div
                     key={req.id}
-                    className="rounded-xl border border-red-100 p-3 text-sm"
+                    className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm"
                   >
                     <p className="font-semibold">{req.title}</p>
-                    <p className="text-slate-600">{req.details}</p>
+                    <p className="text-slate-600 dark:text-slate-300">{req.details}</p>
                   </div>
                 ))}
               </div>

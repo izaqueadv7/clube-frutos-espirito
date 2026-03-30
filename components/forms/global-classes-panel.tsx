@@ -121,7 +121,7 @@ export function GlobalClassesPanel({ items }: { items: ClassItem[] }) {
           </div>
 
           {message ? (
-            <p className="md:col-span-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700">
+            <p className="md:col-span-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
               {message}
             </p>
           ) : null}
@@ -183,7 +183,7 @@ function EditableClassCard({
           />
         </div>
 
-        <div className="flex items-end text-sm text-slate-600">
+        <div className="flex items-end text-sm text-slate-600 dark:text-slate-300">
           Requisitos: {item.requirementsCount}
         </div>
 

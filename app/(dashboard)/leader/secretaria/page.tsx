@@ -14,7 +14,7 @@ export default async function SecretariaPanelPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Painel da Secretária</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Área para acompanhar cadastros, aprovações, usuários, presença e organização dos eventos do clube.
         </p>
       </Card>

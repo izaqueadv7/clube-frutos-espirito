@@ -7,7 +7,7 @@ export async function TopBar() {
   const session = await auth();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-red-100 bg-white/90 backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/90">
+    <header className="sticky top-0 z-40 border-b border-red-100 dark:border-zinc-800 bg-white/90 backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="text-lg font-extrabold text-primary">
           Clube Frutos do Espírito

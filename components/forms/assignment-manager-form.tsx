@@ -169,7 +169,7 @@ export function AssignmentManagerForm({
                 ].join(" ")}
               >
                 <p className="font-semibold">{item.name}</p>
-                <p className="text-sm text-slate-600">{item.email}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">{item.email}</p>
               </button>
             );
           })}
@@ -179,7 +179,7 @@ export function AssignmentManagerForm({
       <div className="space-y-4">
         <Card className="p-5">
           <h2 className="section-title">Classe do desbravador</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
             Selecione uma classe e clique em salvar.
           </p>
 
@@ -200,7 +200,7 @@ export function AssignmentManagerForm({
           </div>
 
           {messageClass ? (
-            <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700">
+            <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
               {messageClass}
             </p>
           ) : null}
@@ -219,7 +219,7 @@ export function AssignmentManagerForm({
 
         <Card className="p-5">
           <h2 className="section-title">Especialidades do desbravador</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
             Marque as especialidades desejadas e clique em salvar.
           </p>
 
@@ -245,7 +245,7 @@ export function AssignmentManagerForm({
                   />
                   <div>
                     <p className="font-semibold">{item.name}</p>
-                    <p className="text-sm text-slate-600">{item.category}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">{item.category}</p>
                   </div>
                 </label>
               );
@@ -253,7 +253,7 @@ export function AssignmentManagerForm({
           </div>
 
           {messageSpecialty ? (
-            <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700">
+            <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
               {messageSpecialty}
             </p>
           ) : null}

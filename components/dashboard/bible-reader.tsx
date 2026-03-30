@@ -177,7 +177,7 @@ export function BibleReader() {
                   key={`${item.book}-${item.chapter}-${item.verse}`}
                   type="button"
                   onClick={() => openReference(item)}
-                  className="block w-full rounded-xl border border-red-100 p-3 text-left hover:bg-red-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
+                  className="block w-full rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-left hover:bg-red-50 dark:hover:bg-zinc-900"
                 >
                   <p className="font-semibold text-primary">
                     {item.book} {item.chapter}:{item.verse}
@@ -192,7 +192,7 @@ export function BibleReader() {
         ) : null}
       </Card>
 
-      <div className="rounded-[28px] border border-gray-200 bg-white p-5 shadow-card dark:border-zinc-800 dark:bg-black dark:text-white dark:shadow-2xl">
+      <div className="rounded-[28px] border border-gray-200 bg-white dark:bg-zinc-950 p-5 shadow-card dark:border-zinc-800 dark:bg-black dark:text-white dark:shadow-2xl">
         <div className="mb-5 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-primary dark:text-white">Bíblia</h2>

@@ -75,13 +75,13 @@ export default async function DashboardPage() {
 
             <div className="mt-4 space-y-3">
               {upcomingEvents.length === 0 ? (
-                <p className="text-sm text-slate-600">Nenhum evento agendado.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum evento agendado.</p>
               ) : (
                 upcomingEvents.map((event) => (
                   <div key={event.id} className="rounded-xl border p-3 text-sm">
                     <p className="font-semibold">{event.title}</p>
-                    <p className="text-slate-600">{event.location}</p>
-                    <p className="text-slate-600">
+                    <p className="text-slate-600 dark:text-slate-300">{event.location}</p>
+                    <p className="text-slate-600 dark:text-slate-300">
                       {new Date(event.date).toLocaleString("pt-BR")}
                     </p>
                   </div>
@@ -97,11 +97,11 @@ export default async function DashboardPage() {
               {recentUsers.map((user) => (
                 <div key={user.id} className="rounded-xl border p-3 text-sm">
                   <p className="font-semibold">{user.name}</p>
-                  <p className="text-slate-600">{user.email}</p>
-                  <p className="text-slate-600">
+                  <p className="text-slate-600 dark:text-slate-300">{user.email}</p>
+                  <p className="text-slate-600 dark:text-slate-300">
                     Perfil: {translateRole(user.role)}
                   </p>
-                  <p className="text-slate-600">
+                  <p className="text-slate-600 dark:text-slate-300">
                     Status: {user.status}
                   </p>
                 </div>
@@ -112,10 +112,10 @@ export default async function DashboardPage() {
 
         <Card className="p-5">
           <h2 className="section-title">Painel de liderança</h2>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
             Use os menus de gerenciamento para usuários, aprovações, eventos, presença, galeria, avisos e progresso das classes.
           </p>
-          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700">
+          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-300">
             Verso do dia: {verseOfDay}
           </p>
         </Card>
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
           <h2 className="section-title">Acompanhamento do responsável</h2>
           <ProgressBar label="Progresso da classe" value={pct} />
           <ProgressBar label="Especialidades" value={specialtyPct} />
-          <p className="rounded-xl bg-green-50 p-3 text-sm text-slate-700">
+          <p className="rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-300">
             Verso do dia: {verseOfDay}
           </p>
         </Card>
@@ -206,15 +206,15 @@ export default async function DashboardPage() {
               child.attendance.map((item: any) => (
                 <div key={item.id} className="rounded-xl border p-3 text-sm">
                   <p className="font-semibold">{item.event.title}</p>
-                  <p className="text-slate-600">{item.event.location}</p>
-                  <p className="text-slate-600">
+                  <p className="text-slate-600 dark:text-slate-300">{item.event.location}</p>
+                  <p className="text-slate-600 dark:text-slate-300">
                     {new Date(item.event.date).toLocaleString("pt-BR")}
                   </p>
-                  <p className="text-slate-600">Status: {item.status}</p>
+                  <p className="text-slate-600 dark:text-slate-300">Status: {item.status}</p>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-slate-600">Nenhum registro de presença.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum registro de presença.</p>
             )}
           </div>
         </Card>
@@ -305,15 +305,15 @@ export default async function DashboardPage() {
           {nextEvent ? (
             <>
               <p className="mt-2 text-lg font-semibold">{nextEvent.title}</p>
-              <p className="text-sm text-slate-600">{nextEvent.location}</p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-600 dark:text-slate-300">{nextEvent.location}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
                 {new Date(nextEvent.date).toLocaleString("pt-BR")}
               </p>
             </>
           ) : (
-            <p className="mt-2 text-sm text-slate-600 ">Nenhum evento agendado.</p>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Nenhum evento agendado.</p>
           )}
-          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700">
+          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-300">
             Verso do dia: {verseOfDay}
           </p>
         </Card>
@@ -326,15 +326,15 @@ export default async function DashboardPage() {
               pathfinder.attendance.map((item: any) => (
                 <div key={item.id} className="rounded-xl border p-3 text-sm">
                   <p className="font-semibold">{item.event.title}</p>
-                  <p className="text-slate-600">{item.event.location}</p>
-                  <p className="text-slate-600">
+                  <p className="text-slate-600 dark:text-slate-300">{item.event.location}</p>
+                  <p className="text-slate-600 dark:text-slate-300">
                     {new Date(item.event.date).toLocaleString("pt-BR")}
                   </p>
-                  <p className="text-slate-600">Status: {item.status}</p>
+                  <p className="text-slate-600 dark:text-slate-300">Status: {item.status}</p>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-slate-600">Nenhum registro de presença.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum registro de presença.</p>
             )}
           </div>
         </Card>
@@ -348,14 +348,14 @@ export default async function DashboardPage() {
             pathfinder.specialties.map((item: any) => (
               <div key={item.id} className="rounded-xl border p-3 text-sm">
                 <p className="font-semibold">{item.specialty.name}</p>
-                <p className="text-slate-600">{item.specialty.category}</p>
-                <p className="text-slate-600">
+                <p className="text-slate-600 dark:text-slate-300">{item.specialty.category}</p>
+                <p className="text-slate-600 dark:text-slate-300">
                   Status: {translateSpecialtyStatus(item.status)}
                 </p>
               </div>
             ))
           ) : (
-            <p className="text-sm text-slate-600">Nenhuma especialidade atribuída.</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">Nenhuma especialidade atribuída.</p>
           )}
         </div>
       </Card>

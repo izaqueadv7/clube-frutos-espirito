@@ -118,7 +118,7 @@ export function CounselorProgressPanel({
                   return (
                     <div
                       key={req.id}
-                      className="rounded-xl border border-red-100 p-4"
+                      className="rounded-xl border border-red-100 dark:border-zinc-800 p-4"
                     >
                       <label className="flex items-start gap-3">
                         <input

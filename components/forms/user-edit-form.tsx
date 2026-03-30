@@ -116,7 +116,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
   return (
     <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">Nome</label>
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">Nome</label>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -125,7 +125,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">Email</label>
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">Email</label>
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -135,7 +135,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
           Nova senha
         </label>
         <input
@@ -148,7 +148,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">Perfil</label>
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">Perfil</label>
         <select
           value={role}
           onChange={(e) => setRole(e.target.value as "PATHFINDER" | "LEADER" | "PARENT")}
@@ -161,7 +161,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
           Função principal
         </label>
         <input
@@ -172,7 +172,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
           Função secundária
         </label>
         <input
@@ -182,7 +182,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
         />
       </div>
 
-      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
         <input
           type="checkbox"
           checked={isAdmin}
@@ -191,7 +191,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
         Administrador geral
       </label>
 
-      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
         <input
           type="checkbox"
           checked={isMedia}
@@ -200,7 +200,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
         Responsável por mídia
       </label>
 
-      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
         <input
           type="checkbox"
           checked={canManageUsers}
@@ -209,7 +209,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
         Gerencia usuários
       </label>
 
-      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
         <input
           type="checkbox"
           checked={canManageContent}
@@ -218,7 +218,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
         Gerencia conteúdo
       </label>
 
-      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 md:col-span-2">
+      <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300 md:col-span-2">
         <input
           type="checkbox"
           checked={isActive}

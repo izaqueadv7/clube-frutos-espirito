@@ -15,7 +15,7 @@ export function MobileTopBar({
   user?: any;
 }) {
   return (
-    <div className="sticky top-0 z-40 flex items-center justify-between bg-white px-4 py-3 shadow-sm dark:bg-zinc-900 lg:hidden">
+    <div className="sticky top-0 z-40 flex items-center justify-between bg-white dark:bg-zinc-950 px-4 py-3 shadow-sm dark:bg-zinc-900 lg:hidden">
       
       {/* MENU ESQUERDA */}
       <MobileMenu user={user} />
@@ -49,7 +49,7 @@ export function MobileTopBar({
               className="h-9 w-9 rounded-full object-cover"
             />
           ) : (
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-700">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-700 dark:text-slate-300">
               {name?.[0] ?? "U"}
             </div>
           )}

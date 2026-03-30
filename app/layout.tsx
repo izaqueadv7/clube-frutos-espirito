@@ -6,10 +6,9 @@ import { PwaRegister } from "@/components/pwa/pwa-register";
 import { AppSplashScreen } from "@/components/pwa/app-splash-screen";
 
 export const metadata: Metadata = {
-  title: "Clube Frutos do Espírito",
-  description: "Site do Clube de Desbravadores Frutos do Espírito",
+  title: "Clube Frutos do Espirito",
+  description: "Site do Clube de Desbravadores Frutos do Espirito",
   manifest: "/manifest.webmanifest",
-  themeColor: "#2E7D32",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -26,20 +25,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const themeScript = `
-    (function() {
+    (function () {
       try {
-        var saved = localStorage.getItem('theme');
-        if (saved === 'dark') {
-          document.documentElement.classList.add('dark');
+        const saved = localStorage.getItem("theme");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
         }
-      } catch (e) {}
+      } catch (e) {
+        document.documentElement.classList.remove("dark");
+      }
     })();
   `;
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body>
+      <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>
         <AppSplashScreen />
         <SessionProvider>
           <PwaRegister />

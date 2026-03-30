@@ -14,7 +14,7 @@ export default async function ConselheiroPanelPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Painel do Conselheiro</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Área para acompanhamento e atualização do progresso das classes dos desbravadores.
         </p>
       </Card>

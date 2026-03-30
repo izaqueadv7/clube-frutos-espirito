@@ -11,6 +11,11 @@ html.dark {
   color-scheme: dark;
 }
 
+html,
+body {
+  min-height: 100%;
+}
+
 body {
   @apply min-h-screen antialiased;
   background-color: rgb(var(--surface));
@@ -25,22 +30,22 @@ main {
 .card {
   @apply rounded-2xl border shadow-card;
   background-color: rgb(var(--accent));
-  border-color: rgba(46, 125, 50, 0.12);
-}
-
-html.dark .card {
-  border-color: rgba(102, 187, 106, 0.18);
+  border-color: rgb(var(--line));
 }
 
 .input {
   @apply w-full rounded-xl border px-4 py-2 outline-none transition;
   background-color: rgb(var(--accent));
-  border-color: rgba(46, 125, 50, 0.18);
+  border-color: rgb(var(--line));
   color: rgb(var(--ink));
 }
 
+.input::placeholder {
+  color: rgb(var(--muted));
+}
+
 .input:focus {
-  border-color: rgb(46, 125, 50);
+  border-color: rgb(var(--primary));
   box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
 }
 
@@ -87,4 +92,37 @@ html.dark .card {
 
 .bg-hero-gradient {
   background: var(--hero-gradient);
+}
+
+/* Base de elementos comuns */
+.page-muted {
+  color: rgb(var(--muted));
+}
+
+.page-line {
+  border-color: rgb(var(--line));
+}
+
+.page-soft {
+  background-color: rgb(var(--soft));
+}
+
+/* Scrollbar suave */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.4) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.35);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
 }

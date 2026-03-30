@@ -95,7 +95,7 @@ export default async function HomePage() {
             Clube Frutos do Espírito
           </h1>
 
-          <p className="max-w-xl text-lg text-slate-700">
+          <p className="max-w-xl text-lg text-slate-700 dark:text-slate-300">
             A plataforma digital do Clube de Desbravadores para acompanhar classes,
             especialidades, eventos e crescimento espiritual em um único lugar.
           </p>
@@ -108,7 +108,7 @@ export default async function HomePage() {
           </div>
 
           <Card className="p-4">
-            <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <p className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Verso da semana
             </p>
             <p className="mt-2 text-lg font-semibold text-ink">{verse}</p>
@@ -127,7 +127,7 @@ export default async function HomePage() {
           <div className="space-y-4 p-6">
             <div className="rounded-xl bg-red-50 p-4">
               <p className="text-sm font-semibold text-primary">Identidade</p>
-              <p className="text-sm text-slate-700">
+              <p className="text-sm text-slate-700 dark:text-slate-800">
                 Cores oficiais: verde folha, preto e branco. Nosso lema é refletir o
                 caráter de Cristo em cada ação.
               </p>
@@ -135,7 +135,7 @@ export default async function HomePage() {
 
             <div className="rounded-xl bg-yellow-50 p-4">
               <p className="text-sm font-semibold text-amber-700">Acesso para famílias</p>
-              <p className="text-sm text-slate-700">
+              <p className="text-sm text-slate-700 dark:text-slate-800">
                 Pais acompanham progresso e recebem comunicados em tempo real.
               </p>
             </div>
@@ -152,12 +152,12 @@ export default async function HomePage() {
           <h3 className="section-title">Próximos eventos</h3>
           <div className="mt-4 space-y-3">
             {events.map((event) => (
-              <div key={event.id} className="rounded-xl border border-red-100 p-3">
+              <div key={event.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3">
                 <p className="font-semibold">{event.title}</p>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 dark:text-slate-300">
                   {format(new Date(event.date), "dd MMM yyyy, HH:mm", { locale: ptBR })}
                 </p>
-                <p className="text-sm text-slate-600">{event.location}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">{event.location}</p>
               </div>
             ))}
           </div>
@@ -167,10 +167,10 @@ export default async function HomePage() {
           <h3 className="section-title">Avisos recentes</h3>
           <div className="mt-4 space-y-3">
             {announcements.map((item) => (
-              <div key={item.id} className="rounded-xl border border-red-100 p-3">
+              <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3">
                 <p className="font-semibold">{item.title}</p>
-                <p className="text-sm text-slate-700">{item.content}</p>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="text-sm text-slate-700 dark:text-slate-300">{item.content}</p>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {format(new Date(item.createdAt), "dd/MM/yyyy")}
                 </p>
               </div>

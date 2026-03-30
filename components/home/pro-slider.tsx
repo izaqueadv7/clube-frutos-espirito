@@ -77,7 +77,7 @@ export function ProSlider({
         <button
           type="button"
           onClick={prev}
-          className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-lg font-bold shadow hover:bg-white"
+          className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-lg font-bold shadow hover:bg-white dark:bg-zinc-950"
         >
           ‹
         </button>
@@ -96,7 +96,7 @@ export function ProSlider({
         <button
           type="button"
           onClick={next}
-          className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-lg font-bold shadow hover:bg-white"
+          className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-lg font-bold shadow hover:bg-white dark:bg-zinc-950"
         >
           ›
         </button>

@@ -100,7 +100,7 @@ export function GalleryPhotoForm() {
       ) : null}
 
       {message ? (
-        <p className="md:col-span-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700">
+        <p className="md:col-span-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
           {message}
         </p>
       ) : null}

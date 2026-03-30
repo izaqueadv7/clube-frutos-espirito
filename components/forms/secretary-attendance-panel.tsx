@@ -168,7 +168,7 @@ export function SecretaryAttendancePanel({
 
       <div className="space-y-2">
         {filteredPathfinders.length === 0 ? (
-          <p className="text-sm text-slate-500">Nenhum desbravador encontrado.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Nenhum desbravador encontrado.</p>
         ) : (
           filteredPathfinders.map((pathfinder) => (
             <label
@@ -187,7 +187,7 @@ export function SecretaryAttendancePanel({
       </div>
 
       {message ? (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700">
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
           {message}
         </p>
       ) : null}

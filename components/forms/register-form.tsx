@@ -76,7 +76,7 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
           Nome completo
         </label>
         <input
@@ -89,7 +89,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
           Email
         </label>
         <input
@@ -102,7 +102,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
           Senha
         </label>
         <input
@@ -115,7 +115,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-semibold text-slate-700">
+        <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
           Confirmar senha
         </label>
         <input

@@ -37,7 +37,7 @@ export function ForgotPasswordForm() {
         {loading ? "Enviando..." : "Enviar link de recuperacao"}
       </Button>
 
-      {message ? <p className="text-sm text-slate-600">{message}</p> : null}
+      {message ? <p className="text-sm text-slate-600 dark:text-slate-300">{message}</p> : null}
     </form>
   );
 }

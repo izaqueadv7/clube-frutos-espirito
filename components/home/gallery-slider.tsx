@@ -44,7 +44,7 @@ export function GallerySlider({ items }: GallerySliderProps) {
             />
 
             <div className="p-4">
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                 {item.title || "Foto do clube"}
               </p>
             </div>

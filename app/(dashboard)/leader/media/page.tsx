@@ -13,7 +13,7 @@ export default async function MediaPanelPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Painel da Mídia</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Área para cuidar dos avisos principais, galeria de fotos e conteúdos visuais do clube.
         </p>
       </Card>

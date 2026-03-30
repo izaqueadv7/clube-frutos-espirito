@@ -17,7 +17,7 @@ export function ImageLightbox({
       onClick={onClose}
     >
       <div
-        className="relative max-h-[90vh] max-w-5xl overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 dark:bg-zinc-900 shadow-2xl"
+        className="relative max-h-[90vh] max-w-5xl overflow-hidden rounded-2xl bg-white dark:bg-zinc-950 dark:bg-zinc-900 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button

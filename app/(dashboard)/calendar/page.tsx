@@ -18,7 +18,7 @@ export default async function CalendarPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Calendario do Clube</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Reunioes, acampamentos, investiduras e atividades especiais.
         </p>
       </Card>
@@ -26,11 +26,11 @@ export default async function CalendarPage() {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {events.map((event: any) => (
           <Card key={event.id} className="space-y-2 p-4">
-            <p className="text-xs font-semibold uppercase text-slate-500">Evento</p>
+            <p className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Evento</p>
             <h2 className="text-lg font-bold text-primary">{event.title}</h2>
-            <p className="text-sm text-slate-600">{event.description}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">{event.description}</p>
             <p className="text-sm font-semibold text-ink">{format(new Date(event.date), "dd MMM yyyy - HH:mm", { locale: ptBR })}</p>
-            <p className="text-sm text-slate-600">{event.location}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">{event.location}</p>
           </Card>
         ))}
       </div>

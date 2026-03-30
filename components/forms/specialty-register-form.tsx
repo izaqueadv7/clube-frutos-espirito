@@ -150,7 +150,7 @@ export function SpecialtyRegisterForm({ items }: { items?: SpecialtyItem[] }) {
           </div>
 
           {message ? (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700">
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
               {message}
             </p>
           ) : null}
@@ -174,8 +174,8 @@ export function SpecialtyRegisterForm({ items }: { items?: SpecialtyItem[] }) {
             return (
               <Card key={item.id} className="p-5">
                 <p className="font-bold text-primary">{item.name}</p>
-                <p className="text-sm text-slate-600">Código: {item.description}</p>
-                <p className="text-sm text-slate-600">Categoria: {item.category}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">Código: {item.description}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">Categoria: {item.category}</p>
 
                 <div className="mt-3 space-y-2">
                   {parsedRequirements.length ? (
@@ -185,7 +185,7 @@ export function SpecialtyRegisterForm({ items }: { items?: SpecialtyItem[] }) {
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-500">Sem requisitos cadastrados.</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Sem requisitos cadastrados.</p>
                   )}
                 </div>
 

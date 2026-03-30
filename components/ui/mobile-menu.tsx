@@ -41,14 +41,14 @@ export function MobileMenu({ user }: { user: any }) {
   const itemClass =
     "block rounded-xl px-3 py-2 text-sm font-medium transition hover:bg-[rgba(46,125,50,0.08)]";
   const sectionTitleClass =
-    "mt-4 text-xs font-bold uppercase tracking-wide text-slate-500";
+    "mt-4 text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400";
 
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-xl border border-[rgba(46,125,50,0.15)] bg-white px-3 py-2 text-primary shadow-sm hover:bg-[rgba(46,125,50,0.06)]"
+        className="rounded-xl border border-[rgba(46,125,50,0.15)] bg-white dark:bg-zinc-950 px-3 py-2 text-primary shadow-sm hover:bg-[rgba(46,125,50,0.06)]"
         aria-label="Abrir menu"
       >
         ☰

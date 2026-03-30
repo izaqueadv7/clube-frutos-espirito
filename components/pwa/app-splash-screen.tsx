@@ -58,7 +58,7 @@ export function AppSplashScreen() {
           Clube Frutos do Espírito
         </h1>
 
-        <p className="mt-2 text-center text-sm text-slate-600">
+        <p className="mt-2 text-center text-sm text-slate-600 dark:text-slate-300">
           Carregando...
         </p>
       </div>

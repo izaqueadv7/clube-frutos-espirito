@@ -9,7 +9,7 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("theme") as ThemeMode | null;
+    const saved = (localStorage.getItem("theme") as ThemeMode | null) ?? "light";
     const current = saved === "dark" ? "dark" : "light";
 
     setTheme(current);
@@ -28,7 +28,7 @@ export function ThemeToggle() {
     return (
       <button
         type="button"
-        className="rounded-lg border px-3 py-2 text-[rgb(var(--ink))]"
+        className="rounded-xl border px-3 py-2 text-slate-800 dark:text-white"
       >
         ☾
       </button>
@@ -39,7 +39,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="rounded-lg border px-3 py-2 text-[rgb(var(--ink))] hover:opacity-80"
+      className="rounded-xl border border-[rgba(46,125,50,0.15)] bg-white dark:bg-zinc-950 px-3 py-2 text-slate-800 transition hover:bg-slate-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
       title={theme === "dark" ? "Modo claro" : "Modo escuro"}
     >
       {theme === "dark" ? "☀" : "☾"}

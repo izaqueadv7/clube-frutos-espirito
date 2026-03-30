@@ -28,7 +28,7 @@ export default async function AnnouncementsPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Sistema de Avisos</h1>
-        <p className="mt-2 text-sm text-slate-600">Comunicados oficiais para desbravadores e pais.</p>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Comunicados oficiais para desbravadores e pais.</p>
       </Card>
 
       {session.user.role === "LEADER" ? (
@@ -43,10 +43,10 @@ export default async function AnnouncementsPage() {
           <Card key={item.id} className="p-4">
             <div className="flex items-center justify-between gap-3">
               <h3 className="text-lg font-bold text-primary">{item.title}</h3>
-              <span className="text-xs font-semibold text-slate-500">{translateAnnouncementAudience(item.audience)}</span>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">{translateAnnouncementAudience(item.audience)}</span>
             </div>
-            <p className="mt-2 text-sm text-slate-700">{item.content}</p>
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{item.content}</p>
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
               Por {item.author.name} em {format(new Date(item.createdAt), "dd/MM/yyyy HH:mm")}
             </p>
           </Card>

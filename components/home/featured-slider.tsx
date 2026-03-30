@@ -51,7 +51,7 @@ export function FeaturedSlider({ items }: FeaturedSliderProps) {
 
               <div className="space-y-3 p-4">
                 {item.description ? (
-                  <p className="text-sm text-slate-600">{item.description}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">{item.description}</p>
                 ) : null}
 
                 {item.linkUrl ? (

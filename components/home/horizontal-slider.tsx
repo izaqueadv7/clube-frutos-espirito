@@ -37,7 +37,7 @@ export function HorizontalSlider({
       <button
         type="button"
         onClick={scrollRight}
-        className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-sm font-bold shadow hover:bg-white"
+        className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-sm font-bold shadow hover:bg-white dark:bg-zinc-950"
       >
         ›
       </button>

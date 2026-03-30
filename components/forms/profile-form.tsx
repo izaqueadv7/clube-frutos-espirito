@@ -96,7 +96,7 @@ export function ProfileForm({ user }: { user: any }) {
             className="mb-3 h-24 w-24 rounded-full border object-cover"
           />
         ) : (
-          <div className="mb-3 flex h-24 w-24 items-center justify-center rounded-full border bg-slate-100 text-slate-500">
+          <div className="mb-3 flex h-24 w-24 items-center justify-center rounded-full border bg-slate-100 dark:bg-zinc-800text-slate-500 dark:text-slate-400">
             Sem foto
           </div>
         )}
@@ -174,7 +174,7 @@ export function ProfileForm({ user }: { user: any }) {
       </div>
 
       {message ? (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700">
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
           {message}
         </p>
       ) : null}

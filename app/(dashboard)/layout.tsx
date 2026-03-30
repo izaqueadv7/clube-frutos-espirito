@@ -93,7 +93,7 @@ export default async function DashboardLayout({
                 className="h-10 w-10 rounded-full border object-cover"
               />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border bg-slate-100 text-slate-500">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-slate-400">
                 {dbUser.name?.[0] ?? "U"}
               </div>
             )}
@@ -102,7 +102,7 @@ export default async function DashboardLayout({
               <p className="text-sm font-semibold" style={{ color: "rgb(var(--ink))" }}>
                 {dbUser.name}
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {translateRole(dbUser.role)}
               </p>
             </div>

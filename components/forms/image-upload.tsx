@@ -54,11 +54,11 @@ export function ImageUpload({ onUploaded }: ImageUploadProps) {
       <input type="file" accept="image/*" onChange={handleUpload} />
 
       {loading ? (
-        <p className="text-sm text-slate-500">Enviando imagem...</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Enviando imagem...</p>
       ) : null}
 
       {message ? (
-        <p className="text-sm text-slate-600">{message}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-300">{message}</p>
       ) : null}
 
       {preview ? (

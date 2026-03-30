@@ -20,7 +20,7 @@ export default async function HighlightsPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Avisos principais</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Cadastre os cards que aparecerão em destaque na página inicial.
         </p>
       </Card>

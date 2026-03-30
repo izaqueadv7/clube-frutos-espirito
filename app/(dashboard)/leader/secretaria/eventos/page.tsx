@@ -19,7 +19,7 @@ export default async function SecretariaEventosPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Gerenciar Eventos</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Crie, edite e exclua eventos do clube.
         </p>
       </Card>

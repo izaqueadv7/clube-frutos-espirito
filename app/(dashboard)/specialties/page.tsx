@@ -57,19 +57,19 @@ export default async function SpecialtiesPage() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="p-4">
-          <h2 className="mb-3 font-bold text-slate-700">Pendentes</h2>
+          <h2 className="mb-3 font-bold text-slate-700 dark:text-slate-300">Pendentes</h2>
           <div className="space-y-2">
             {grouped.PENDING.map((item: any) => (
-              <div key={item.id} className="rounded-xl border border-red-100 p-3">
+              <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3">
                 <p className="font-semibold">{item.specialty.name}</p>
-                <p className="text-xs text-slate-500">{item.specialty.category}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{item.specialty.category}</p>
               </div>
             ))}
           </div>
         </Card>
 
         <Card className="p-4">
-          <h2 className="mb-3 font-bold text-slate-700">Em andamento</h2>
+          <h2 className="mb-3 font-bold text-slate-700 dark:text-slate-300">Em andamento</h2>
           <div className="space-y-2">
             {grouped.IN_PROGRESS.map((item: any) => (
               <div
@@ -84,7 +84,7 @@ export default async function SpecialtiesPage() {
         </Card>
 
         <Card className="p-4">
-          <h2 className="mb-3 font-bold text-slate-700">Concluídas</h2>
+          <h2 className="mb-3 font-bold text-slate-700 dark:text-slate-300">Concluídas</h2>
           <div className="space-y-2">
             {grouped.COMPLETED.map((item: any) => (
               <div

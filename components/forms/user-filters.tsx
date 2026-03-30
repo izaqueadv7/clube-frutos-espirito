@@ -107,7 +107,7 @@ export function UserFilters({ users, renderUser }: UserFiltersProps) {
       <div className="space-y-4">
         {filteredUsers.length === 0 ? (
           <Card className="p-5">
-            <p className="text-sm text-slate-600">Nenhum usuário encontrado.</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum usuário encontrado.</p>
           </Card>
         ) : (
           filteredUsers.map((user) => <div key={user.id}>{renderUser(user)}</div>)
