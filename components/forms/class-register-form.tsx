@@ -192,7 +192,7 @@ export function ClassRegisterForm({ items }: { items?: ClassItem[] }) {
           </div>
 
           {message ? (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-slate-700 dark:text-slate-800">
               {message}
             </p>
           ) : null}
@@ -211,8 +211,8 @@ export function ClassRegisterForm({ items }: { items?: ClassItem[] }) {
           {items.map((item) => (
             <Card key={item.id} className="p-5">
               <p className="font-bold text-primary">{item.name}</p>
-              <p className="text-sm text-slate-600 dark:text-slate-300">{item.description}</p>
-              <p className="text-sm text-slate-600 dark:text-slate-300">Ordem: {item.order}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-800">{item.description}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-800">Ordem: {item.order}</p>
 
               <div className="mt-3 space-y-3">
                 {item.requirements?.length ? (

@@ -42,18 +42,18 @@ export default async function ParentPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Portal dos Pais</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Acompanhe o desenvolvimento espiritual e atividades do seu filho.</p>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">Acompanhe o desenvolvimento espiritual e atividades do seu filho.</p>
       </Card>
 
       {!child ? (
         <Card className="p-5">
-          <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum filho vinculado ao seu cadastro.</p>
+          <p className="text-sm text-slate-600 dark:text-slate-800">Nenhum filho vinculado ao seu cadastro.</p>
         </Card>
       ) : (
         <>
           <Card className="space-y-3 p-5">
             <h2 className="text-lg font-bold text-primary">{child.user.name}</h2>
-            <p className="text-sm text-slate-600 dark:text-slate-300">Classe atual: {child.currentClass?.name ?? "Nao definida"}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-800">Classe atual: {child.currentClass?.name ?? "Nao definida"}</p>
             <ProgressBar label="Progresso da classe" value={progressPct} />
             <ProgressBar label="Especialidades concluidas" value={specialtyPct} />
           </Card>
@@ -64,7 +64,7 @@ export default async function ParentPage() {
               {child.specialties.map((item: any) => (
                 <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm">
                   <p className="font-semibold">{item.specialty.name}</p>
-                  <p className="text-slate-600 dark:text-slate-300">Status: {item.status}</p>
+                  <p className="text-slate-600 dark:text-slate-800">Status: {item.status}</p>
                 </div>
               ))}
             </div>
@@ -76,7 +76,7 @@ export default async function ParentPage() {
               {child.attendance.map((item: any) => (
                 <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm">
                   <p className="font-semibold">{item.event.title}</p>
-                  <p className="text-slate-600 dark:text-slate-300">Status: {item.status}</p>
+                  <p className="text-slate-600 dark:text-slate-800">Status: {item.status}</p>
                 </div>
               ))}
             </div>

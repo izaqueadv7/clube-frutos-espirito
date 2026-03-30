@@ -11,23 +11,24 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#C1121F",
-          dark: "#8B0E17",
-          light: "#E86A73"
+          DEFAULT: "#2E7D32",
+          dark: "#1B5E20",
+          light: "#66BB6A"
         },
         accent: {
-          DEFAULT: "#F2C94C",
-          dark: "#D6A825",
-          light: "#FFE59A"
+          DEFAULT: "#FFFFFF",
+          dark: "#0F172A",
+          light: "#F5FAF5"
         },
-        surface: "#FFF8EF",
-        ink: "#222222"
+        surface: "#F5FAF5",
+        ink: "#111827"
       },
       boxShadow: {
-        card: "0 10px 30px rgba(193,18,31,0.12)"
+        card: "0 10px 30px rgba(27,94,32,0.12)"
       },
       backgroundImage: {
-        "hero-gradient": "radial-gradient(circle at top right, rgba(242,201,76,0.35), transparent 38%), linear-gradient(130deg, #fff8ef, #fff)"
+        "hero-gradient":
+          "radial-gradient(circle at top right, rgba(102,187,106,0.18), transparent 38%), linear-gradient(130deg, #f5faf5, #ffffff)"
       }
     }
   },

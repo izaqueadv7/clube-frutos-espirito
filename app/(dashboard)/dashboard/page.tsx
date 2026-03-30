@@ -75,7 +75,7 @@ export default async function DashboardPage() {
 
             <div className="mt-4 space-y-3">
               {upcomingEvents.length === 0 ? (
-                <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum evento agendado.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-800">Nenhum evento agendado.</p>
               ) : (
                 upcomingEvents.map((event) => (
                   <div key={event.id} className="rounded-xl border p-3 text-sm">
@@ -115,7 +115,7 @@ export default async function DashboardPage() {
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
             Use os menus de gerenciamento para usuários, aprovações, eventos, presença, galeria, avisos e progresso das classes.
           </p>
-          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-300">
+          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-800">
             Verso do dia: {verseOfDay}
           </p>
         </Card>
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
           <h2 className="section-title">Acompanhamento do responsável</h2>
           <ProgressBar label="Progresso da classe" value={pct} />
           <ProgressBar label="Especialidades" value={specialtyPct} />
-          <p className="rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-300">
+          <p className="rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-800">
             Verso do dia: {verseOfDay}
           </p>
         </Card>
@@ -313,7 +313,7 @@ export default async function DashboardPage() {
           ) : (
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Nenhum evento agendado.</p>
           )}
-          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-300">
+          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-800">
             Verso do dia: {verseOfDay}
           </p>
         </Card>

@@ -11,7 +11,7 @@ export default function ResetPasswordPage() {
     <main className="flex min-h-screen items-center justify-center bg-hero-gradient px-4">
       <div className="card w-full max-w-md p-6">
         <h1 className="text-2xl font-extrabold text-primary">Nova senha</h1>
-        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Defina uma nova senha para seu acesso.</p>
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-800">Defina uma nova senha para seu acesso.</p>
         <div className="mt-6">
           <Suspense fallback={<p className="text-sm text-slate-500 dark:text-slate-400">Carregando...</p>}>
             <ResetPasswordContent />

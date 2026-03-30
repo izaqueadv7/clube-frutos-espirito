@@ -55,8 +55,7 @@ export default async function DashboardLayout({
       <MobileTopBar name={dbUser.name} image={dbUser.image} user={session.user} />
 
       <div
-        className="mx-auto hidden max-w-7xl items-center justify-between rounded-2xl p-4 shadow-card lg:mt-4 lg:flex"
-        style={{ backgroundColor: "rgb(var(--accent))" }}
+        className="mx-auto hidden max-w-7xl items-center justify-between rounded-2xl bg-primary p-4 text-white shadow-card lg:mt-4 lg:flex"
       >
         <div className="flex items-center gap-3">
           <MobileMenu user={session.user} />
@@ -69,7 +68,7 @@ export default async function DashboardLayout({
               height={42}
               className="h-10 w-10 object-contain"
             />
-            <span className="text-lg font-extrabold text-primary">
+            <span className="text-lg font-extrabold text-white">
               Clube Frutos do Espírito
             </span>
           </Link>
@@ -80,7 +79,7 @@ export default async function DashboardLayout({
           <SubscribeNotifications />
 
           <div className="hidden md:block">
-            <span className="rounded-full bg-[rgba(46,125,50,0.08)] px-3 py-1 text-xs font-semibold text-primary">
+            <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">
               {translateRole(dbUser.role)}
             </span>
           </div>
@@ -93,16 +92,16 @@ export default async function DashboardLayout({
                 className="h-10 w-10 rounded-full border object-cover"
               />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-slate-400">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white/15 text-white">
                 {dbUser.name?.[0] ?? "U"}
               </div>
             )}
 
             <div className="hidden md:block">
-              <p className="text-sm font-semibold" style={{ color: "rgb(var(--ink))" }}>
+              <p className="text-sm font-semibold text-white">
                 {dbUser.name}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-white/80">
                 {translateRole(dbUser.role)}
               </p>
             </div>

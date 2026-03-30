@@ -7,9 +7,9 @@ export async function TopBar() {
   const session = await auth();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-red-100 dark:border-zinc-800 bg-white/90 backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/90">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-primary text-white shadow-md backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="text-lg font-extrabold text-primary">
+        <Link href="/" className="text-lg font-extrabold text-white">
           Clube Frutos do Espírito
         </Link>
 
@@ -18,30 +18,29 @@ export async function TopBar() {
 
           <Link
             href="/calendar"
-            className="text-sm font-semibold text-ink hover:text-primary dark:text-slate-300"
+            className="text-sm font-semibold text-white hover:text-white/90"
           >
             Calendário
           </Link>
 
           <Link
             href="/announcements"
-            className="text-sm font-semibold text-ink hover:text-primary dark:text-slate-300"
+            className="text-sm font-semibold text-white hover:text-white/90"
           >
             Avisos
           </Link>
 
           {session ? (
             <Link href="/dashboard">
-              <Button
-                variant="secondary"
-                className="text-sm dark:bg-white dark:text-black"
-              >
+              <span className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-2 font-semibold text-primary shadow-sm transition hover:bg-slate-100">
                 Minha Área
-              </Button>
+              </span>
             </Link>
           ) : (
             <Link href="/login">
-              <Button className="text-sm">Entrar</Button>
+              <span className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-2 font-semibold text-primary shadow-sm transition hover:bg-slate-100">
+                Entrar
+              </span>
             </Link>
           )}
         </nav>

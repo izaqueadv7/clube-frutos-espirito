@@ -13,7 +13,7 @@ export default async function DiretorPanelPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Painel do Diretor</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Área estratégica para acompanhar usuários, aprovações, eventos e comunicação do clube.
         </p>
       </Card>

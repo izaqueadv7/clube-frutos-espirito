@@ -31,7 +31,7 @@ export default async function ProfilePage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Meu Perfil</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Atualize suas informações, sua foto e sua senha.
         </p>
       </Card>
@@ -39,8 +39,8 @@ export default async function ProfilePage() {
       <Card className="p-5">
         <div className="mb-4">
           <p className="font-bold text-primary">{user.name}</p>
-          <p className="text-sm text-slate-600 dark:text-slate-300">{user.email}</p>
-          <p className="text-sm text-slate-600 dark:text-slate-300">
+          <p className="text-sm text-slate-600 dark:text-slate-800">{user.email}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-800">
             {translateRole(user.role)}
           </p>
         </div>

@@ -48,7 +48,7 @@ export function MobileMenu({ user }: { user: any }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-xl border border-[rgba(46,125,50,0.15)] bg-white dark:bg-zinc-950 px-3 py-2 text-primary shadow-sm hover:bg-[rgba(46,125,50,0.06)]"
+        className="rounded-xl border border-white/20 bg-white/15 px-3 py-2 text-white shadow-sm hover:bg-white/20"
         aria-label="Abrir menu"
       >
         ☰

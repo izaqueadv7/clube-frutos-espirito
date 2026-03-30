@@ -95,7 +95,7 @@ export default async function HomePage() {
             Clube Frutos do Espírito
           </h1>
 
-          <p className="max-w-xl text-lg text-slate-700 dark:text-slate-300">
+          <p className="max-w-xl text-lg text-slate-700 dark:text-slate-800">
             A plataforma digital do Clube de Desbravadores para acompanhar classes,
             especialidades, eventos e crescimento espiritual em um único lugar.
           </p>
@@ -108,7 +108,7 @@ export default async function HomePage() {
           </div>
 
           <Card className="p-4">
-            <p className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+            <p className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-600">
               Verso da semana
             </p>
             <p className="mt-2 text-lg font-semibold text-ink">{verse}</p>
@@ -154,10 +154,10 @@ export default async function HomePage() {
             {events.map((event) => (
               <div key={event.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3">
                 <p className="font-semibold">{event.title}</p>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
+                <p className="text-sm text-slate-600 dark:text-slate-800">
                   {format(new Date(event.date), "dd MMM yyyy, HH:mm", { locale: ptBR })}
                 </p>
-                <p className="text-sm text-slate-600 dark:text-slate-300">{event.location}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-800">{event.location}</p>
               </div>
             ))}
           </div>
@@ -169,7 +169,7 @@ export default async function HomePage() {
             {announcements.map((item) => (
               <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3">
                 <p className="font-semibold">{item.title}</p>
-                <p className="text-sm text-slate-700 dark:text-slate-300">{item.content}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-800">{item.content}</p>
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {format(new Date(item.createdAt), "dd/MM/yyyy")}
                 </p>

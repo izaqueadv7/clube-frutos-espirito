@@ -20,11 +20,11 @@ export function InstallPrompt() {
 
   return (
     <Button
-      variant="secondary"
+      variant="primary"
       onClick={async () => {
         promptEvent.prompt();
         const result = await promptEvent.userChoice;
-        toast(result.outcome === "accepted" ? "Aplicativo instalado!" : "Instalacao cancelada");
+        toast(result.outcome === "accepted" ? "Aplicativo instalado!" : "Instalação cancelada");
         setPromptEvent(null);
       }}
     >

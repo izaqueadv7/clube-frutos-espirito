@@ -41,7 +41,7 @@ export default async function ClassesPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Módulo de Classes</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Amigo, Companheiro, Pesquisador, Pioneiro, Excursionista e Guia com
           acompanhamento por requisito.
         </p>
@@ -66,7 +66,7 @@ export default async function ClassesPage() {
                 <span className="text-xs text-slate-500 dark:text-slate-400">Ordem {item.order}</span>
               </div>
 
-              <p className="text-sm text-slate-600 dark:text-slate-300">{item.description}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-800">{item.description}</p>
 
               {session.user.role !== "LEADER" ? (
                 <ProgressBar label="Progresso" value={pct} />
@@ -79,7 +79,7 @@ export default async function ClassesPage() {
                     className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm"
                   >
                     <p className="font-semibold">{req.title}</p>
-                    <p className="text-slate-600 dark:text-slate-300">{req.details}</p>
+                    <p className="text-slate-600 dark:text-slate-800">{req.details}</p>
                   </div>
                 ))}
               </div>

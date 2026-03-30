@@ -44,7 +44,7 @@ export default async function LeaderPage() {
     <div className="space-y-4">
       <Card className="p-5">
         <h1 className="section-title">Painel Administrativo do Lider</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Cadastre membros, atualize progresso, gerencie eventos e publique comunicados.
         </p>
       </Card>
@@ -103,8 +103,8 @@ export default async function LeaderPage() {
               <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">ID: {item.id}</p>
                 <p className="font-semibold">{item.user.name}</p>
-                <p className="text-slate-600 dark:text-slate-300">{item.user.email}</p>
-                <p className="text-slate-600 dark:text-slate-300">Classe: {item.currentClass?.name ?? "Nao definida"}</p>
+                <p className="text-slate-600 dark:text-slate-800">{item.user.email}</p>
+                <p className="text-slate-600 dark:text-slate-800">Classe: {item.currentClass?.name ?? "Nao definida"}</p>
               </div>
             ))}
           </div>
@@ -117,8 +117,8 @@ export default async function LeaderPage() {
               <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">ID: {item.id}</p>
                 <p className="font-semibold">{item.title}</p>
-                <p className="text-slate-600 dark:text-slate-300">{new Date(item.date).toLocaleString("pt-BR")}</p>
-                <p className="text-slate-600 dark:text-slate-300">{item.location}</p>
+                <p className="text-slate-600 dark:text-slate-800">{new Date(item.date).toLocaleString("pt-BR")}</p>
+                <p className="text-slate-600 dark:text-slate-800">{item.location}</p>
               </div>
             ))}
           </div>
@@ -133,7 +133,7 @@ export default async function LeaderPage() {
               <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">ID: {item.id}</p>
                 <p className="font-semibold">{item.title}</p>
-                <p className="text-slate-600 dark:text-slate-300">Classe: {item.class.name}</p>
+                <p className="text-slate-600 dark:text-slate-800">Classe: {item.class.name}</p>
               </div>
             ))}
           </div>
@@ -146,8 +146,8 @@ export default async function LeaderPage() {
               <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm">
                 <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">Assignment ID: {item.id}</p>
                 <p className="font-semibold">{item.specialty.name}</p>
-                <p className="text-slate-600 dark:text-slate-300">Pathfinder: {item.pathfinder.user.name}</p>
-                <p className="text-slate-600 dark:text-slate-300">Status: {item.status}</p>
+                <p className="text-slate-600 dark:text-slate-800">Pathfinder: {item.pathfinder.user.name}</p>
+                <p className="text-slate-600 dark:text-slate-800">Status: {item.status}</p>
               </div>
             ))}
           </div>

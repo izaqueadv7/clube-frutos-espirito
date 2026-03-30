@@ -88,21 +88,21 @@ export function CounselorProgressPanel({
 
       {filtered.length === 0 ? (
         <Card className="p-5">
-          <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum desbravador encontrado.</p>
+          <p className="text-sm text-slate-600 dark:text-slate-800">Nenhum desbravador encontrado.</p>
         </Card>
       ) : (
         filtered.map((pathfinder) => (
           <Card key={pathfinder.id} className="p-5">
             <div className="mb-4">
               <h2 className="text-lg font-bold text-primary">{pathfinder.name}</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-300">{pathfinder.email}</p>
-              <p className="text-sm text-slate-600 dark:text-slate-300">
+              <p className="text-sm text-slate-600 dark:text-slate-800">{pathfinder.email}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-800">
                 Classe atual: {pathfinder.currentClass?.name ?? "Não definida"}
               </p>
             </div>
 
             {!pathfinder.currentClass ? (
-              <p className="text-sm text-slate-600 dark:text-slate-300">
+              <p className="text-sm text-slate-600 dark:text-slate-800">
                 Este desbravador ainda não possui classe definida.
               </p>
             ) : (
@@ -135,7 +135,7 @@ export function CounselorProgressPanel({
                         />
                         <div>
                           <p className="font-semibold">{req.title}</p>
-                          <p className="text-sm text-slate-600 dark:text-slate-300">{req.details}</p>
+                          <p className="text-sm text-slate-600 dark:text-slate-800">{req.details}</p>
                         </div>
                       </label>
                     </div>

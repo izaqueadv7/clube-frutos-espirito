@@ -134,7 +134,7 @@ export function BibleReader() {
     <div className="space-y-4">
       <Card className="p-5">
         <h2 className="section-title">Devocional do dia</h2>
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-800">
           {devotional
             ? `${devotional.book} ${devotional.chapter}:${devotional.verse}`
             : "Carregando..."}
@@ -147,7 +147,7 @@ export function BibleReader() {
       <Card className="space-y-4 p-5">
         <div>
           <h2 className="section-title">Buscar referência bíblica</h2>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-800">
             Exemplo: Joao 3:16, Salmos 23:1, Romanos 12:12
           </p>
         </div>
@@ -182,7 +182,7 @@ export function BibleReader() {
                   <p className="font-semibold text-primary">
                     {item.book} {item.chapter}:{item.verse}
                   </p>
-                  <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
+                  <p className="mt-1 text-sm text-gray-700 dark:text-gray-800">
                     {item.text}
                   </p>
                 </button>
@@ -196,7 +196,7 @@ export function BibleReader() {
         <div className="mb-5 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-primary dark:text-white">Bíblia</h2>
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-800">
               Navegue por livros, capítulos e versículos
             </p>
           </div>
@@ -275,7 +275,7 @@ export function BibleReader() {
         {view === "verses" && currentBook && selectedChapter ? (
           <div className="space-y-5">
             <div className="text-center">
-              <p className="text-2xl text-gray-500 dark:text-gray-300">{currentBook.name}</p>
+              <p className="text-2xl text-gray-500 dark:text-gray-800">{currentBook.name}</p>
               <h3 className="mt-1 text-7xl font-bold leading-none text-gray-900 dark:text-white">
                 {selectedChapter}
               </h3>
