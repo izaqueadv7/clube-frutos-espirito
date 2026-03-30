@@ -21,10 +21,11 @@ export function MobileTopBar({
       <div className="flex items-center gap-3">
         <button
           type="button"
-          className="rounded-xl p-2 hover:bg-white/10"
+          className="relative rounded-xl p-2 transition hover:bg-white/10"
           aria-label="Notificações"
         >
           <Bell className="h-5 w-5 text-white" />
+          <span className="absolute right-1 top-1 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-primary" />
         </button>
 
         <Link href="/profile" className="flex items-center gap-2">

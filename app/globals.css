@@ -126,3 +126,14 @@ main {
 *::-webkit-scrollbar-track {
   background: transparent;
 }
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-28px);
+    opacity: 0.65;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
