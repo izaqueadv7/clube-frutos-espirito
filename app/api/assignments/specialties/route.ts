@@ -15,8 +15,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
+    const action = String(body?.action || "assign").trim();
     const pathfinderId = String(body?.pathfinderId || "").trim();
-    const specialtyIds = Array.isArray(body?.specialtyIds) ? body.specialtyIds : [];
+    const specialtyId = String(body?.specialtyId || "").trim();
+    const completedAtRaw = String(body?.completedAt || "").trim();
 
     if (!pathfinderId) {
       return NextResponse.json(
@@ -36,28 +38,91 @@ export async function POST(request: Request) {
       );
     }
 
-    await prisma.pathfinderSpecialty.deleteMany({
-      where: { pathfinderId }
+    if (!specialtyId) {
+      return NextResponse.json(
+        { error: "Especialidade é obrigatória." },
+        { status: 400 }
+      );
+    }
+
+    const specialty = await prisma.specialty.findUnique({
+      where: { id: specialtyId }
     });
 
-    for (const specialtyId of specialtyIds) {
-      const id = String(specialtyId || "").trim();
-      if (!id) continue;
+    if (!specialty) {
+      return NextResponse.json(
+        { error: "Especialidade não encontrada." },
+        { status: 404 }
+      );
+    }
 
-      await prisma.pathfinderSpecialty.create({
-        data: {
+    if (action === "assign") {
+      await prisma.pathfinderSpecialty.upsert({
+        where: {
+          pathfinderId_specialtyId: {
+            pathfinderId,
+            specialtyId
+          }
+        },
+        update: {
+          status: "PENDING"
+        },
+        create: {
           pathfinderId,
-          specialtyId: id,
+          specialtyId,
           status: "PENDING"
         }
       });
+
+      return NextResponse.json({ ok: true });
     }
 
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    console.error("Erro ao vincular especialidades:", error);
+    if (action === "complete") {
+      await prisma.pathfinderSpecialty.upsert({
+        where: {
+          pathfinderId_specialtyId: {
+            pathfinderId,
+            specialtyId
+          }
+        },
+        update: {
+          status: "COMPLETED",
+          completedAt: completedAtRaw
+            ? new Date(`${completedAtRaw}T00:00:00`)
+            : new Date()
+        },
+        create: {
+          pathfinderId,
+          specialtyId,
+          status: "COMPLETED",
+          completedAt: completedAtRaw
+            ? new Date(`${completedAtRaw}T00:00:00`)
+            : new Date()
+        }
+      });
+
+      return NextResponse.json({ ok: true });
+    }
+
+    if (action === "remove") {
+      await prisma.pathfinderSpecialty.deleteMany({
+        where: {
+          pathfinderId,
+          specialtyId
+        }
+      });
+
+      return NextResponse.json({ ok: true });
+    }
+
     return NextResponse.json(
-      { error: "Erro ao vincular especialidades ao desbravador." },
+      { error: "Ação inválida." },
+      { status: 400 }
+    );
+  } catch (error) {
+    console.error("Erro ao gerenciar especialidade:", error);
+    return NextResponse.json(
+      { error: "Erro ao processar especialidade do desbravador." },
       { status: 500 }
     );
   }

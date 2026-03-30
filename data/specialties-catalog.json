@@ -1,0 +1,66 @@
+[
+  { "area": "ADRA", "code": "AD001", "name": "Alívio da Fome" },
+  { "area": "ADRA", "code": "AD002", "name": "Avaliação da Comunidade" },
+  { "area": "ADRA", "code": "AD003", "name": "Serviço Comunitário" },
+  { "area": "ADRA", "code": "AD004", "name": "Resposta a emergências e desastres" },
+  { "area": "ADRA", "code": "AD005", "name": "Resposta a emergências e desastres - avançado" },
+  { "area": "ADRA", "code": "AD006", "name": "Alfabetização" },
+  { "area": "ADRA", "code": "AD007", "name": "Resolução de Conflitos" },
+  { "area": "ADRA", "code": "AD008", "name": "Reassentamento de Refugiados" },
+  { "area": "ADRA", "code": "AD009", "name": "Desenvolvimento Comunitário" },
+
+  { "area": "Ciência e saúde", "code": "CS001", "name": "Primeiros Socorros Básico" },
+  { "area": "Ciência e saúde", "code": "CS002", "name": "Primeiros Socorros" },
+  { "area": "Ciência e saúde", "code": "CS003", "name": "Nutrição" },
+  { "area": "Ciência e saúde", "code": "CS004", "name": "Temperança" },
+  { "area": "Ciência e saúde", "code": "CS005", "name": "Cultura Física" },
+  { "area": "Ciência e saúde", "code": "CS006", "name": "Saúde e Cura" },
+  { "area": "Ciência e saúde", "code": "CS007", "name": "Vida Saudável" },
+
+  { "area": "Estudo da natureza", "code": "EN001", "name": "Campismo I" },
+  { "area": "Estudo da natureza", "code": "EN002", "name": "Campismo II" },
+  { "area": "Estudo da natureza", "code": "EN003", "name": "Acampamento de Inverno" },
+  { "area": "Estudo da natureza", "code": "EN004", "name": "Excursionismo Pedestre" },
+  { "area": "Estudo da natureza", "code": "EN005", "name": "Orientação" },
+  { "area": "Estudo da natureza", "code": "EN006", "name": "Astronomia" },
+  { "area": "Estudo da natureza", "code": "EN007", "name": "Aves" },
+  { "area": "Estudo da natureza", "code": "EN008", "name": "Mamíferos" },
+  { "area": "Estudo da natureza", "code": "EN009", "name": "Felinos" },
+  { "area": "Estudo da natureza", "code": "EN010", "name": "Cães" },
+  { "area": "Estudo da natureza", "code": "EN011", "name": "Sementes" },
+  { "area": "Estudo da natureza", "code": "EN012", "name": "Árvores" },
+  { "area": "Estudo da natureza", "code": "EN013", "name": "Flores" },
+  { "area": "Estudo da natureza", "code": "EN014", "name": "Rochas e Minerais" },
+  { "area": "Estudo da natureza", "code": "EN015", "name": "Ecologia" },
+
+  { "area": "Habilidades domésticas", "code": "HD001", "name": "Culinária ao Ar Livre" },
+  { "area": "Habilidades domésticas", "code": "HD002", "name": "Arte Culinária" },
+  { "area": "Habilidades domésticas", "code": "HD003", "name": "Panificação" },
+  { "area": "Habilidades domésticas", "code": "HD004", "name": "Etiqueta Cristã" },
+
+  { "area": "Artes e habilidades manuais", "code": "AH001", "name": "Origami" },
+  { "area": "Artes e habilidades manuais", "code": "AH002", "name": "Scrapbook" },
+  { "area": "Artes e habilidades manuais", "code": "AH003", "name": "Cestaria" },
+  { "area": "Artes e habilidades manuais", "code": "AH004", "name": "Pintura em Tecido" },
+
+  { "area": "Atividades missionárias", "code": "AM001", "name": "Evangelismo Pessoal" },
+  { "area": "Atividades missionárias", "code": "AM002", "name": "Estudo Bíblico" },
+  { "area": "Atividades missionárias", "code": "AM003", "name": "História Denominacional" },
+
+  { "area": "Atividades profissionais", "code": "AP001", "name": "Digitação" },
+  { "area": "Atividades profissionais", "code": "AP002", "name": "Informática Básica" },
+  { "area": "Atividades profissionais", "code": "AP003", "name": "Fotografia Digital" },
+
+  { "area": "Atividades recreativas", "code": "AR001", "name": "Natação I" },
+  { "area": "Atividades recreativas", "code": "AR002", "name": "Ciclismo" },
+  { "area": "Atividades recreativas", "code": "AR003", "name": "Patinação" },
+  { "area": "Atividades recreativas", "code": "AR004", "name": "Pipas" },
+
+  { "area": "Atividades agrícolas", "code": "AG001", "name": "Horticultura" },
+  { "area": "Atividades agrícolas", "code": "AG002", "name": "Jardinagem" },
+  { "area": "Atividades agrícolas", "code": "AG003", "name": "Compostagem" },
+
+  { "area": "Mestrados", "code": "MS001", "name": "Mestrado em ADRA" },
+  { "area": "Mestrados", "code": "MS002", "name": "Mestrado em Saúde" },
+  { "area": "Mestrados", "code": "MS003", "name": "Mestrado em Vida Campestre" }
+]

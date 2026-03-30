@@ -15,7 +15,16 @@ export default async function AssignmentsPage() {
     include: {
       user: true,
       currentClass: true,
-      specialties: true
+      specialties: {
+        include: {
+          specialty: true
+        }
+      },
+      progress: {
+        include: {
+          requirement: true
+        }
+      }
     },
     orderBy: {
       user: {
@@ -25,27 +34,51 @@ export default async function AssignmentsPage() {
   });
 
   const classes = await prisma.pathfinderClass.findMany({
-    orderBy: { order: "asc" }
+    orderBy: { order: "asc" },
+    include: {
+      groups: {
+        orderBy: { order: "asc" },
+        include: {
+          requirements: {
+            orderBy: { order: "asc" }
+          }
+        }
+      },
+      requirements: {
+        where: { groupId: null },
+        orderBy: { order: "asc" }
+      }
+    }
   });
 
   const specialties = await prisma.specialty.findMany({
-    orderBy: { name: "asc" }
+    orderBy: { name: "asc" },
+    include: {
+      area: true,
+      items: {
+        orderBy: { order: "asc" }
+      }
+    }
   });
 
   const normalizedPathfinders = pathfinders.map((item) => ({
     id: item.id,
     name: item.user.name,
     email: item.user.email,
+    image: item.user.image ?? "",
     currentClassId: item.currentClassId ?? "",
-    specialtyIds: item.specialties.map((spec) => spec.specialtyId)
+    specialtyIds: item.specialties.map((spec) => spec.specialtyId),
+    completedRequirementIds: item.progress
+      .filter((progress) => progress.completed)
+      .map((progress) => progress.requirementId)
   }));
 
   return (
     <div className="space-y-4">
       <Card className="p-5">
-        <h1 className="section-title">Vincular Classes e Especialidades</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
-          Selecione o desbravador e vincule de forma rápida a classe e as especialidades.
+        <h1 className="section-title">Vínculos de Classes e Especialidades</h1>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          Selecione o desbravador e gerencie classes, requisitos e especialidades.
         </p>
       </Card>
 

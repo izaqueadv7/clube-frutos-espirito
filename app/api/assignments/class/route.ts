@@ -15,12 +15,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
+    const action = String(body?.action || "assign").trim();
     const pathfinderId = String(body?.pathfinderId || "").trim();
     const classId = String(body?.classId || "").trim();
+    const requirementId = String(body?.requirementId || "").trim();
+    const completedAtRaw = String(body?.completedAt || "").trim();
 
-    if (!pathfinderId || !classId) {
+    if (!pathfinderId) {
       return NextResponse.json(
-        { error: "Desbravador e classe são obrigatórios." },
+        { error: "Desbravador é obrigatório." },
         { status: 400 }
       );
     }
@@ -36,46 +39,212 @@ export async function POST(request: Request) {
       );
     }
 
-    const selectedClass = await prisma.pathfinderClass.findUnique({
-      where: { id: classId },
-      include: {
-        requirements: true
+    if (action === "assign") {
+      if (!classId) {
+        return NextResponse.json(
+          { error: "Classe é obrigatória." },
+          { status: 400 }
+        );
       }
-    });
 
-    if (!selectedClass) {
-      return NextResponse.json(
-        { error: "Classe não encontrada." },
-        { status: 404 }
-      );
-    }
-
-    await prisma.pathfinder.update({
-      where: { id: pathfinderId },
-      data: {
-        currentClassId: classId
-      }
-    });
-
-    await prisma.pathfinderProgress.deleteMany({
-      where: { pathfinderId }
-    });
-
-    for (const requirement of selectedClass.requirements) {
-      await prisma.pathfinderProgress.create({
-        data: {
-          pathfinderId,
-          requirementId: requirement.id,
-          completed: false
+      const selectedClass = await prisma.pathfinderClass.findUnique({
+        where: { id: classId },
+        include: {
+          requirements: {
+            orderBy: { order: "asc" }
+          }
         }
       });
+
+      if (!selectedClass) {
+        return NextResponse.json(
+          { error: "Classe não encontrada." },
+          { status: 404 }
+        );
+      }
+
+      await prisma.pathfinder.update({
+        where: { id: pathfinderId },
+        data: {
+          currentClassId: classId
+        }
+      });
+
+      for (const requirement of selectedClass.requirements) {
+        await prisma.pathfinderProgress.upsert({
+          where: {
+            pathfinderId_requirementId: {
+              pathfinderId,
+              requirementId: requirement.id
+            }
+          },
+          update: {},
+          create: {
+            pathfinderId,
+            requirementId: requirement.id,
+            completed: false
+          }
+        });
+      }
+
+      return NextResponse.json({ ok: true });
     }
 
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    console.error("Erro ao vincular classe:", error);
+    if (action === "toggleRequirement") {
+      if (!requirementId) {
+        return NextResponse.json(
+          { error: "Requisito é obrigatório." },
+          { status: 400 }
+        );
+      }
+
+      const current = await prisma.pathfinderProgress.findUnique({
+        where: {
+          pathfinderId_requirementId: {
+            pathfinderId,
+            requirementId
+          }
+        }
+      });
+
+      const nextCompleted = !current?.completed;
+
+      await prisma.pathfinderProgress.upsert({
+        where: {
+          pathfinderId_requirementId: {
+            pathfinderId,
+            requirementId
+          }
+        },
+        update: {
+          completed: nextCompleted,
+          completedAt: nextCompleted
+            ? completedAtRaw
+              ? new Date(`${completedAtRaw}T00:00:00`)
+              : new Date()
+            : null
+        },
+        create: {
+          pathfinderId,
+          requirementId,
+          completed: true,
+          completedAt: completedAtRaw
+            ? new Date(`${completedAtRaw}T00:00:00`)
+            : new Date()
+        }
+      });
+
+      return NextResponse.json({ ok: true });
+    }
+
+    if (action === "completeAll") {
+      if (!classId) {
+        return NextResponse.json(
+          { error: "Classe é obrigatória." },
+          { status: 400 }
+        );
+      }
+
+      const selectedClass = await prisma.pathfinderClass.findUnique({
+        where: { id: classId },
+        include: {
+          requirements: true
+        }
+      });
+
+      if (!selectedClass) {
+        return NextResponse.json(
+          { error: "Classe não encontrada." },
+          { status: 404 }
+        );
+      }
+
+      const completedAt = completedAtRaw
+        ? new Date(`${completedAtRaw}T00:00:00`)
+        : new Date();
+
+      for (const requirement of selectedClass.requirements) {
+        await prisma.pathfinderProgress.upsert({
+          where: {
+            pathfinderId_requirementId: {
+              pathfinderId,
+              requirementId: requirement.id
+            }
+          },
+          update: {
+            completed: true,
+            completedAt
+          },
+          create: {
+            pathfinderId,
+            requirementId: requirement.id,
+            completed: true,
+            completedAt
+          }
+        });
+      }
+
+      await prisma.pathfinder.update({
+        where: { id: pathfinderId },
+        data: {
+          currentClassId: classId
+        }
+      });
+
+      return NextResponse.json({ ok: true });
+    }
+
+    if (action === "removeClass") {
+      if (!classId) {
+        return NextResponse.json(
+          { error: "Classe é obrigatória." },
+          { status: 400 }
+        );
+      }
+
+      const selectedClass = await prisma.pathfinderClass.findUnique({
+        where: { id: classId },
+        include: {
+          requirements: true
+        }
+      });
+
+      if (!selectedClass) {
+        return NextResponse.json(
+          { error: "Classe não encontrada." },
+          { status: 404 }
+        );
+      }
+
+      await prisma.pathfinderProgress.deleteMany({
+        where: {
+          pathfinderId,
+          requirementId: {
+            in: selectedClass.requirements.map((item) => item.id)
+          }
+        }
+      });
+
+      if (pathfinder.currentClassId === classId) {
+        await prisma.pathfinder.update({
+          where: { id: pathfinderId },
+          data: {
+            currentClassId: null
+          }
+        });
+      }
+
+      return NextResponse.json({ ok: true });
+    }
+
     return NextResponse.json(
-      { error: "Erro ao vincular classe ao desbravador." },
+      { error: "Ação inválida." },
+      { status: 400 }
+    );
+  } catch (error) {
+    console.error("Erro ao gerenciar classe:", error);
+    return NextResponse.json(
+      { error: "Erro ao processar classe do desbravador." },
       { status: 500 }
     );
   }

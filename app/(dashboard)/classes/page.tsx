@@ -1,92 +1,61 @@
 ﻿import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Card } from "@/components/ui/card";
-import { ProgressBar } from "@/components/dashboard/progress-bar";
-import { translateClassName } from "@/lib/translate";
+import { ClassesBrowser } from "@/components/dashboard/classes-browser";
 
 export default async function ClassesPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
   const classes = await prisma.pathfinderClass.findMany({
+    orderBy: { order: "asc" },
     include: {
-      requirements: true
-    },
-    orderBy: { order: "asc" }
+      groups: {
+        orderBy: { order: "asc" },
+        include: {
+          requirements: {
+            orderBy: { order: "asc" }
+          }
+        }
+      },
+      requirements: {
+        where: {
+          groupId: null
+        },
+        orderBy: { order: "asc" }
+      }
+    }
   });
 
-  let pathfinderId: string | null = null;
+  const normalized = classes.map((item) => ({
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    category: item.category ?? "",
+    order: item.order,
+    groups: item.groups.map((group) => ({
+      id: group.id,
+      title: group.title,
+      roman: group.roman,
+      order: group.order,
+      requirements: group.requirements.map((req) => ({
+        id: req.id,
+        title: req.title,
+        details: req.details,
+        marker: req.marker ?? "",
+        level: req.level,
+        order: req.order
+      }))
+    })),
+    looseRequirements: item.requirements.map((req) => ({
+      id: req.id,
+      title: req.title,
+      details: req.details,
+      marker: req.marker ?? "",
+      level: req.level,
+      order: req.order
+    }))
+  }));
 
-  if (session.user.role === "PATHFINDER") {
-    pathfinderId =
-      (await prisma.pathfinder.findUnique({
-        where: { userId: session.user.id }
-      }))?.id ?? null;
-  }
-
-  if (session.user.role === "PARENT") {
-    const parent = await prisma.parent.findUnique({
-      where: { userId: session.user.id },
-      include: { children: true }
-    });
-    pathfinderId = parent?.children[0]?.pathfinderId ?? null;
-  }
-
-  const progress = pathfinderId
-    ? await prisma.pathfinderProgress.findMany({ where: { pathfinderId } })
-    : [];
-
-  return (
-    <div className="space-y-4">
-      <Card className="p-5">
-        <h1 className="section-title">Módulo de Classes</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
-          Amigo, Companheiro, Pesquisador, Pioneiro, Excursionista e Guia com
-          acompanhamento por requisito.
-        </p>
-      </Card>
-
-      <div className="space-y-4">
-        {classes.map((item: any) => {
-          const reqs = item.requirements;
-          const completed = reqs.filter((req: any) =>
-            progress.some((p: any) => p.requirementId === req.id && p.completed)
-          ).length;
-          const pct = reqs.length
-            ? Math.round((completed / reqs.length) * 100)
-            : 0;
-
-          return (
-            <Card key={item.id} className="space-y-3 p-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-primary">
-                  {translateClassName(item.name)}
-                </h2>
-                <span className="text-xs text-slate-500 dark:text-slate-400">Ordem {item.order}</span>
-              </div>
-
-              <p className="text-sm text-slate-600 dark:text-slate-800">{item.description}</p>
-
-              {session.user.role !== "LEADER" ? (
-                <ProgressBar label="Progresso" value={pct} />
-              ) : null}
-
-              <div className="grid gap-2 md:grid-cols-2">
-                {reqs.map((req: any) => (
-                  <div
-                    key={req.id}
-                    className="rounded-xl border border-red-100 dark:border-zinc-800 p-3 text-sm"
-                  >
-                    <p className="font-semibold">{req.title}</p>
-                    <p className="text-slate-600 dark:text-slate-800">{req.details}</p>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-    </div>
-  );
+  return <ClassesBrowser items={normalized} />;
 }

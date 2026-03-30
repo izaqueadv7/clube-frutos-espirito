@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "import:official": "tsx scripts/import-official-catalog.ts",
+    "fix:areas": "tsx scripts/fix-specialty-areas.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -10,12 +12,22 @@
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "prisma:seed": "tsx prisma/seed.ts",
+    "seed:specialties": "tsx scripts/seed-specialties-catalog.ts",
+    "import:adra": "tsx scripts/import-adra-requirements.ts",
+    "import:mda": "tsx scripts/import-mda-requirements.ts",
+    "reset:specialties": "tsx scripts/reset-specialties-from-catalog.ts",
+    "import:reqs": "tsx scripts/import-specialty-requirements-manual-map.ts"
+    
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.7.0",
     "bcryptjs": "^2.4.3",
+    "cheerio": "^1.2.0",
     "cloudinary": "^2.9.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

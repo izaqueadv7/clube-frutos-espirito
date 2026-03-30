@@ -1,103 +1,50 @@
 ﻿import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { SpecialtiesBrowser } from "@/components/dashboard/specialties-browser";
 
 export default async function SpecialtiesPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  let pathfinderId: string | null = null;
+  const areas = await prisma.specialtyArea.findMany({
+    orderBy: [{ order: "asc" }, { name: "asc" }],
+    include: {
+      specialties: {
+        orderBy: [{ name: "asc" }],
+        include: {
+          items: {
+            orderBy: { order: "asc" }
+          }
+        }
+      }
+    }
+  });
 
-  if (session.user.role === "PATHFINDER") {
-    pathfinderId =
-      (await prisma.pathfinder.findUnique({
-        where: { userId: session.user.id }
-      }))?.id ?? null;
-  }
+  const normalized = areas
+    .map((area) => ({
+      id: area.id,
+      name: area.name,
+      slug: area.slug,
+      order: area.order,
+      specialties: area.specialties.map((specialty) => ({
+        id: specialty.id,
+        name: specialty.name,
+        slug: specialty.slug ?? "",
+        code: specialty.code ?? "",
+        category: specialty.category,
+        description: specialty.description,
+        order: specialty.order,
+        requirements: specialty.items.map((req) => ({
+          id: req.id,
+          text: req.text,
+          marker: req.marker ?? "",
+          level: req.level,
+          order: req.order
+        }))
+      }))
+    }))
+    .filter((area) => area.specialties.length > 0);
 
-  if (session.user.role === "PARENT") {
-    const parent = await prisma.parent.findUnique({
-      where: { userId: session.user.id },
-      include: { children: true }
-    });
-    pathfinderId = parent?.children[0]?.pathfinderId ?? null;
-  }
-
-  const assignments =
-    session.user.role === "LEADER"
-      ? await prisma.pathfinderSpecialty.findMany({
-          include: {
-            specialty: true,
-            pathfinder: { include: { user: true } }
-          },
-          orderBy: { specialty: { name: "asc" } }
-        })
-      : await prisma.pathfinderSpecialty.findMany({
-          where: { pathfinderId: pathfinderId ?? "" },
-          include: { specialty: true },
-          orderBy: { specialty: { name: "asc" } }
-        });
-
-  const grouped = {
-    PENDING: assignments.filter((item: any) => item.status === "PENDING"),
-    IN_PROGRESS: assignments.filter((item: any) => item.status === "IN_PROGRESS"),
-    COMPLETED: assignments.filter((item: any) => item.status === "COMPLETED")
-  };
-
-  return (
-    <div className="space-y-4">
-      <Card className="p-5">
-        <h1 className="section-title">Módulo de Especialidades</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
-          Visualize o progresso por status: pendente, em andamento e concluída.
-        </p>
-      </Card>
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="p-4">
-          <h2 className="mb-3 font-bold text-slate-700 dark:text-slate-800">Pendentes</h2>
-          <div className="space-y-2">
-            {grouped.PENDING.map((item: any) => (
-              <div key={item.id} className="rounded-xl border border-red-100 dark:border-zinc-800 p-3">
-                <p className="font-semibold">{item.specialty.name}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{item.specialty.category}</p>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <h2 className="mb-3 font-bold text-slate-700 dark:text-slate-800">Em andamento</h2>
-          <div className="space-y-2">
-            {grouped.IN_PROGRESS.map((item: any) => (
-              <div
-                key={item.id}
-                className="rounded-xl border border-yellow-200 bg-yellow-50 p-3"
-              >
-                <p className="font-semibold">{item.specialty.name}</p>
-                <p className="text-xs text-slate-600 dark:text-slate-800">{item.specialty.description}</p>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <h2 className="mb-3 font-bold text-slate-700 dark:text-slate-800">Concluídas</h2>
-          <div className="space-y-2">
-            {grouped.COMPLETED.map((item: any) => (
-              <div
-                key={item.id}
-                className="rounded-xl border border-green-200 bg-green-50 p-3"
-              >
-                <p className="font-semibold">{item.specialty.name}</p>
-                <Badge className="bg-green-600 text-white">Concluída</Badge>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <SpecialtiesBrowser items={normalized} />;
 }

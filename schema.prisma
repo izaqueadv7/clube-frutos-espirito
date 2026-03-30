@@ -7,6 +7,302 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                String             @id @default(uuid())
+  name              String
+  email             String             @unique
+  passwordHash      String
+  role              UserRole
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  canManageContent  Boolean            @default(false)
+  canManageUsers    Boolean            @default(false)
+  isAdmin           Boolean            @default(false)
+  isMedia           Boolean            @default(false)
+  primaryFunction   String?
+  secondaryFunction String?
+  isActive          Boolean            @default(true)
+  status            UserStatus         @default(PENDING)
+  image             String?
+  birthDate         DateTime?
+  announcements     Announcement[]
+  featuredSlides    FeaturedSlide[]
+  galleryPhotos     GalleryPhoto[]
+  parentProfile     Parent?
+  pathfinderProfile Pathfinder?
+  subscriptions     PushSubscription[]
+
+  @@map("users")
+}
+
+model Pathfinder {
+  id                  String                @id @default(uuid())
+  userId              String                @unique
+  birthDate           DateTime?
+  currentClassId      String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  notes               String?
+  attendance          Attendance[]
+  parentRelationships ParentPathfinder[]
+  progress            PathfinderProgress[]
+  specialties         PathfinderSpecialty[]
+  currentClass        PathfinderClass?      @relation(fields: [currentClassId], references: [id])
+  user                User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pathfinders")
+}
+
+model Parent {
+  id        String             @id @default(uuid())
+  userId    String             @unique
+  phone     String?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  children  ParentPathfinder[]
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("parents")
+}
+
+model ParentPathfinder {
+  id           String     @id @default(uuid())
+  parentId     String
+  pathfinderId String
+  parent       Parent     @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  pathfinder   Pathfinder @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+
+  @@unique([parentId, pathfinderId])
+  @@map("parent_pathfinders")
+}
+
+model SpecialtyArea {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  slug        String      @unique
+  order       Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  specialties Specialty[]
+
+  @@map("specialty_areas")
+}
+
+model Specialty {
+  id           String                 @id @default(uuid())
+  name         String                 @unique
+  category     String
+  description  String
+  requirements String
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  areaId       String?
+  code         String?
+  order        Int                    @default(0)
+  slug         String?                @unique
+  sourceUrl    String?
+  pathfinders  PathfinderSpecialty[]
+  area         SpecialtyArea?         @relation(fields: [areaId], references: [id])
+  items        SpecialtyRequirement[]
+
+  @@map("specialties")
+}
+
+model SpecialtyRequirement {
+  id          String                                   @id @default(uuid())
+  specialtyId String
+  text        String
+  order       Int                                      @default(0)
+  level       Int                                      @default(0)
+  marker      String?
+  progress    PathfinderSpecialtyRequirementProgress[]
+  specialty   Specialty                                @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+
+  @@map("specialty_requirements")
+}
+
+model PathfinderSpecialty {
+  id            String                                   @id @default(uuid())
+  pathfinderId  String
+  specialtyId   String
+  status        SpecialtyStatus                          @default(PENDING)
+  startedAt     DateTime?
+  completedAt   DateTime?
+  notes         String?
+  pathfinder    Pathfinder                               @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+  specialty     Specialty                                @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+  progressItems PathfinderSpecialtyRequirementProgress[]
+
+  @@unique([pathfinderId, specialtyId])
+  @@map("pathfinder_specialties")
+}
+
+model PathfinderSpecialtyRequirementProgress {
+  id                    String               @id @default(uuid())
+  pathfinderSpecialtyId String
+  requirementId         String
+  completed             Boolean              @default(false)
+  completedAt           DateTime?
+  notes                 String?
+  pathfinderSpecialty   PathfinderSpecialty  @relation(fields: [pathfinderSpecialtyId], references: [id], onDelete: Cascade)
+  requirement           SpecialtyRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+
+  @@unique([pathfinderSpecialtyId, requirementId])
+  @@map("pathfinder_specialty_requirement_progress")
+}
+
+model PathfinderClassGroup {
+  id           String             @id @default(uuid())
+  classId      String
+  title        String
+  roman        String
+  order        Int                @default(0)
+  class        PathfinderClass    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  requirements ClassRequirement[]
+
+  @@map("class_groups")
+}
+
+model PathfinderClass {
+  id           String                 @id @default(uuid())
+  name         String                 @unique
+  description  String
+  order        Int
+  category     String?
+  slug         String?                @unique
+  sourceUrl    String?
+  groups       PathfinderClassGroup[]
+  requirements ClassRequirement[]
+  pathfinders  Pathfinder[]
+
+  @@map("classes")
+}
+
+model ClassRequirement {
+  id       String                @id @default(uuid())
+  classId  String
+  title    String
+  details  String
+  points   Int                   @default(1)
+  groupId  String?
+  level    Int                   @default(0)
+  marker   String?
+  order    Int                   @default(0)
+  class    PathfinderClass       @relation(fields: [classId], references: [id], onDelete: Cascade)
+  group    PathfinderClassGroup? @relation(fields: [groupId], references: [id])
+  progress PathfinderProgress[]
+
+  @@map("class_requirements")
+}
+
+model PathfinderProgress {
+  id            String           @id @default(uuid())
+  pathfinderId  String
+  requirementId String
+  completed     Boolean          @default(false)
+  completedAt   DateTime?
+  notes         String?
+  pathfinder    Pathfinder       @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+  requirement   ClassRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+
+  @@unique([pathfinderId, requirementId])
+  @@map("pathfinder_progress")
+}
+
+model Event {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attendance  Attendance[]
+
+  @@map("events")
+}
+
+model Announcement {
+  id        String               @id @default(uuid())
+  title     String
+  content   String
+  audience  AnnouncementAudience @default(ALL)
+  authorId  String
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  author    User                 @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("announcements")
+}
+
+model Attendance {
+  id           String           @id @default(uuid())
+  eventId      String
+  pathfinderId String
+  status       AttendanceStatus @default(PRESENT)
+  checkInTime  DateTime?
+  note         String?
+  event        Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  pathfinder   Pathfinder       @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, pathfinderId])
+  @@map("attendance")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("password_reset_tokens")
+}
+
+model FeaturedSlide {
+  id            String   @id @default(uuid())
+  title         String
+  description   String?
+  imageUrl      String
+  linkUrl       String?
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
+  createdById   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  imagePublicId String?
+  createdBy     User?    @relation(fields: [createdById], references: [id])
+
+  @@map("featured_slides")
+}
+
+model GalleryPhoto {
+  id            String   @id @default(uuid())
+  title         String?
+  imageUrl      String
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
+  createdById   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  imagePublicId String?
+  createdBy     User?    @relation(fields: [createdById], references: [id])
+
+  @@map("gallery_photos")
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  endpoint  String   @unique
+  p256dhKey String
+  authKey   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("push_subscriptions")
+}
+
 enum UserRole {
   PATHFINDER
   LEADER
@@ -38,255 +334,8 @@ enum UserStatus {
   REJECTED
 }
 
-model User {
-  id                String   @id @default(uuid())
-  name              String
-  email             String   @unique
-  passwordHash      String
-  role              UserRole
-  birthDate         DateTime?
-  image             String?
-  primaryFunction   String?
-  secondaryFunction String?
-  isAdmin           Boolean  @default(false)
-  isMedia           Boolean  @default(false)
-  canManageUsers    Boolean  @default(false)
-  canManageContent  Boolean  @default(false)
-  isActive Boolean @default(true)
-  status UserStatus @default(PENDING)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  pathfinderProfile Pathfinder?
-  parentProfile     Parent?
-  announcements     Announcement[]
-  subscriptions     PushSubscription[]
-  featuredSlides FeaturedSlide[]
-galleryPhotos  GalleryPhoto[]
-
-  @@map("users")
-}
-
-model Pathfinder {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  birthDate      DateTime?
-  currentClassId String?
-  notes String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  currentClass        PathfinderClass?     @relation(fields: [currentClassId], references: [id])
-  specialties         PathfinderSpecialty[]
-  progress            PathfinderProgress[]
-  attendance          Attendance[]
-  parentRelationships ParentPathfinder[]
-
-  @@map("pathfinders")
-}
-
-model Parent {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  phone     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  children  ParentPathfinder[]
-
-  @@map("parents")
-}
-
-model ParentPathfinder {
-  id           String @id @default(uuid())
-  parentId     String
-  pathfinderId String
-
-  parent     Parent     @relation(fields: [parentId], references: [id], onDelete: Cascade)
-  pathfinder Pathfinder @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
-
-  @@unique([parentId, pathfinderId])
-  @@map("parent_pathfinders")
-}
-
-model Specialty {
-  id           String   @id @default(uuid())
-  name         String   @unique
-  category     String
-  description  String
-  requirements String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  pathfinders  PathfinderSpecialty[]
-  items        SpecialtyRequirement[]
-
-  @@map("specialties")
-}
-
-model SpecialtyRequirement {
-  id          String   @id @default(uuid())
-  specialtyId String
-  text        String
-  order       Int      @default(0)
-
-  specialty Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
-
-  @@map("specialty_requirements")
-}
-
-model PathfinderSpecialty {
-  id           String          @id @default(uuid())
-  pathfinderId String
-  specialtyId  String
-  status       SpecialtyStatus @default(PENDING)
-  startedAt    DateTime?
-  completedAt  DateTime?
-
-  pathfinder Pathfinder @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
-  specialty  Specialty  @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
-
-  @@unique([pathfinderId, specialtyId])
-  @@map("pathfinder_specialties")
-}
-
-model PathfinderClass {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String
-  order       Int
-
-  requirements ClassRequirement[]
-  pathfinders  Pathfinder[]
-
-  @@map("classes")
-}
-
-model ClassRequirement {
-  id       String @id @default(uuid())
-  classId  String
-  title    String
-  details  String
-  points   Int    @default(1)
-
-  class PathfinderClass @relation(fields: [classId], references: [id], onDelete: Cascade)
-  progress PathfinderProgress[]
-
-  @@map("class_requirements")
-}
-
-model PathfinderProgress {
-  id            String   @id @default(uuid())
-  pathfinderId  String
-  requirementId String
-  completed     Boolean  @default(false)
-  completedAt   DateTime?
-
-  pathfinder  Pathfinder       @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
-  requirement ClassRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
-
-  @@unique([pathfinderId, requirementId])
-  @@map("pathfinder_progress")
-}
-
-model Event {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  date        DateTime
-  location    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  attendance Attendance[]
-
-  @@map("events")
-}
-
-model Announcement {
-  id         String                @id @default(uuid())
-  title      String
-  content    String
-  audience   AnnouncementAudience  @default(ALL)
-  authorId   String
-  createdAt  DateTime              @default(now())
-  updatedAt  DateTime              @updatedAt
-
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  @@map("announcements")
-}
-
-model Attendance {
-  id           String           @id @default(uuid())
-  eventId       String
-  pathfinderId  String
-  status        AttendanceStatus @default(PRESENT)
-  checkInTime   DateTime?
-  note          String?
-
-  event      Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  pathfinder Pathfinder @relation(fields: [pathfinderId], references: [id], onDelete: Cascade)
-
-  @@unique([eventId, pathfinderId])
-  @@map("attendance")
-}
-
-model PasswordResetToken {
-  id        String   @id @default(uuid())
-  email     String
-  token     String   @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@map("password_reset_tokens")
-}
-
-model FeaturedSlide {
-  id          String   @id @default(uuid())
-  title       String
-  description String?
-  imageUrl    String
-  imagePublicId String?
-  linkUrl     String?
-  isActive    Boolean  @default(true)
-  order       Int      @default(0)
-  createdById String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
-
-  @@map("featured_slides")
-}
-
-model GalleryPhoto {
-  id          String   @id @default(uuid())
-  title       String?
-  imageUrl    String
-  imagePublicId String?
-  isActive    Boolean  @default(true)
-  order       Int      @default(0)
-  createdById String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
-
-  @@map("gallery_photos")
-}
-
-model PushSubscription {
-  id         String   @id @default(uuid())
-  userId     String
-  endpoint   String   @unique
-  p256dhKey  String
-  authKey    String
-  createdAt  DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("push_subscriptions")
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
