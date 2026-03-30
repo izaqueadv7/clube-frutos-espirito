@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import {
   LibraryBig,
   Badge,
+  House,
   CalendarDays,
-  Bell,
   BookOpenText
 } from "lucide-react";
 
@@ -27,14 +27,14 @@ const items: {
     icon: Badge
   },
   {
+    href: "/dashboard",
+    label: "Início",
+    icon: House
+  },
+  {
     href: "/calendar",
     label: "Calendário",
     icon: CalendarDays
-  },
-  {
-    href: "/announcements",
-    label: "Avisos",
-    icon: Bell
   },
   {
     href: "/bible",
@@ -68,15 +68,4 @@ export function MobileBottomNav() {
               <span
                 className={[
                   "leading-tight",
-                  active ? "text-[12px] font-bold" : "text-[11px] font-semibold"
-                ].join(" ")}
-              >
-                {item.label}
-              </span>
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
-  );
-}
+                  active ? "text-[12px] font
