@@ -33,7 +33,7 @@ export default async function AssignmentsPage() {
     }
   });
 
-  const classes = await prisma.pathfinderClass.findMany({
+  const classesRaw = await prisma.pathfinderClass.findMany({
     orderBy: { order: "asc" },
     include: {
       groups: {
@@ -51,7 +51,7 @@ export default async function AssignmentsPage() {
     }
   });
 
-  const specialties = await prisma.specialty.findMany({
+  const specialtiesRaw = await prisma.specialty.findMany({
     orderBy: { name: "asc" },
     include: {
       area: true,
@@ -71,6 +71,56 @@ export default async function AssignmentsPage() {
     completedRequirementIds: item.progress
       .filter((progress) => progress.completed)
       .map((progress) => progress.requirementId)
+  }));
+
+  const classes = classesRaw.map((item) => ({
+    id: item.id,
+    name: item.name,
+    category: item.category ?? undefined,
+    order: item.order,
+    groups: item.groups.map((group) => ({
+      id: group.id,
+      title: group.title,
+      roman: group.roman,
+      order: group.order,
+      requirements: group.requirements.map((req) => ({
+        id: req.id,
+        title: req.title,
+        details: req.details,
+        marker: req.marker ?? undefined,
+        level: req.level ?? 0,
+        order: req.order
+      }))
+    })),
+    requirements: item.requirements.map((req) => ({
+      id: req.id,
+      title: req.title,
+      details: req.details,
+      marker: req.marker ?? undefined,
+      level: req.level ?? 0,
+      order: req.order
+    }))
+  }));
+
+  const specialties = specialtiesRaw.map((item) => ({
+    id: item.id,
+    name: item.name,
+    category: item.category,
+    code: item.code ?? undefined,
+    description: item.description ?? undefined,
+    area: item.area
+      ? {
+          id: item.area.id,
+          name: item.area.name
+        }
+      : null,
+    items: item.items.map((req) => ({
+      id: req.id,
+      text: req.text,
+      marker: req.marker ?? undefined,
+      level: req.level ?? 0,
+      order: req.order
+    }))
   }));
 
   return (
