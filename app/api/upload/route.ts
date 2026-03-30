@@ -12,38 +12,84 @@ export async function POST(request: Request) {
   }
 
   try {
-    const formData = await request.formData();
-    const file = formData.get("file") as File;
+    if (!process.env.CLOUDINARY_CLOUD_NAME) {
+      return NextResponse.json(
+        { error: "CLOUDINARY_CLOUD_NAME não configurado." },
+        { status: 500 }
+      );
+    }
 
-    if (!file) {
-      return NextResponse.json({ error: "Arquivo não enviado." }, { status: 400 });
+    if (!process.env.CLOUDINARY_API_KEY) {
+      return NextResponse.json(
+        { error: "CLOUDINARY_API_KEY não configurado." },
+        { status: 500 }
+      );
+    }
+
+    if (!process.env.CLOUDINARY_API_SECRET) {
+      return NextResponse.json(
+        { error: "CLOUDINARY_API_SECRET não configurado." },
+        { status: 500 }
+      );
+    }
+
+    const formData = await request.formData();
+    const file = formData.get("file");
+
+    if (!file || !(file instanceof File)) {
+      return NextResponse.json(
+        { error: "Arquivo não enviado corretamente." },
+        { status: 400 }
+      );
+    }
+
+    if (!file.type?.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "Envie apenas arquivos de imagem." },
+        { status: 400 }
+      );
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
     const upload = await new Promise<any>((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream(
-          {
-            folder: "clube-frutos-do-espirito"
-          },
-          (error, result) => {
-            if (error) return reject(error);
-            resolve(result);
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "clube-frutos-do-espirito",
+          resource_type: "image"
+        },
+        (error, result) => {
+          if (error) {
+            return reject(error);
           }
-        )
-        .end(buffer);
+
+          if (!result) {
+            return reject(new Error("Cloudinary não retornou resultado."));
+          }
+
+          resolve(result);
+        }
+      );
+
+      stream.end(buffer);
     });
 
     return NextResponse.json({
+      ok: true,
       url: upload.secure_url,
       publicId: upload.public_id
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erro no upload:", error);
+
     return NextResponse.json(
-      { error: "Erro ao enviar imagem." },
+      {
+        error:
+          error?.message ||
+          error?.error?.message ||
+          "Erro ao enviar imagem."
+      },
       { status: 500 }
     );
   }

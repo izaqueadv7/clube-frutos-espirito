@@ -30,7 +30,7 @@ export function ImageUpload({ onUploaded }: ImageUploadProps) {
       const data = await response.json();
 
       if (!response.ok) {
-        setMessage(data?.error || "Erro ao enviar imagem.");
+        setMessage(data?.error || `Erro no upload (${response.status}).`);
         return;
       }
 
@@ -42,8 +42,8 @@ export function ImageUpload({ onUploaded }: ImageUploadProps) {
       });
 
       setMessage("Imagem enviada com sucesso.");
-    } catch (error) {
-      setMessage("Erro no upload.");
+    } catch (error: any) {
+      setMessage(error?.message || "Erro no upload.");
     } finally {
       setLoading(false);
     }
@@ -54,11 +54,15 @@ export function ImageUpload({ onUploaded }: ImageUploadProps) {
       <input type="file" accept="image/*" onChange={handleUpload} />
 
       {loading ? (
-        <p className="text-sm text-slate-500 dark:text-slate-400">Enviando imagem...</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          Enviando imagem...
+        </p>
       ) : null}
 
       {message ? (
-        <p className="text-sm text-slate-600 dark:text-slate-300">{message}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
+          {message}
+        </p>
       ) : null}
 
       {preview ? (
