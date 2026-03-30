@@ -89,10 +89,10 @@ export function MobileMenu({ user }: { user: any }) {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]">
+        <div className="fixed inset-0 z-[55] bg-black/40 backdrop-blur-[2px]">
           <div
-            ref={menuRef}
-            className="absolute left-0 top-0 h-full w-[86%] max-w-[360px] overflow-y-auto rounded-r-[32px] p-4 shadow-2xl animate-[slideInLeft_.22s_ease-out]"
+  ref={menuRef}
+  className="absolute left-0 top-0 z-[60] h-full w-[86%] max-w-[360px] overflow-y-auto rounded-r-[32px] p-4 pb-32 shadow-2xl animate-[slideInLeft_.22s_ease-out]"
             style={{
               backgroundColor: "rgb(var(--surface))",
               color: "rgb(var(--ink))"
