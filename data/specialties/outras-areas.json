@@ -1,0 +1,41 @@
+[
+  { "area": "Artes e habilidades manuais", "code": "AH001", "name": "Origami" },
+  { "area": "Artes e habilidades manuais", "code": "AH002", "name": "Scrapbook" },
+  { "area": "Artes e habilidades manuais", "code": "AH003", "name": "Cestaria" },
+  { "area": "Artes e habilidades manuais", "code": "AH004", "name": "Pintura em Tecido" },
+  { "area": "Artes e habilidades manuais", "code": "AH005", "name": "Crochê" },
+  { "area": "Artes e habilidades manuais", "code": "AH006", "name": "Tricô" },
+  { "area": "Artes e habilidades manuais", "code": "AH007", "name": "Macramê" },
+
+  { "area": "Habilidades domésticas", "code": "HD001", "name": "Culinária ao Ar Livre" },
+  { "area": "Habilidades domésticas", "code": "HD002", "name": "Arte Culinária" },
+  { "area": "Habilidades domésticas", "code": "HD003", "name": "Panificação" },
+  { "area": "Habilidades domésticas", "code": "HD004", "name": "Etiqueta Cristã" },
+  { "area": "Habilidades domésticas", "code": "HD005", "name": "Costura" },
+
+  { "area": "Atividades agrícolas", "code": "AG001", "name": "Horticultura" },
+  { "area": "Atividades agrícolas", "code": "AG002", "name": "Jardinagem" },
+  { "area": "Atividades agrícolas", "code": "AG003", "name": "Compostagem" },
+
+  { "area": "Atividades missionárias", "code": "AM001", "name": "Evangelismo Pessoal" },
+  { "area": "Atividades missionárias", "code": "AM002", "name": "Estudo Bíblico" },
+  { "area": "Atividades missionárias", "code": "AM003", "name": "História Denominacional" },
+  { "area": "Atividades missionárias", "code": "AM004", "name": "Mordomia Cristã" },
+  { "area": "Atividades missionárias", "code": "AM005", "name": "Escola Sabatina" },
+
+  { "area": "Atividades profissionais", "code": "AP001", "name": "Digitação" },
+  { "area": "Atividades profissionais", "code": "AP002", "name": "Informática Básica" },
+  { "area": "Atividades profissionais", "code": "AP003", "name": "Fotografia Digital" },
+  { "area": "Atividades profissionais", "code": "AP004", "name": "Ordem Unida" },
+  { "area": "Atividades profissionais", "code": "AP005", "name": "Pioneirias" },
+
+  { "area": "Atividades recreativas", "code": "AR001", "name": "Natação I" },
+  { "area": "Atividades recreativas", "code": "AR002", "name": "Ciclismo" },
+  { "area": "Atividades recreativas", "code": "AR003", "name": "Patinação" },
+  { "area": "Atividades recreativas", "code": "AR004", "name": "Pipas" },
+  { "area": "Atividades recreativas", "code": "AR005", "name": "Nós e Amarras" },
+
+  { "area": "Mestrados", "code": "MS001", "name": "Mestrado em ADRA" },
+  { "area": "Mestrados", "code": "MS002", "name": "Mestrado em Saúde" },
+  { "area": "Mestrados", "code": "MS003", "name": "Mestrado em Vida Campestre" }
+]

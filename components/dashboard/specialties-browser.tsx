@@ -6,8 +6,7 @@ import {
   ChevronRight,
   Search,
   BadgeCheck,
-  FolderOpen,
-  BookMarked
+  FolderOpen
 } from "lucide-react";
 
 type RequirementItem = {
@@ -37,11 +36,10 @@ type AreaItem = {
   specialties: SpecialtyItem[];
 };
 
-type ViewMode = "areas" | "specialties" | "requirements";
-
 function indentClass(level: number) {
-  if (level === 1) return "ml-4";
-  if (level >= 2) return "ml-8";
+  if (level === 1) return "ml-8";
+  if (level === 2) return "ml-14";
+  if (level >= 3) return "ml-20";
   return "";
 }
 

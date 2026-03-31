@@ -1,0 +1,22 @@
+[
+  { "area": "Estudo da natureza", "code": "EN001", "name": "Campismo I" },
+  { "area": "Estudo da natureza", "code": "EN002", "name": "Campismo II" },
+  { "area": "Estudo da natureza", "code": "EN003", "name": "Acampamento de Inverno" },
+  { "area": "Estudo da natureza", "code": "EN004", "name": "Excursionismo Pedestre" },
+  { "area": "Estudo da natureza", "code": "EN005", "name": "Orientação" },
+  { "area": "Estudo da natureza", "code": "EN006", "name": "Astronomia" },
+  { "area": "Estudo da natureza", "code": "EN007", "name": "Ecologia" },
+  { "area": "Estudo da natureza", "code": "EN008", "name": "Aves" },
+  { "area": "Estudo da natureza", "code": "EN009", "name": "Mamíferos" },
+  { "area": "Estudo da natureza", "code": "EN010", "name": "Felinos" },
+  { "area": "Estudo da natureza", "code": "EN011", "name": "Cães" },
+  { "area": "Estudo da natureza", "code": "EN012", "name": "Sementes" },
+  { "area": "Estudo da natureza", "code": "EN013", "name": "Árvores" },
+  { "area": "Estudo da natureza", "code": "EN014", "name": "Flores" },
+  { "area": "Estudo da natureza", "code": "EN015", "name": "Rochas e Minerais" },
+  { "area": "Estudo da natureza", "code": "EN016", "name": "Insetos" },
+  { "area": "Estudo da natureza", "code": "EN017", "name": "Répteis" },
+  { "area": "Estudo da natureza", "code": "EN018", "name": "Anfíbios" },
+  { "area": "Estudo da natureza", "code": "EN019", "name": "Clima" },
+  { "area": "Estudo da natureza", "code": "EN020", "name": "Geologia" }
+]

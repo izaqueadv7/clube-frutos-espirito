@@ -1,0 +1,16 @@
+[
+  { "area": "Ciência e saúde", "code": "CS001", "name": "Primeiros Socorros Básico" },
+  { "area": "Ciência e saúde", "code": "CS002", "name": "Primeiros Socorros" },
+  { "area": "Ciência e saúde", "code": "CS003", "name": "Nutrição" },
+  { "area": "Ciência e saúde", "code": "CS004", "name": "Temperança" },
+  { "area": "Ciência e saúde", "code": "CS005", "name": "Cultura Física" },
+  { "area": "Ciência e saúde", "code": "CS006", "name": "Saúde e Cura" },
+  { "area": "Ciência e saúde", "code": "CS007", "name": "Vida Saudável" },
+  { "area": "Ciência e saúde", "code": "CS008", "name": "Anatomia" },
+  { "area": "Ciência e saúde", "code": "CS009", "name": "Higiene" },
+  { "area": "Ciência e saúde", "code": "CS010", "name": "Prevenção às Drogas" },
+  { "area": "Ciência e saúde", "code": "CS011", "name": "Dependência Química" },
+  { "area": "Ciência e saúde", "code": "CS012", "name": "Biossegurança" },
+  { "area": "Ciência e saúde", "code": "CS013", "name": "Saúde Mental" },
+  { "area": "Ciência e saúde", "code": "CS014", "name": "Segurança Básica na Água" }
+]

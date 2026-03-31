@@ -1,0 +1,11 @@
+[
+  { "area": "ADRA", "code": "AD001", "name": "Alívio da Fome" },
+  { "area": "ADRA", "code": "AD002", "name": "Avaliação da Comunidade" },
+  { "area": "ADRA", "code": "AD003", "name": "Serviço Comunitário" },
+  { "area": "ADRA", "code": "AD004", "name": "Resposta a emergências e desastres" },
+  { "area": "ADRA", "code": "AD005", "name": "Resposta a emergências e desastres - avançado" },
+  { "area": "ADRA", "code": "AD006", "name": "Alfabetização" },
+  { "area": "ADRA", "code": "AD007", "name": "Resolução de Conflitos" },
+  { "area": "ADRA", "code": "AD008", "name": "Reassentamento de Refugiados" },
+  { "area": "ADRA", "code": "AD009", "name": "Desenvolvimento Comunitário" }
+]

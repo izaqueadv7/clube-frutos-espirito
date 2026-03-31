@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "import:official": "tsx scripts/import-official-catalog.ts",
+    "import:catalog": "tsx scripts/import-specialty-catalog-from-mda.ts",
     "fix:areas": "tsx scripts/fix-specialty-areas.ts",
     "dev": "next dev",
     "build": "next build",
@@ -17,8 +18,23 @@
     "import:adra": "tsx scripts/import-adra-requirements.ts",
     "import:mda": "tsx scripts/import-mda-requirements.ts",
     "reset:specialties": "tsx scripts/reset-specialties-from-catalog.ts",
-    "import:reqs": "tsx scripts/import-specialty-requirements-manual-map.ts"
-    
+    "import:reqs": "tsx scripts/import-requirements-from-mda.ts",
+    "import:missing-catalog": "tsx scripts/import-missing-specialty-catalog-from-mda.ts",
+    "import:reqs-mda": "tsx scripts/import-specialty-requirements-from-mda.ts",
+    "import:ameb-reqs": "tsx scripts/import-ameb-requirements-from-mda.ts",
+    "debug:ameb": "tsx scripts/debug-ameb-page.ts",
+    "import:am-reqs": "tsx scripts/import-am-requirements-from-mda.ts",
+    "import:adra-reqs": "tsx scripts/import-adra-requirements-from-mda.ts",
+    "import:ar-reqs": "tsx scripts/import-ar-requirements-from-mda.ts",
+    "import:aa-reqs": "tsx scripts/import-aa-requirements-from-mda.ts",
+    "import:ap-reqs": "tsx scripts/import-ap-requirements-from-mda.ts",
+    "import:hd-reqs": "tsx scripts/import-hd-requirements-from-mda.ts",
+    "import:cs-reqs": "tsx scripts/import-cs-requirements-from-mda.ts",
+    "import:en-reqs": "tsx scripts/import-en-requirements-from-mda.ts",
+    "import:hm-reqs": "tsx scripts/import-hm-requirements-from-mda.ts",
+    "import:me-reqs": "tsx scripts/import-me-requirements-from-mda.ts",
+    "import:classes-advanced": "tsx scripts/import-advanced-classes-from-mda.ts",
+    "import:advanced-groups": "tsx scripts/import-advanced-class-groups-from-mda.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -26,6 +42,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.7.0",
+    "axios": "^1.14.0",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.2.0",
     "cloudinary": "^2.9.0",
@@ -42,7 +59,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^22.13.8",
+    "@types/node": "^22.19.15",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "autoprefixer": "^10.4.20",

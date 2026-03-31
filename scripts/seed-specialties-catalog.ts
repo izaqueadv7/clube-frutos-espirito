@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import catalog from "../data/specialties-catalog.json";
+import catalogJson from "../data/specialties-catalog.json";
 
 const prisma = new PrismaClient();
 
@@ -24,7 +24,7 @@ const OFFICIAL_AREAS = [
   "Estudo da natureza",
   "Habilidades domésticas",
   "Mestrados"
-];
+] as const;
 
 type SpecialtySeed = {
   area: string;
@@ -32,6 +32,8 @@ type SpecialtySeed = {
   name: string;
   description?: string;
 };
+
+const catalog = catalogJson as SpecialtySeed[];
 
 async function ensureAreas() {
   for (let i = 0; i < OFFICIAL_AREAS.length; i++) {
@@ -53,10 +55,8 @@ async function ensureAreas() {
 }
 
 async function seedSpecialties() {
-  const specialties = catalog as SpecialtySeed[];
-
-  for (let i = 0; i < specialties.length; i++) {
-    const item = specialties[i];
+  for (let i = 0; i < catalog.length; i++) {
+    const item = catalog[i];
 
     const area = await prisma.specialtyArea.findUnique({
       where: { slug: slugify(item.area) }
@@ -69,18 +69,50 @@ async function seedSpecialties() {
 
     const slug = slugify(`${item.code}-${item.name}`);
 
-    await prisma.specialty.upsert({
-      where: { slug },
-      update: {
-        name: item.name,
-        code: item.code,
-        category: item.area,
-        description: item.description || item.name,
-        requirements: "",
-        areaId: area.id,
-        order: i + 1
-      },
-      create: {
+    const existingBySlug = await prisma.specialty.findUnique({
+      where: { slug }
+    });
+
+    if (existingBySlug) {
+      await prisma.specialty.update({
+        where: { id: existingBySlug.id },
+        data: {
+          name: item.name,
+          code: item.code,
+          category: item.area,
+          description: item.description || item.name,
+          requirements: "",
+          areaId: area.id,
+          order: i + 1,
+          slug
+        }
+      });
+      continue;
+    }
+
+    const existingByName = await prisma.specialty.findUnique({
+      where: { name: item.name }
+    });
+
+    if (existingByName) {
+      await prisma.specialty.update({
+        where: { id: existingByName.id },
+        data: {
+          name: item.name,
+          code: item.code,
+          category: item.area,
+          description: item.description || item.name,
+          requirements: "",
+          areaId: area.id,
+          order: i + 1,
+          slug
+        }
+      });
+      continue;
+    }
+
+    await prisma.specialty.create({
+      data: {
         name: item.name,
         slug,
         code: item.code,
@@ -98,7 +130,7 @@ async function main() {
   console.log("Criando áreas oficiais...");
   await ensureAreas();
 
-  console.log("Populando catálogo inicial de especialidades...");
+  console.log("Populando catálogo de especialidades...");
   await seedSpecialties();
 
   console.log("Catálogo de especialidades criado com sucesso.");
