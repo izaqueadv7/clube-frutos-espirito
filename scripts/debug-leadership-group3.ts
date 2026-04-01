@@ -1,5 +1,6 @@
 import * as fs from "fs/promises";
 import * as cheerio from "cheerio";
+import type { Element } from "domhandler";
 
 const URL = "https://mda.wiki.br/Cart%C3%A3o_de_L%C3%ADder_Master";
 
