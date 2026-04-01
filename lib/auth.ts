@@ -54,8 +54,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             | "PATHFINDER"
             | "LEADER"
             | "PARENT"
-            | "ADMIN"
-            | "DIRECTOR";
           session.user.primaryFunction = dbUser.primaryFunction ?? undefined;
           session.user.secondaryFunction = dbUser.secondaryFunction ?? undefined;
           session.user.isAdmin = dbUser.isAdmin;
