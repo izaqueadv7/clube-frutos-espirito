@@ -171,7 +171,6 @@ async function main() {
           classId: classDb.id,
           title: item.title,
           details: item.details,
-          text: item.details,
           marker: item.marker,
           level: item.level,
           order: item.order,
