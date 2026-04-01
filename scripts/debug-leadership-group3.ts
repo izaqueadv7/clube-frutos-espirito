@@ -34,7 +34,7 @@ async function main() {
       ? $(".page-content").first()
       : $("#page-content").first();
 
-  let targetHeading: cheerio.Element | null = null;
+  let targetHeading: any = null;
 
   content.find("h2").each((_, el) => {
     const text = normalize($(el).text());
