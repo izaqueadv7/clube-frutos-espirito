@@ -53,9 +53,7 @@ export default async function DashboardLayout({
     <main className="min-h-screen bg-hero-gradient pb-28 lg:px-8">
       <MobileTopBar name={dbUser.name} image={dbUser.image} user={session.user} />
 
-      <div
-        className="mx-auto hidden max-w-7xl items-center justify-between rounded-2xl bg-primary p-4 text-white shadow-card lg:mt-4 lg:flex"
-      >
+      <div className="mx-auto hidden max-w-7xl items-center justify-between rounded-2xl bg-primary p-4 text-white shadow-card lg:mt-4 lg:flex">
         <div className="flex items-center gap-3">
           <MobileMenu user={session.user} />
 
@@ -88,7 +86,7 @@ export default async function DashboardLayout({
               <img
                 src={dbUser.image}
                 alt="Foto do usuário"
-                className="h-10 w-10 rounded-full border object-cover"
+                className="h-10 w-10 rounded-full border border-white/40 object-cover"
               />
             ) : (
               <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white/15 text-white">
@@ -105,7 +103,6 @@ export default async function DashboardLayout({
               </p>
             </div>
           </div>
-
         </div>
       </div>
 

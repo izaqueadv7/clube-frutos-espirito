@@ -36,7 +36,15 @@
     "import:classes-advanced": "tsx scripts/import-advanced-classes-from-mda.ts",
     "import:advanced-groups": "tsx scripts/import-advanced-class-groups-from-mda.ts",
     "cleanup:advanced-classes": "tsx scripts/cleanup-advanced-classes.ts",
-    "cleanup:advanced-groups": "tsx scripts/cleanup-empty-advanced-groups.ts"
+    "cleanup:advanced-groups": "tsx scripts/cleanup-empty-advanced-groups.ts",
+    "import:leadership-master": "tsx scripts/import-leadership-master-classes.ts",
+    "debug:leadership-mda": "tsx scripts/debug-leadership-mda.ts",
+    "debug:group3": "tsx scripts/debug-leadership-group3.ts",
+    "import:leader-class": "tsx scripts/import-leader-class.ts",
+    "cleanup:wrong-masters": "tsx scripts/cleanup-wrong-masters.ts",
+    "import:masters-reqs": "tsx scripts/import-masters-requirements.ts",
+    "sync:pathfinders": "tsx scripts/sync-missing-pathfinders.ts",
+    "fix:francisco": "tsx scripts/fix-francisco-role.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

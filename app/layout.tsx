@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>
+      <body className="bg-surface text-ink">
         <AppSplashScreen />
         <SessionProvider>
           <PwaRegister />

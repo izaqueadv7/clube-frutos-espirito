@@ -43,6 +43,10 @@ function indentClass(level: number) {
   return "";
 }
 
+function isValidMasterName(name: string) {
+  return name.trim().toLowerCase().startsWith("mestrado em ");
+}
+
 export function SpecialtiesBrowser({ items }: { items: AreaItem[] }) {
   const [searchArea, setSearchArea] = useState("");
   const [searchSpecialty, setSearchSpecialty] = useState("");
@@ -50,17 +54,30 @@ export function SpecialtiesBrowser({ items }: { items: AreaItem[] }) {
   const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
   const [selectedSpecialtyId, setSelectedSpecialtyId] = useState<string | null>(null);
 
+  const normalizedItems = useMemo(() => {
+    return items.map((area) => {
+      if (area.name !== "Mestrados") return area;
+
+      return {
+        ...area,
+        specialties: area.specialties.filter((specialty) =>
+          isValidMasterName(specialty.name)
+        )
+      };
+    });
+  }, [items]);
+
   const selectedArea =
-    items.find((item) => item.id === selectedAreaId) ?? null;
+    normalizedItems.find((item) => item.id === selectedAreaId) ?? null;
 
   const selectedSpecialty =
     selectedArea?.specialties.find((item) => item.id === selectedSpecialtyId) ?? null;
 
   const filteredAreas = useMemo(() => {
     const q = searchArea.trim().toLowerCase();
-    if (!q) return items;
-    return items.filter((item) => item.name.toLowerCase().includes(q));
-  }, [items, searchArea]);
+    if (!q) return normalizedItems;
+    return normalizedItems.filter((item) => item.name.toLowerCase().includes(q));
+  }, [normalizedItems, searchArea]);
 
   const filteredSpecialties = useMemo(() => {
     if (!selectedArea) return [];

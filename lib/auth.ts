@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8)
+  password: z.string().min(1)
 });
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -40,7 +40,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             isMedia: true,
             canManageUsers: true,
             canManageContent: true,
-            status: true
+            status: true,
+            isActive: true
           }
         });
 
@@ -49,14 +50,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           session.user.name = dbUser.name;
           session.user.email = dbUser.email;
           session.user.image = dbUser.image ?? undefined;
-          session.user.role = dbUser.role as "PATHFINDER" | "LEADER" | "PARENT";
+          session.user.role = dbUser.role as
+            | "PATHFINDER"
+            | "LEADER"
+            | "PARENT"
+            | "ADMIN"
+            | "DIRECTOR";
           session.user.primaryFunction = dbUser.primaryFunction ?? undefined;
           session.user.secondaryFunction = dbUser.secondaryFunction ?? undefined;
           session.user.isAdmin = dbUser.isAdmin;
           session.user.isMedia = dbUser.isMedia;
           session.user.canManageUsers = dbUser.canManageUsers;
           session.user.canManageContent = dbUser.canManageContent;
-          session.user.status = dbUser.status as "PENDING" | "APPROVED" | "REJECTED";
+          session.user.status = dbUser.status as
+            | "PENDING"
+            | "APPROVED"
+            | "REJECTED";
+          session.user.isActive = dbUser.isActive;
         }
       }
 
@@ -73,8 +83,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       async authorize(rawCredentials) {
         const parsed = credentialsSchema.safeParse(rawCredentials);
+
         if (!parsed.success) {
-          throw new Error("Credenciais inválidas.");
+          return null;
         }
 
         const { email, password } = parsed.data;
@@ -84,24 +95,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!user) {
-          throw new Error("Email ou senha inválidos.");
+          return null;
         }
 
         if (!user.isActive) {
-          throw new Error("Este usuário está desativado. Procure a liderança.");
+          return null;
         }
 
         if (user.status === "PENDING") {
-          throw new Error("Seu cadastro está aguardando aprovação da liderança.");
+          return null;
         }
 
         if (user.status === "REJECTED") {
-          throw new Error("Seu cadastro foi rejeitado. Procure a liderança do clube.");
+          return null;
+        }
+
+        if (!user.passwordHash) {
+          return null;
         }
 
         const isValid = await bcrypt.compare(password, user.passwordHash);
+
         if (!isValid) {
-          throw new Error("Email ou senha inválidos.");
+          return null;
         }
 
         return {

@@ -17,7 +17,7 @@ export default async function LeaderSpecialtiesPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-5">
+      <Card className="card-premium hover-lift">
         <h1 className="section-title">Gerenciar Especialidades</h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Cadastre, edite e exclua especialidades globais do sistema.

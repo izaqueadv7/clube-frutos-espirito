@@ -16,7 +16,7 @@ export default async function CalendarPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-5">
+      <Card className="card-premium hover-lift">
         <h1 className="section-title">Calendario do Clube</h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Reunioes, acampamentos, investiduras e atividades especiais.

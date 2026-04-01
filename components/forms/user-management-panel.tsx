@@ -105,7 +105,7 @@ export function UserManagementPanel({ users }: { users: UserItem[] }) {
 
       <div className="space-y-4">
         {filteredUsers.length === 0 ? (
-          <Card className="p-5">
+          <Card className="card-premium hover-lift">
             <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum usuário encontrado.</p>
           </Card>
         ) : (

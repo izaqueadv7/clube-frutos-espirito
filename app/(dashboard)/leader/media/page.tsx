@@ -11,14 +11,14 @@ export default async function MediaPanelPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-5">
+      <Card className="card-premium hover-lift">
         <h1 className="section-title">Painel da Mídia</h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Área para cuidar dos avisos principais, galeria de fotos e conteúdos visuais do clube.
         </p>
       </Card>
 
-      <Card className="p-5">
+      <Card className="card-premium hover-lift">
         <div className="space-y-3">
           <a href="/leader/highlights" className="block rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white">
             Gerenciar Avisos Principais

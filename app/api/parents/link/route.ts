@@ -27,7 +27,13 @@ export async function POST(request: Request) {
     }
 
     const parentUser = await prisma.user.findUnique({
-      where: { id: parentUserId }
+      where: { id: parentUserId },
+      select: {
+        id: true,
+        role: true,
+        name: true,
+        email: true
+      }
     });
 
     if (!parentUser || parentUser.role !== "PARENT") {
@@ -38,7 +44,16 @@ export async function POST(request: Request) {
     }
 
     const pathfinder = await prisma.pathfinder.findUnique({
-      where: { id: pathfinderId }
+      where: { id: pathfinderId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        }
+      }
     });
 
     if (!pathfinder) {
@@ -82,7 +97,20 @@ export async function POST(request: Request) {
       }
     });
 
-    return NextResponse.json({ ok: true, relation });
+    return NextResponse.json({
+      ok: true,
+      relation,
+      parent: {
+        id: parentUser.id,
+        name: parentUser.name,
+        email: parentUser.email
+      },
+      pathfinder: {
+        id: pathfinder.id,
+        name: pathfinder.user?.name ?? "",
+        email: pathfinder.user?.email ?? ""
+      }
+    });
   } catch (error) {
     console.error("Erro ao vincular responsável:", error);
     return NextResponse.json(

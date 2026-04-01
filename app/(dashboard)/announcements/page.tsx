@@ -26,13 +26,13 @@ export default async function AnnouncementsPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-5">
+      <Card className="card-premium hover-lift">
         <h1 className="section-title">Sistema de Avisos</h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">Comunicados oficiais para desbravadores e pais.</p>
       </Card>
 
       {session.user.role === "LEADER" ? (
-        <Card className="p-5">
+        <Card className="card-premium hover-lift">
           <h2 className="mb-3 text-lg font-bold text-primary">Novo aviso</h2>
           <AnnouncementForm />
         </Card>

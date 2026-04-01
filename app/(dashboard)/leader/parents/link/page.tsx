@@ -32,22 +32,35 @@ export default async function ParentLinkPage() {
     }
   });
 
-  const normalizedPathfinders = pathfinders.map((item) => ({
-    id: item.id,
-    name: item.user.name,
-    email: item.user.email
-  }));
+  const normalizedParents = parents
+    .filter((item) => item.name && item.email)
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      email: item.email
+    }));
+
+  const normalizedPathfinders = pathfinders
+    .filter((item) => item.user?.name && item.user?.email)
+    .map((item) => ({
+      id: item.id,
+      name: item.user.name,
+      email: item.user.email
+    }));
 
   return (
     <div className="space-y-4">
-      <Card className="p-5">
+      <Card className="card-premium hover-lift">
         <h1 className="section-title">Vincular Responsável ao Desbravador</h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Escolha um responsável já cadastrado e vincule ao desbravador.
         </p>
       </Card>
 
-      <ParentLinkForm parents={parents} pathfinders={normalizedPathfinders} />
+      <ParentLinkForm
+        parents={normalizedParents}
+        pathfinders={normalizedPathfinders}
+      />
     </div>
   );
 }

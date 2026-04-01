@@ -33,7 +33,7 @@ export default async function ApprovalsPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-5">
+      <Card className="card-premium hover-lift">
         <h1 className="section-title">Aprovação de cadastros</h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-800">
           Aprove ou rejeite novos usuários cadastrados no portal.

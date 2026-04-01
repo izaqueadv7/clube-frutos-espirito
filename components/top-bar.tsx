@@ -1,6 +1,5 @@
 ﻿import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export async function TopBar() {
@@ -32,13 +31,27 @@ export async function TopBar() {
 
           {session ? (
             <Link href="/dashboard">
-              <span className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-2 font-semibold text-primary shadow-sm transition hover:bg-slate-100">
+              <span className="inline-flex items-center justify-center rounded-xl px-5 py-2 font-semibold shadow-sm transition
+              
+              bg-white !bg-white
+              text-primary !text-primary
+              hover:bg-slate-100 dark:hover:bg-slate-100
+              
+              border border-white/40
+              ">
                 Minha Área
               </span>
             </Link>
           ) : (
             <Link href="/login">
-              <span className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-2 font-semibold text-primary shadow-sm transition hover:bg-slate-100">
+              <span className="inline-flex items-center justify-center rounded-xl px-5 py-2 font-semibold shadow-sm transition
+              
+              bg-white !bg-white
+              text-primary !text-primary
+              hover:bg-slate-100 dark:hover:bg-slate-100
+              
+              border border-white/40
+              ">
                 Entrar
               </span>
             </Link>

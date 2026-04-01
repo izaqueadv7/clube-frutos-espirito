@@ -11,27 +11,28 @@ export default async function AssignmentsPage() {
   if (!session?.user) redirect("/login");
   if (!canManageAssignments(session.user)) redirect("/dashboard");
 
-  const pathfinders = await prisma.pathfinder.findMany({
-    include: {
-      user: true,
-      currentClass: true,
-      specialties: {
-        include: {
-          specialty: true
+const users = await prisma.user.findMany({
+  include: {
+    pathfinderProfile: {
+      include: {
+        currentClass: true,
+        specialties: {
+          include: {
+            specialty: true
+          }
+        },
+        progress: {
+          include: {
+            requirement: true
+          }
         }
-      },
-      progress: {
-        include: {
-          requirement: true
-        }
-      }
-    },
-    orderBy: {
-      user: {
-        name: "asc"
       }
     }
-  });
+  },
+  orderBy: {
+    name: "asc"
+  }
+});
 
   const classesRaw = await prisma.pathfinderClass.findMany({
     orderBy: { order: "asc" },
@@ -61,17 +62,27 @@ export default async function AssignmentsPage() {
     }
   });
 
-  const normalizedPathfinders = pathfinders.map((item) => ({
-    id: item.id,
-    name: item.user.name,
-    email: item.user.email,
-    image: item.user.image ?? "",
-    currentClassId: item.currentClassId ?? "",
-    specialtyIds: item.specialties.map((spec) => spec.specialtyId),
-    completedRequirementIds: item.progress
-      .filter((progress) => progress.completed)
-      .map((progress) => progress.requirementId)
-  }));
+  const normalizedPathfinders = users.map((user) => {
+  const pf = user.pathfinderProfile;
+
+  return {
+    id: pf?.id ?? user.id,
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    image: user.image ?? "",
+
+    isPathfinder: !!pf,
+    isLeader: ["LEADER", "DIRECTOR", "ADMIN"].includes(user.role),
+
+    currentClassId: pf?.currentClassId ?? "",
+    specialtyIds: pf?.specialties?.map((s) => s.specialtyId) ?? [],
+    completedRequirementIds:
+      pf?.progress
+        ?.filter((p) => p.completed)
+        .map((p) => p.requirementId) ?? []
+  };
+});
 
   const classes = classesRaw.map((item) => ({
     id: item.id,

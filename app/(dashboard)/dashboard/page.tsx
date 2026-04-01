@@ -5,7 +5,11 @@ import { getVerseOfDay } from "@/lib/content";
 import { Card } from "@/components/ui/card";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { ProgressBar } from "@/components/dashboard/progress-bar";
-import { translateClassName, translateRole, translateSpecialtyStatus } from "@/lib/translate";
+import {
+  translateClassName,
+  translateRole,
+  translateSpecialtyStatus
+} from "@/lib/translate";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -15,6 +19,10 @@ export default async function DashboardPage() {
   }
 
   const verseOfDay = getVerseOfDay();
+
+  const innerCardClass =
+    "rounded-2xl border page-line bg-app-card px-5 py-4 text-sm shadow-[0_4px_12px_rgba(0,0,0,0.08)]";
+  const softVerseClass = "mt-4 rounded-2xl page-soft px-4 py-3 text-sm";
 
   if (session.user.role === "LEADER") {
     const [
@@ -70,18 +78,18 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid gap-4 xl:grid-cols-2">
-          <Card className="p-5">
+          <Card className="card-premium hover-lift p-5">
             <h2 className="section-title">Próximos eventos</h2>
 
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 space-y-4">
               {upcomingEvents.length === 0 ? (
-                <p className="text-sm text-slate-600 dark:text-slate-800">Nenhum evento agendado.</p>
+                <p className="text-sm text-app-secondary">Nenhum evento agendado.</p>
               ) : (
                 upcomingEvents.map((event) => (
-                  <div key={event.id} className="rounded-xl border p-3 text-sm">
-                    <p className="font-semibold">{event.title}</p>
-                    <p className="text-slate-600 dark:text-slate-300">{event.location}</p>
-                    <p className="text-slate-600 dark:text-slate-300">
+                  <div key={event.id} className={innerCardClass}>
+                    <p className="font-semibold text-app-primary">{event.title}</p>
+                    <p className="mt-1 text-app-secondary">{event.location}</p>
+                    <p className="mt-1 text-app-secondary">
                       {new Date(event.date).toLocaleString("pt-BR")}
                     </p>
                   </div>
@@ -90,18 +98,18 @@ export default async function DashboardPage() {
             </div>
           </Card>
 
-          <Card className="p-5">
+          <Card className="card-premium hover-lift p-5">
             <h2 className="section-title">Últimos usuários</h2>
 
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 space-y-4">
               {recentUsers.map((user) => (
-                <div key={user.id} className="rounded-xl border p-3 text-sm">
-                  <p className="font-semibold">{user.name}</p>
-                  <p className="text-slate-600 dark:text-slate-300">{user.email}</p>
-                  <p className="text-slate-600 dark:text-slate-300">
+                <div key={user.id} className={innerCardClass}>
+                  <p className="font-semibold text-app-primary">{user.name}</p>
+                  <p className="mt-1 text-app-secondary">{user.email}</p>
+                  <p className="mt-1 text-app-secondary">
                     Perfil: {translateRole(user.role)}
                   </p>
-                  <p className="text-slate-600 dark:text-slate-300">
+                  <p className="mt-1 text-app-secondary">
                     Status: {user.status}
                   </p>
                 </div>
@@ -110,12 +118,12 @@ export default async function DashboardPage() {
           </Card>
         </div>
 
-        <Card className="p-5">
+        <Card className="card-premium hover-lift p-5">
           <h2 className="section-title">Painel de liderança</h2>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          <p className="mt-2 text-sm text-app-secondary">
             Use os menus de gerenciamento para usuários, aprovações, eventos, presença, galeria, avisos e progresso das classes.
           </p>
-          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-800">
+          <p className={softVerseClass}>
             Verso do dia: {verseOfDay}
           </p>
         </Card>
@@ -189,32 +197,32 @@ export default async function DashboardPage() {
           />
         </div>
 
-        <Card className="space-y-4 p-5">
+        <Card className="card-premium hover-lift space-y-4 p-5">
           <h2 className="section-title">Acompanhamento do responsável</h2>
           <ProgressBar label="Progresso da classe" value={pct} />
           <ProgressBar label="Especialidades" value={specialtyPct} />
-          <p className="rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-800">
+          <p className={softVerseClass}>
             Verso do dia: {verseOfDay}
           </p>
         </Card>
 
-        <Card className="p-5">
+        <Card className="card-premium hover-lift p-5">
           <h2 className="section-title">Últimas presenças</h2>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 space-y-4">
             {child?.attendance.length ? (
               child.attendance.map((item: any) => (
-                <div key={item.id} className="rounded-xl border p-3 text-sm">
-                  <p className="font-semibold">{item.event.title}</p>
-                  <p className="text-slate-600 dark:text-slate-300">{item.event.location}</p>
-                  <p className="text-slate-600 dark:text-slate-300">
+                <div key={item.id} className={innerCardClass}>
+                  <p className="font-semibold text-app-primary">{item.event.title}</p>
+                  <p className="mt-1 text-app-secondary">{item.event.location}</p>
+                  <p className="mt-1 text-app-secondary">
                     {new Date(item.event.date).toLocaleString("pt-BR")}
                   </p>
-                  <p className="text-slate-600 dark:text-slate-300">Status: {item.status}</p>
+                  <p className="mt-1 text-app-secondary">Status: {item.status}</p>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum registro de presença.</p>
+              <p className="text-sm text-app-secondary">Nenhum registro de presença.</p>
             )}
           </div>
         </Card>
@@ -293,69 +301,69 @@ export default async function DashboardPage() {
         />
       </div>
 
-      <Card className="space-y-4 p-5">
+      <Card className="card-premium hover-lift space-y-4 p-5">
         <h2 className="section-title">Meu progresso</h2>
         <ProgressBar label="Classe" value={classProgress} />
         <ProgressBar label="Especialidades" value={specialtyProgress} />
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-2">
-        <Card className="p-5">
+        <Card className="card-premium hover-lift p-5">
           <h2 className="section-title">Próximo encontro</h2>
           {nextEvent ? (
             <>
-              <p className="mt-2 text-lg font-semibold">{nextEvent.title}</p>
-              <p className="text-sm text-slate-600 dark:text-slate-300">{nextEvent.location}</p>
-              <p className="text-sm text-slate-600 dark:text-slate-300">
+              <p className="mt-2 text-lg font-semibold text-app-primary">{nextEvent.title}</p>
+              <p className="text-sm text-app-secondary">{nextEvent.location}</p>
+              <p className="text-sm text-app-secondary">
                 {new Date(nextEvent.date).toLocaleString("pt-BR")}
               </p>
             </>
           ) : (
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Nenhum evento agendado.</p>
+            <p className="mt-2 text-sm text-app-secondary">Nenhum evento agendado.</p>
           )}
-          <p className="mt-4 rounded-xl bg-green-50 p-3 text-sm text-slate-700 dark:text-slate-800">
+          <p className={softVerseClass}>
             Verso do dia: {verseOfDay}
           </p>
         </Card>
 
-        <Card className="p-5">
+        <Card className="card-premium hover-lift p-5">
           <h2 className="section-title">Minhas últimas presenças</h2>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 space-y-4">
             {pathfinder?.attendance.length ? (
               pathfinder.attendance.map((item: any) => (
-                <div key={item.id} className="rounded-xl border p-3 text-sm">
-                  <p className="font-semibold">{item.event.title}</p>
-                  <p className="text-slate-600 dark:text-slate-300">{item.event.location}</p>
-                  <p className="text-slate-600 dark:text-slate-300">
+                <div key={item.id} className={innerCardClass}>
+                  <p className="font-semibold text-app-primary">{item.event.title}</p>
+                  <p className="mt-1 text-app-secondary">{item.event.location}</p>
+                  <p className="mt-1 text-app-secondary">
                     {new Date(item.event.date).toLocaleString("pt-BR")}
                   </p>
-                  <p className="text-slate-600 dark:text-slate-300">Status: {item.status}</p>
+                  <p className="mt-1 text-app-secondary">Status: {item.status}</p>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-slate-600 dark:text-slate-300">Nenhum registro de presença.</p>
+              <p className="text-sm text-app-secondary">Nenhum registro de presença.</p>
             )}
           </div>
         </Card>
       </div>
 
-      <Card className="p-5">
+      <Card className="card-premium hover-lift p-5">
         <h2 className="section-title">Minhas especialidades</h2>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {pathfinder?.specialties.length ? (
             pathfinder.specialties.map((item: any) => (
-              <div key={item.id} className="rounded-xl border p-3 text-sm">
-                <p className="font-semibold">{item.specialty.name}</p>
-                <p className="text-slate-600 dark:text-slate-300">{item.specialty.category}</p>
-                <p className="text-slate-600 dark:text-slate-300">
+              <div key={item.id} className={innerCardClass}>
+                <p className="font-semibold text-app-primary">{item.specialty.name}</p>
+                <p className="mt-1 text-app-secondary">{item.specialty.category}</p>
+                <p className="mt-1 text-app-secondary">
                   Status: {translateSpecialtyStatus(item.status)}
                 </p>
               </div>
             ))
           ) : (
-            <p className="text-sm text-slate-600 dark:text-slate-300">Nenhuma especialidade atribuída.</p>
+            <p className="text-sm text-app-secondary">Nenhuma especialidade atribuída.</p>
           )}
         </div>
       </Card>

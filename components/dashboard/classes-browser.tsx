@@ -170,9 +170,9 @@ export function ClassesBrowser({ items }: { items: ClassItem[] }) {
                   className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
                 >
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-white">
-                      {group.roman}
-                    </div>
+                    <div className="flex h-12 min-w-[48px] items-center justify-center rounded-2xl bg-primary px-2 text-sm font-bold text-white">
+  {group.roman === "PR" ? "PR" : group.roman}
+</div>
 
                     <div>
                       <p className="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500">
