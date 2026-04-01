@@ -69,7 +69,7 @@ function dedupeRequirements(items: RequirementItem[]) {
 
 function extractListRecursively(
   $: cheerio.CheerioAPI,
-  listElement: cheerio.Element,
+  listElement: any,
   level = 0,
   orderRef = { value: 1 }
 ): RequirementItem[] {

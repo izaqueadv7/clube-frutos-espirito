@@ -152,7 +152,7 @@ function getMarker(index: number, tag: string, level: number, type?: string, sta
 
 function extractMalformedList(
   $: cheerio.CheerioAPI,
-  listEl: cheerio.Element,
+  listEl: any,
   level = 0,
   orderRef = { v: 1 }
 ): RequirementItem[] {

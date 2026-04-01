@@ -95,7 +95,7 @@ function parseSectionNodes(
     });
   }
 
-  function walk(node: cheerio.Element, level = 0) {
+  function walk(node: any, level = 0) {
     const tag = node.tagName?.toLowerCase();
 
     if (tag === "li") {

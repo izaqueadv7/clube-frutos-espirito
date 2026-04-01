@@ -144,7 +144,7 @@ function getMarker(
 
 function extractList(
   $: cheerio.CheerioAPI,
-  el: cheerio.Element,
+  el: any,
   level = 0,
   order = { v: 1 }
 ): RequirementItem[] {
