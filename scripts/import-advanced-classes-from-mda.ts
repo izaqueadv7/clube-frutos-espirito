@@ -175,7 +175,7 @@ async function main() {
           marker: item.marker,
           level: item.level,
           order: item.order,
-          group: item.group
+          groupId: null
         }
       });
     }
