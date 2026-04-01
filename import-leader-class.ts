@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import * as cheerio from "cheerio";
+import type { Element } from "domhandler";
 
 const prisma = new PrismaClient();
 
@@ -90,7 +91,7 @@ function parseSectionNodes(
     });
   }
 
-  function walkList(listNode: cheerio.Element, level: number) {
+  function walkList(listNode: Element, level: number) {
     const tag = listNode.tagName?.toLowerCase() || "ol";
     const style = ($(listNode).attr("style") || "").toLowerCase();
     const isAlpha = style.includes("lower-alpha") || style.includes("upper-alpha");
