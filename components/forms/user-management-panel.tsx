@@ -9,7 +9,7 @@ type UserItem = {
   id: string;
   name: string;
   email: string;
-  role: "PATHFINDER" | "LEADER" | "PARENT";
+  role: "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
   status: "PENDING" | "APPROVED" | "REJECTED";
   primaryFunction: string;
   secondaryFunction: string;

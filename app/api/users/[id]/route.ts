@@ -26,7 +26,7 @@ export async function PUT(request: Request, { params }: Params) {
   const name = String(body?.name || "").trim();
   const email = String(body?.email || "").trim().toLowerCase();
   const password = String(body?.password || "");
-  const role = body?.role as "PATHFINDER" | "LEADER" | "PARENT";
+  const role = body?.role as "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
   const primaryFunction = String(body?.primaryFunction || "").trim();
   const secondaryFunction = String(body?.secondaryFunction || "").trim();
 
@@ -60,7 +60,7 @@ export async function PUT(request: Request, { params }: Params) {
   const data: {
     name: string;
     email: string;
-    role: "PATHFINDER" | "LEADER" | "PARENT";
+    role: "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
     primaryFunction: string | null;
     secondaryFunction: string | null;
     isAdmin: boolean;

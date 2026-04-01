@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireLeader, requireUser } from "@/lib/api-auth";
 
-async function resolvePathfinderId(userId: string, role: "PATHFINDER" | "LEADER" | "PARENT") {
+async function resolvePathfinderId(userId: string, role: "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR") {
   if (role === "PATHFINDER") {
     return (await prisma.pathfinder.findUnique({ where: { userId } }))?.id ?? null;
   }
