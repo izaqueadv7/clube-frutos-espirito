@@ -37,6 +37,19 @@ function categoryLabel(category: string) {
   return "Classe";
 }
 
+function getClassDisplayName(name: string) {
+  const map: Record<string, string> = {
+    "Amigo": "Amigo e Amigo da Natureza",
+    "Companheiro": "Companheiro e Companheiro de Excursão",
+    "Pesquisador": "Pesquisador e Pesquisador de Campo e Bosque",
+    "Pioneiro": "Pioneiro e Pioneiro de Novas Fronteiras",
+    "Excursionista": "Excursionista e Excursionista na Mata",
+    "Guia": "Guia e Guia de Exploração"
+  };
+
+  return map[name] ?? name;
+}
+
 function indentClass(level: number) {
   if (level === 1) return "ml-4";
   if (level >= 2) return "ml-8";
@@ -106,7 +119,7 @@ export function ClassesBrowser({ items }: { items: ClassItem[] }) {
                     {categoryLabel(item.category)}
                   </p>
                   <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">
-                    {item.name}
+                    {getClassDisplayName(item.name)}
                   </h2>
                   <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                     {item.description}
@@ -142,7 +155,7 @@ export function ClassesBrowser({ items }: { items: ClassItem[] }) {
               {categoryLabel(selectedClass.category)}
             </p>
             <h1 className="mt-1 text-3xl font-extrabold">
-              {selectedClass.name}
+              {getClassDisplayName(selectedClass.name)}
             </h1>
             <p className="mt-2 text-sm text-white/85">
               {selectedClass.description}

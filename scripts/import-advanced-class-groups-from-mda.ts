@@ -101,12 +101,6 @@ function toRoman(num: number) {
   return result;
 }
 
-function getMarker(index: number, level: number) {
-  if (level === 0) return `${index + 1}.`;
-  if (level === 1) return `${toAlpha(index + 1)})`;
-  return `${index + 1}.`;
-}
-
 async function fetchHtml(url: string) {
   const res = await fetch(url, {
     headers: {
@@ -133,115 +127,100 @@ function dedupeRequirements(items: ParsedRequirement[]) {
   });
 }
 
-function extractRequirementsFromNode($: cheerio.CheerioAPI, root: cheerio.Cheerio<any>) {
+function extractAdvancedSectionTextFromBody(html: string) {
+  const $ = cheerio.load(html);
+
+  const bodyText = $("body").text();
+
+  if (!bodyText) return "";
+
+  const normalized = bodyText
+    .replace(/\u00a0/g, " ")
+    .replace(/\r/g, "\n")
+    .replace(/\t/g, " ")
+    .replace(/[ ]{2,}/g, " ")
+    .replace(/\n{2,}/g, "\n")
+    .trim();
+
+  // 🔥 AGORA ELE NÃO DEPENDE DO NOME
+  const match = normalized.match(/CLASSE AVAN[ÇC]ADA\s*[–-]\s*(.+)/i);
+
+  if (!match) return "";
+
+  const startIndex = match.index ?? -1;
+
+  if (startIndex < 0) return "";
+
+  let sliced = normalized.slice(startIndex);
+
+  // remove o título
+  sliced = sliced.replace(/CLASSE AVAN[ÇC]ADA\s*[–-]\s*(.+)/i, "").trim();
+
+  const footerMarkers = [
+    "Image:",
+    "Divisão Sul",
+    "Sobre Nós",
+    "Departamentos",
+    "Sedes Regionais",
+    "Nossas redes sociais"
+  ];
+
+  let endIndex = sliced.length;
+  for (const marker of footerMarkers) {
+    const idx = sliced.indexOf(marker);
+    if (idx >= 0 && idx < endIndex) {
+      endIndex = idx;
+    }
+  }
+
+  return sliced.slice(0, endIndex).trim();
+}
+
+function parseAdvancedRequirementsFromText(sectionText: string) {
+  if (!sectionText) return [] as ParsedRequirement[];
+
+  const rawLines = sectionText
+    .split("\n")
+    .map((line) => normalize(line))
+    .filter(Boolean);
+
   const items: ParsedRequirement[] = [];
   let order = 1;
 
-  const topLists = root.find("ol, ul").filter((_, el) => {
-    const parentLists = $(el).parents("ol, ul");
-    return parentLists.length === 0;
-  });
-
-  topLists.each((_, list) => {
-    const tag = list.tagName?.toLowerCase();
-
-    $(list)
-      .children("li")
-      .each((i, li) => {
-        const liNode = $(li);
-        const clone = liNode.clone();
-        clone.children("ol,ul").remove();
-
-        const text = normalize(clone.text());
-        if (!text) return;
-
-        items.push({
-          title: text,
-          details: text,
-          marker: tag === "ul" ? "•" : getMarker(i, 0),
-          level: 0,
-          order: order++
-        });
-
-        liNode.children("ol,ul").each((_, childList) => {
-          const childTag = childList.tagName?.toLowerCase();
-
-          $(childList)
-            .children("li")
-            .each((j, sub) => {
-              const subText = normalize($(sub).text());
-              if (!subText) return;
-
-              items.push({
-                title: subText,
-                details: subText,
-                marker: childTag === "ul" ? "•" : getMarker(j, 1),
-                level: 1,
-                order: order++
-              });
-            });
-        });
+  for (const line of rawLines) {
+    const mainMatch = line.match(/^(\d+)\.\s*(.+)$/);
+    if (mainMatch) {
+      items.push({
+        title: mainMatch[2],
+        details: mainMatch[2],
+        marker: `${mainMatch[1]}.`,
+        level: 0,
+        order: order++
       });
-  });
+      continue;
+    }
+
+    const subMatch = line.match(/^([a-z])\)\s*(.+)$/i);
+    if (subMatch) {
+      items.push({
+        title: subMatch[2],
+        details: subMatch[2],
+        marker: `${subMatch[1].toLowerCase()})`,
+        level: 1,
+        order: order++
+      });
+      continue;
+    }
+
+    // Linha que continua o item anterior
+    const last = items[items.length - 1];
+    if (last) {
+      last.details = `${last.details} ${line}`.trim();
+      last.title = last.details;
+    }
+  }
 
   return dedupeRequirements(items);
-}
-
-function extractAdvancedSectionFromOfficialPage(html: string, groupName: string) {
-  const $ = cheerio.load(html);
-
-  const headings = $("h1, h2, h3, h4, h5, h6");
-
-  let targetHeading: cheerio.Element | null = null;
-
-  headings.each((_, el) => {
-    const text = normalizeLoose($(el).text());
-    if (text.includes(normalizeLoose(groupName))) {
-      targetHeading = el;
-      return false;
-    }
-  });
-
-  if (!targetHeading) return [] as ParsedRequirement[];
-
-  const sectionNodes: cheerio.Element[] = [];
-  let current = $(targetHeading).next();
-
-  while (current.length > 0) {
-    const tagName = current.get(0)?.tagName?.toLowerCase() || "";
-
-    if (/^h[1-6]$/.test(tagName)) {
-      break;
-    }
-
-    sectionNodes.push(current.get(0)!);
-    current = current.next();
-  }
-
-  const wrapper = $("<div></div>");
-  for (const node of sectionNodes) {
-    wrapper.append($(node).clone());
-  }
-
-  const fromLists = extractRequirementsFromNode($, wrapper);
-  if (fromLists.length > 0) return fromLists;
-
-  const plainText = normalize(wrapper.text());
-
-  const parts = plainText
-    .split(/(?=(?:\d+\.)|(?:\d+\s)|(?:[a-z]\)))/i)
-    .map((t) => normalize(t))
-    .filter((t) => t.length > 8);
-
-  return dedupeRequirements(
-    parts.map((part, index) => ({
-      title: part,
-      details: part,
-      marker: `${index + 1}.`,
-      level: 0,
-      order: index + 1
-    }))
-  );
 }
 
 async function getNextGroupPosition(classId: string) {
@@ -271,7 +250,8 @@ async function main() {
     console.log(`Grupo: ${item.groupName}`);
 
     const html = await fetchHtml(item.url);
-    const parsed = extractAdvancedSectionFromOfficialPage(html, item.groupName);
+    const sectionText = extractAdvancedSectionTextFromBody(html);
+    const parsed = parseAdvancedRequirementsFromText(sectionText);
 
     const baseClass = await prisma.pathfinderClass.findFirst({
       where: { name: item.baseClassName }

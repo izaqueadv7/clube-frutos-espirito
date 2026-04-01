@@ -34,7 +34,9 @@
     "import:hm-reqs": "tsx scripts/import-hm-requirements-from-mda.ts",
     "import:me-reqs": "tsx scripts/import-me-requirements-from-mda.ts",
     "import:classes-advanced": "tsx scripts/import-advanced-classes-from-mda.ts",
-    "import:advanced-groups": "tsx scripts/import-advanced-class-groups-from-mda.ts"
+    "import:advanced-groups": "tsx scripts/import-advanced-class-groups-from-mda.ts",
+    "cleanup:advanced-classes": "tsx scripts/cleanup-advanced-classes.ts",
+    "cleanup:advanced-groups": "tsx scripts/cleanup-empty-advanced-groups.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
