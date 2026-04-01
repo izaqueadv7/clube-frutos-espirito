@@ -5,7 +5,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      role: "PATHFINDER" | "LEADER" | "PARENT";
+      role: "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
       status?: "PENDING" | "APPROVED" | "REJECTED";
       primaryFunction?: string;
       secondaryFunction?: string;
@@ -21,7 +21,7 @@ declare module "next-auth" {
 
   interface User {
     id: string;
-    role?: "PATHFINDER" | "LEADER" | "PARENT";
+    role?: "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
     status?: "PENDING" | "APPROVED" | "REJECTED";
     primaryFunction?: string | null;
     secondaryFunction?: string | null;
