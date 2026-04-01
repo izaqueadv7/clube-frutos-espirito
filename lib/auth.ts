@@ -64,7 +64,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             | "PENDING"
             | "APPROVED"
             | "REJECTED";
-          session.user.isActive = dbUser.isActive;
         }
       }
 
