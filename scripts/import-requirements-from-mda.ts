@@ -259,7 +259,7 @@ async function processArea(areaName: string) {
       const url =
         sp.sourceUrl && sp.sourceUrl.includes("mda.wiki.br")
           ? sp.sourceUrl
-          : buildMdaUrlFromSlug(sp.slug);
+          : buildMdaUrlFromSlug(sp.slug ?? "");
 
       const html = await fetchPage(url);
       const requirements = extractRequirements(html);
