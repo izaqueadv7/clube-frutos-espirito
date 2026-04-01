@@ -8,7 +8,7 @@ type UserEditFormProps = {
     id: string;
     name: string;
     email: string;
-    role: "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
+    role: "PATHFINDER" | "LEADER" | "PARENT";
     primaryFunction: string;
     secondaryFunction: string;
     isAdmin: boolean;
@@ -151,7 +151,7 @@ export function UserEditForm({ user }: UserEditFormProps) {
         <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">Perfil</label>
         <select
           value={role}
-          onChange={(e) => setRole(e.target.value as "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR")}
+          onChange={(e) => setRole(e.target.value as "PATHFINDER" | "LEADER" | "PARENT")}
           className="w-full rounded-lg border border-slate-300 px-3 py-2"
         >
           <option value="PATHFINDER">PATHFINDER</option>

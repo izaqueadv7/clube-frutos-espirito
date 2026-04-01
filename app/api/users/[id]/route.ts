@@ -9,6 +9,18 @@ type Params = {
   params: Promise<{ id: string }>;
 };
 
+type AllowedRole = "PATHFINDER" | "LEADER" | "PARENT";
+
+function normalizeRole(value: unknown): AllowedRole | null {
+  const role = String(value || "").trim().toUpperCase();
+
+  if (role === "PATHFINDER") return "PATHFINDER";
+  if (role === "LEADER") return "LEADER";
+  if (role === "PARENT") return "PARENT";
+
+  return null;
+}
+
 export async function PUT(request: Request, { params }: Params) {
   const session = await auth();
 
@@ -26,7 +38,8 @@ export async function PUT(request: Request, { params }: Params) {
   const name = String(body?.name || "").trim();
   const email = String(body?.email || "").trim().toLowerCase();
   const password = String(body?.password || "");
-  const role = body?.role as "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
+  const role = normalizeRole(body?.role);
+
   const primaryFunction = String(body?.primaryFunction || "").trim();
   const secondaryFunction = String(body?.secondaryFunction || "").trim();
 
@@ -60,7 +73,7 @@ export async function PUT(request: Request, { params }: Params) {
   const data: {
     name: string;
     email: string;
-    role: "PATHFINDER" | "LEADER" | "PARENT" | "ADMIN"  | "DIRECTOR";
+    role: AllowedRole;
     primaryFunction: string | null;
     secondaryFunction: string | null;
     isAdmin: boolean;
